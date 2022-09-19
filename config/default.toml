@@ -1,0 +1,43 @@
+webPath = 'build/web'
+env = 'dev'
+
+[wechat]
+
+appID = ''
+appSecret = ''
+
+[redis]
+
+addr = '127.0.0.1:6379'
+db = 0
+
+[tencent]
+
+secretId = ''
+secretKey = ''
+
+[tencent.sms]
+
+appID = ''
+templateID = ''
+signName = ''
+
+[tencent.cos]
+
+bucketURL = ''
+
+[token]
+
+secret = ''
+
+[db]
+
+user = ''
+password = ''
+addr = '127.0.0.1:3306'
+db = ''
+
+[logger]
+
+level = 'debug'
+format = 'json'

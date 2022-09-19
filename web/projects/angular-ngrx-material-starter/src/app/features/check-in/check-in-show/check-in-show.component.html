@@ -1,0 +1,16 @@
+<mat-card>
+  <img *ngIf="checkIn?.headImgUrl"
+       mat-card-avatar
+       [src]="checkIn?.headImgUrl"
+  />
+  <mat-card-title>{{checkIn?.userName}} 的今日打卡</mat-card-title>
+  <mat-card-subtitle>打卡时间: {{(checkIn?.createdAt || 0) *1000 | date: 'mediumTime'}}</mat-card-subtitle>
+  <mat-card-content>
+    <ng-container *ngIf="checkIn">
+      <video controls [style.width]="'100%'">
+        <source [src]="checkIn?.url">
+        Your browser does not support the video tag.
+      </video>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
