@@ -88,10 +88,10 @@ export class CheckInComponent implements OnInit {
             checkInAtStr = new Date(this.todayCheckIn?.createdAt * 1000 ?? 0).toLocaleString('chinese', {hour12: false})
           }
           this.wechatService.wx.updateAppMessageShareData({
-            title: '今日打卡',
+            title: this.todayCheckIn?.userName + ' 的今日打卡',
             desc: '打卡时间: ' + checkInAtStr,
             link: window.location.origin + '/web/check-in/' + this.todayCheckIn?.key, // 分享链接，该链接域名或路径必须与当前页面对应的公众号 JS 安全域名一致
-            imgUrl: 'https://storage-1313942024.cos.ap-shanghai.myqcloud.com/logo.jpeg', // 分享图标
+            imgUrl: this.todayCheckIn?.headImgUrl, // 分享图标
             success: function () {
               console.log('shared success')
             },

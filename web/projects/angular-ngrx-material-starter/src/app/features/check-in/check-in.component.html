@@ -13,18 +13,10 @@
     </ng-container>
     <!--未打卡-->
     <ng-container *ngIf="!todayCheckIn">
-      <!--拍摄-->
-      <input type="file" [style.display]="'none'"
-             (change)="onFileSelected($event)" #fileUpload accept="video/*" capture="user">
-      <button mat-fab color="primary" aria-label="选择打卡视频" (click)="fileUpload.click()">
-        <mat-icon>
-          <fa-icon icon="video"></fa-icon>
-        </mat-icon>
-      </button>
       <!--从相册中选择-->
       <input type="file" [style.display]="'none'"
-             (change)="onFileSelected($event)" #fileUpload2 accept="video/*">
-      <button mat-fab color="primary" aria-label="选择打卡视频" (click)="fileUpload2.click()" class="ms-1">
+             (change)="onFileSelected($event)" #fileUpload accept="video/*">
+      <button mat-fab color="primary" aria-label="选择打卡视频" (click)="fileUpload.click()" class="ms-1">
         <mat-icon>
           <fa-icon icon="file"></fa-icon>
         </mat-icon>
@@ -33,7 +25,8 @@
     </ng-container>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="confirmCheckIn()" *ngIf="!todayCheckIn" [disabled]="!file || loading">
+    <button mat-raised-button color="primary" (click)="confirmCheckIn()" *ngIf="!todayCheckIn"
+            [disabled]="!file || loading">
       确认打卡
     </button>
     <button mat-raised-button color="warn" (click)="resetCheckIn()" *ngIf="todayCheckIn">
@@ -41,6 +34,7 @@
     </button>
   </mat-card-actions>
   <mat-card-footer>
-    <mat-progress-bar mode="determinate" *ngIf="uploadProgressValue != 0" [value]="uploadProgressValue"></mat-progress-bar>
+    <mat-progress-bar mode="determinate" *ngIf="uploadProgressValue != 0"
+                      [value]="uploadProgressValue"></mat-progress-bar>
   </mat-card-footer>
 </mat-card>

@@ -43,7 +43,8 @@ export class AppComponent implements OnInit {
     // {link: 'feature-list', label: 'anms.menu.features'},
     // {link: 'examples', label: 'anms.menu.examples'},
     {link: 'me', label: '我的'},
-    {link: 'check-in', label: '打卡'}
+    {link: 'check-in', label: '打卡'},
+    {link: 'check-in/top', label: '打卡排行'}
   ];
   navigationSideMenu = [
     ...this.navigation,

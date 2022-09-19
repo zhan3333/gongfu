@@ -20,9 +20,6 @@
             <mat-card-subtitle>@{{checkIn?.userName}}</mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
-            <p>
-              {{checkIn?.createdAt}}
-            </p>
             <p *ngIf="checkIn?.createdAt">打卡时间: {{(checkIn.createdAt || 0) * 1000 | date: 'shortTime'}}</p>
           </mat-card-content>
           <mat-card-actions>

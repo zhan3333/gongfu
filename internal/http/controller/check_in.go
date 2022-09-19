@@ -40,6 +40,14 @@ func (r Controller) GetTodayCheckIn(c *app.Context) result.Result {
 	if err != nil {
 		return result.Err(err)
 	}
+	user, err := r.Store.GetUser(context.TODO(), checkIn.UserID)
+	if err != nil {
+		return result.Err(fmt.Errorf("get user: %w", err))
+	}
+	var userName, headImgUrl = "", ""
+	if user != nil {
+		userName, headImgUrl = user.Nickname, user.HeadImgURL
+	}
 	if checkIn == nil {
 		return result.Ok(gin.H{
 			"exists": false,
@@ -52,10 +60,12 @@ func (r Controller) GetTodayCheckIn(c *app.Context) result.Result {
 	return result.Ok(gin.H{
 		"exists": true,
 		"checkIn": gin.H{
-			"id":        checkIn.ID,
-			"createdAt": checkIn.CreatedAt.Unix(),
-			"url":       visitUrl,
-			"key":       checkIn.Key,
+			"id":         checkIn.ID,
+			"createdAt":  checkIn.CreatedAt.Unix(),
+			"url":        visitUrl,
+			"key":        checkIn.Key,
+			"userName":   userName,
+			"headImgUrl": headImgUrl,
 		},
 	})
 }

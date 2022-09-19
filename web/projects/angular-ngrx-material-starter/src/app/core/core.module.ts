@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { NgModule, Optional, SkipSelf, ErrorHandler } from '@angular/core';
+import { CommonModule, registerLocaleData } from '@angular/common';
+import { NgModule, Optional, SkipSelf, ErrorHandler, LOCALE_ID } from '@angular/core';
 import {
   HttpClientModule,
   HttpClient,
@@ -75,6 +75,11 @@ import {
   faYoutube
 } from '@fortawesome/free-brands-svg-icons';
 import { HttpAuthInterceptor } from './http-interceptors/http-auth.interceptor';
+import localeZh from '@angular/common/locales/zh';
+import localeZhExtra from '@angular/common/locales/extra/zh';
+
+registerLocaleData(localeZh, 'zh-cn', localeZhExtra);
+
 
 export {
   TitleService,
@@ -150,7 +155,7 @@ export function httpLoaderFactory(http: HttpClient) {
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpAuthInterceptor, multi: true },
     { provide: ErrorHandler, useClass: AppErrorHandler },
-    { provide: RouterStateSerializer, useClass: CustomSerializer }
+    { provide: RouterStateSerializer, useClass: CustomSerializer },
   ],
   exports: [
     // angular
