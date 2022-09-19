@@ -58,9 +58,9 @@ export class CheckInTopComponent implements OnInit {
       this.checkInList = data
       this.wechatService.refresh(location.href.split('#')[0]).subscribe(
         () => {
-          const link = window.location.origin + `/web/check-in-top?start=${this.start}&end=${this.end}`
-          const startDate = formatDate(this.start * 1000, 'Y-M-d H:i:s', 'zh-cn')
-          const endDate = formatDate(this.end * 1000, 'Y-M-d H:i:s', 'zh-cn')
+          const link = window.location.origin + `/web/check-in/top?start=${this.start}&end=${this.end}`
+          const startDate = formatDate(this.start * 1000, 'Y-M-d H:m:s', 'zh-cn')
+          const endDate = formatDate(this.end * 1000, 'Y-M-d H:m:s', 'zh-cn')
           const curDate = formatDate(this.start * 1000, 'Y-M-d', 'zh-cn')
           console.log('shared link: ' + link)
           this.wechatService.wx.updateAppMessageShareData({
