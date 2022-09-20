@@ -40,6 +40,11 @@ func (r Controller) GetTodayCheckIn(c *app.Context) result.Result {
 	if err != nil {
 		return result.Err(err)
 	}
+	if checkIn == nil {
+		return result.Ok(gin.H{
+			"exists": false,
+		})
+	}
 	user, err := r.Store.GetUser(context.TODO(), checkIn.UserID)
 	if err != nil {
 		return result.Err(fmt.Errorf("get user: %w", err))
@@ -48,11 +53,7 @@ func (r Controller) GetTodayCheckIn(c *app.Context) result.Result {
 	if user != nil {
 		userName, headImgUrl = user.Nickname, user.HeadImgURL
 	}
-	if checkIn == nil {
-		return result.Ok(gin.H{
-			"exists": false,
-		})
-	}
+
 	visitUrl, err := r.Storage.GetVisitURL(context.TODO(), checkIn.Key)
 	if err != nil {
 		return result.Err(fmt.Errorf("get visit url: %w", err))
