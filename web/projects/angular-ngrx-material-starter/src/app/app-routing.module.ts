@@ -45,7 +45,7 @@ const routes: Routes = [
     canActivate: [AuthService]
   },
   {
-    path: 'check-in/top',
+    path: 'check-in-top',
     component: CheckInTopComponent,
     canActivate: []
   },
