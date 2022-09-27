@@ -73,6 +73,8 @@ import { RtlSupportDirective } from './rtl-support/rtl-support.directive';
     MatSnackBarModule,
     MatSlideToggleModule,
     MatDividerModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
 
     FontAwesomeModule
   ],
@@ -104,6 +106,7 @@ import { RtlSupportDirective } from './rtl-support/rtl-support.directive';
     MatSlideToggleModule,
     MatDividerModule,
     MatSliderModule,
+    MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
 

@@ -101,7 +101,12 @@ func getStore(conf *config.DB) (service.Store, error) {
 	if err != nil {
 		return nil, fmt.Errorf("open db: %w", err)
 	}
-	if err := db.AutoMigrate(&model.User{}, &model.CheckIn{}); err != nil {
+	if err := db.AutoMigrate(
+		&model.User{},
+		&model.CheckIn{},
+		&model.CheckInDay{},
+		&model.CheckInCount{},
+	); err != nil {
 		return nil, fmt.Errorf("auto migrate: %w", err)
 	}
 	return service.NewDBStore(db), nil

@@ -1,4 +1,5 @@
 export interface User {
+  id?: number;
   openid?: string;
   nickname?: string;
   sex?: Number;

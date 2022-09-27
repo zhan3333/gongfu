@@ -49,6 +49,7 @@
   </mat-card-header>
   <mat-card-actions *ngIf="user?.phone">
     <button mat-raised-button color="primary" routerLink="/check-in">去打卡</button>
-    <button mat-raised-button color="primary" routerLink="/check-in-top">查看榜单</button>
+    <button mat-raised-button color="primary" routerLink="/check-in-top">查看今日打卡榜单</button>
+    <button mat-raised-button color="primary" routerLink="/check-in-histories" [queryParams]="{userID: user?.id}">查看历史打卡</button>
   </mat-card-actions>
 </mat-card>

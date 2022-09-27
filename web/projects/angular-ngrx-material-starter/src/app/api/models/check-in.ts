@@ -8,9 +8,23 @@ export interface CheckIn {
   userName?: string,
   headImgUrl?: string,
   key?: string,
+  date?: string,
 }
+
+export type CheckInList = CheckIn[]
 
 export interface CheckInExist {
   exists: boolean,
   checkIn?: CheckIn,
 }
+
+export interface CheckInCount {
+  id?: number;
+  userName?: string;
+  userID?: number;
+  headImgUrl?: string;
+  checkInCount?: number;
+  checkInContinuous?: number;
+}
+
+export type CheckInCountList = CheckInCount[]

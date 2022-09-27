@@ -3,6 +3,15 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { AuthService } from './core/auth/auth.service';
 import { CheckInShowComponent } from './features/check-in/check-in-show/check-in-show.component';
 import { CheckInTopComponent } from './features/check-in/check-in-top/check-in-top.component';
+import { CheckInCountComponent } from './features/check-in/check-in-count/check-in-count.component';
+import { CheckInHistoriesComponent } from './features/check-in/check-in-histories/check-in-histories.component';
+import { CheckInContinuousComponent } from './features/check-in/check-in-continuous/check-in-continuous.component';
+import {
+  CHECK_IN_CONTINUOUS_TOP_PATH,
+  CHECK_IN_COUNT_PATH,
+  CHECK_IN_HISTORIES_PATH,
+  CHECK_IN_TOP_PATH
+} from './core/router/route-path';
 
 const routes: Routes = [
   {
@@ -45,8 +54,23 @@ const routes: Routes = [
     canActivate: [AuthService]
   },
   {
-    path: 'check-in-top',
+    path: CHECK_IN_TOP_PATH,
     component: CheckInTopComponent,
+    canActivate: []
+  },
+  {
+    path: CHECK_IN_COUNT_PATH,
+    component: CheckInCountComponent,
+    canActivate: []
+  },
+  {
+    path: CHECK_IN_CONTINUOUS_TOP_PATH,
+    component: CheckInContinuousComponent,
+    canActivate: []
+  },
+  {
+    path: CHECK_IN_HISTORIES_PATH,
+    component: CheckInHistoriesComponent,
     canActivate: []
   },
   {

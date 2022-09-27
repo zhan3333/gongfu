@@ -45,12 +45,15 @@ func (r Route) Route(app *gin.Engine) {
 			authedApi.POST("bind/phone", controller.Wrap(r.Controller.GetBindCode))
 			authedApi.POST("bind/phone/valid", controller.Wrap(r.Controller.ValidBindCode))
 			authedApi.GET("check-in/today", controller.Wrap(r.Controller.GetTodayCheckIn))
-			authedApi.POST("check-in", controller.Wrap(r.Controller.CheckIn))
+			authedApi.POST("check-in", controller.Wrap(r.Controller.PostCheckIn))
 			// 获取上传文件的 token
 			authedApi.GET("storage/upload-token", controller.Wrap(r.Controller.GetUploadToken))
 		}
 		api.GET("wechat/js-config", controller.Wrap(r.Controller.JSConfig))
 		api.GET("check-in/top", controller.Wrap(r.Controller.GetCheckInTop))
+		api.GET("check-in/top/count", controller.Wrap(r.Controller.GetCheckInCountTop))
+		api.GET("check-in/top/continuous", controller.Wrap(r.Controller.GetCheckInContinuousTop))
+		api.GET("check-in/histories", controller.Wrap(r.Controller.GetCheckInHistories))
 		api.GET("check-in/:key", controller.Wrap(r.Controller.GetCheckIn))
 	}
 

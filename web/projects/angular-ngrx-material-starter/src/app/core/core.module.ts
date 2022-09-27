@@ -77,6 +77,8 @@ import {
 import { HttpAuthInterceptor } from './http-interceptors/http-auth.interceptor';
 import localeZh from '@angular/common/locales/zh';
 import localeZhExtra from '@angular/common/locales/extra/zh';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 registerLocaleData(localeZh, 'zh-cn', localeZhExtra);
 
@@ -126,6 +128,8 @@ export function httpLoaderFactory(http: HttpClient) {
     MatTooltipModule,
     MatSnackBarModule,
     MatButtonModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
 
     // ngrx
     StoreModule.forRoot(reducers, { metaReducers }),
@@ -171,6 +175,8 @@ export function httpLoaderFactory(http: HttpClient) {
     MatTooltipModule,
     MatSnackBarModule,
     MatButtonModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
 
     // 3rd party
     FontAwesomeModule,

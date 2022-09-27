@@ -1,13 +1,19 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h1 rtl class="main-heading">
-        {{ '今日打卡榜单' }}
-      </h1>
+      <h2 rtl class="main-heading" *ngIf="isToday()">
+        今日打卡榜单 (凌晨5点后算下一天)
+      </h2>
+      <h2 rtl class="main-heading" *ngIf="!isToday()">
+        {{date}} 打卡榜单
+      </h2>
+    </div>
+    <div class="col-md-12" *ngIf="!isToday()">
+      <button mat-raised-button (click)="clickToday()">查看今日</button>
     </div>
   </div>
   <div class="row" rtl>
-    <div class="col-md-12 col-lg-6">
+    <div class="col-md-12 col-lg-6 p-1">
       <ng-container *ngIf="checkInList && checkInList.length > 0">
         <mat-card
           *ngFor="let checkIn of checkInList; index as i">

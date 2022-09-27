@@ -23,3 +23,6 @@ upload: upload_web upload_api
 restart:
 	scp -r build/config ${remote_ssh}:${remote_dir}/
 	ssh ${remote_ssh} "cd ~/Application && docker-compose up -d --no-deps gongfu"
+
+run:
+	go run cmd/main.go

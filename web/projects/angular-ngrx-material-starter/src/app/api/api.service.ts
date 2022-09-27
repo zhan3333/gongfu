@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpEventType, HttpRequest } from '@angular/common/http';
 import { User } from './models/user';
-import { CheckIn, CheckInExist } from './models/check-in';
+import { CheckIn, CheckInCountList, CheckInExist, CheckInList } from './models/check-in';
 import { last, map, switchMap, tap } from 'rxjs/operators';
 
 const meUrl = '/me'
@@ -13,6 +13,9 @@ const getUploadTokenUrl = '/storage/upload-token'
 const wechatJSConfigUrl = '/wechat/js-config'
 const showCheckIn = '/check-in/'
 const getCheckInTop = '/check-in/top'
+const getCheckInCountTop = '/check-in/top/count'
+const getCheckInContinuousTop = '/check-in/top/continuous'
+const getCheckInHistories = '/check-in/histories'
 
 @Injectable({
   providedIn: 'root'
@@ -88,13 +91,27 @@ export class ApiService {
     return this.http.get<CheckIn>(showCheckIn + key)
   }
 
-  getCheckInTop(startAt: number, endAt: number) {
-    return this.http.get<CheckIn[]>(getCheckInTop, {
+  getCheckInTop(date: string) {
+    return this.http.get<CheckInList>(getCheckInTop, {
       params: {
-        startAt: startAt,
-        endAt: endAt,
+        date,
       }
     })
+  }
+
+  // 获取打卡次数排行榜
+  getCheckInCountTop() {
+    return this.http.get<CheckInCountList>(getCheckInCountTop)
+  }
+
+  // 获取连续打卡排行榜
+  getCheckInContinuousTop() {
+    return this.http.get<CheckInCountList>(getCheckInContinuousTop)
+  }
+
+  // 获取用户打卡历史
+  getCheckInHistories(userID: number, startDate: string, endDate: string) {
+    return this.http.get<CheckInList>(getCheckInHistories, {params: {userID, startDate, endDate}})
   }
 }
 

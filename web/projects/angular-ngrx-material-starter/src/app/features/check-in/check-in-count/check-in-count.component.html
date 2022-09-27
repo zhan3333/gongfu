@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 rtl class="main-heading">
+        总打卡次数榜单
+      </h1>
+    </div>
+  </div>
+  <div class="row" rtl>
+    <div class="col-md-12 col-lg-6 p-1">
+      <ng-container *ngIf="checkInCountList && checkInCountList.length > 0">
+        <mat-card
+          *ngFor="let count of checkInCountList; index as i">
+          <mat-card-header>
+            <img
+              mat-card-avatar
+              [src]="count?.headImgUrl"
+            />
+            <mat-card-title>Top {{i + 1}}</mat-card-title>
+            <mat-card-subtitle>@{{count?.userName}}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>总打卡: {{count?.checkInCount}} 天</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button routerLink="/check-in-histories" [queryParams]="{userID: count?.userID}">查看</button>
+          </mat-card-actions>
+        </mat-card>
+      </ng-container>
+      <ng-container *ngIf="!checkInCountList || checkInCountList.length == 0">
+        <h2>未有数据产生</h2>
+      </ng-container>
+    </div>
+  </div>
+</div>

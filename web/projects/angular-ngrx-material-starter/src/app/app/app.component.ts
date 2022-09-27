@@ -23,6 +23,7 @@ import {
 } from '../core/settings/settings.actions';
 import { AuthService } from '../core/auth/auth.service';
 import { Router } from '@angular/router';
+import { CHECK_IN_CONTINUOUS_TOP_PATH, CHECK_IN_COUNT_PATH, CHECK_IN_TOP_PATH } from '../core/router/route-path';
 
 @Component({
   selector: 'anms-root',
@@ -44,7 +45,9 @@ export class AppComponent implements OnInit {
     // {link: 'examples', label: 'anms.menu.examples'},
     {link: 'me', label: '我的'},
     {link: 'check-in', label: '打卡'},
-    {link: 'check-in-top', label: '打卡排行'}
+    {link: CHECK_IN_TOP_PATH, label: '日打卡排行'},
+    {link: CHECK_IN_COUNT_PATH, label: '总打卡排行'},
+    {link: CHECK_IN_CONTINUOUS_TOP_PATH, label: '连续打卡排行'}
   ];
   navigationSideMenu = [
     ...this.navigation,

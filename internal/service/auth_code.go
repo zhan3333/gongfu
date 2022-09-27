@@ -163,11 +163,11 @@ func (a authCode) newCode(length int) string {
 }
 
 func (a authCode) addLimiting(ctx context.Context, phone string) error {
-	return a.Redis.Incr(ctx, fmt.Sprintf("limiting_%s_%s", phone, time.Now().Format("2006050415"))).Err()
+	return a.Redis.Incr(ctx, fmt.Sprintf("limiting_%s_%s", phone, time.Now().Format("2006010215"))).Err()
 }
 
 func (a authCode) isLimiting(ctx context.Context, phone string) (bool, error) {
-	v, err := a.Redis.Get(ctx, fmt.Sprintf("limiting_%s_%s", phone, time.Now().Format("2006050415"))).Result()
+	v, err := a.Redis.Get(ctx, fmt.Sprintf("limiting_%s_%s", phone, time.Now().Format("2006010215"))).Result()
 	if err != nil {
 		if errors.Is(err, redis.Nil) {
 			return false, nil
