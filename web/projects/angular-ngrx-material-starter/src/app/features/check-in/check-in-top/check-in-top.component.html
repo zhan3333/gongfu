@@ -1,15 +1,29 @@
 <div class="container">
-  <div class="row">
+  <div class="row mt-1">
     <div class="col-md-12">
-      <h2 rtl class="main-heading" *ngIf="isToday()">
-        今日打卡榜单 (凌晨5点后算下一天)
+      <h2 style="text-align: center" *ngIf="isToday()">
+        今日打卡榜单
       </h2>
-      <h2 rtl class="main-heading" *ngIf="!isToday()">
+      <p style="text-align: center" *ngIf="isToday()">
+        凌晨5点后算下一天
+      </p>
+      <h2 style="text-align: center" *ngIf="!isToday()">
         {{date}} 打卡榜单
       </h2>
     </div>
-    <div class="col-md-12" *ngIf="!isToday()">
-      <button mat-raised-button (click)="clickToday()">查看今日</button>
+    <div class="col-md-12">
+      <mat-form-field style="width: 100%" appearance="legacy">
+        <mat-label>排行榜日期</mat-label>
+        <input matInput [matDatepicker]="picker" (click)="picker.open()"
+               [formControl]="selectDate">
+        <mat-datepicker-toggle matSuffix [for]="picker">
+          <mat-icon matDatepickerToggleIcon>
+            <fa-icon icon="arrow-down"></fa-icon>
+          </mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker touchUi></mat-datepicker>
+      </mat-form-field>
+      <button mat-raised-button (click)="clickToday()" *ngIf="!isToday()">今日</button>
     </div>
   </div>
   <div class="row" rtl>
@@ -34,7 +48,7 @@
         </mat-card>
       </ng-container>
       <ng-container *ngIf="!checkInList || checkInList.length == 0">
-        <h2>未有数据产生</h2>
+        <h2 style="text-align: center">未有数据产生</h2>
       </ng-container>
     </div>
   </div>

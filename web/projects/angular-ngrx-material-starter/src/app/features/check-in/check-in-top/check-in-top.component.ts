@@ -7,6 +7,8 @@ import { WechatService } from '../../../services/wechat.service';
 import { HttpParams } from '@angular/common/http';
 import { formatDate } from '@angular/common';
 import * as moment from 'moment';
+import { FormControl } from '@angular/forms';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'anms-check-in-top',
@@ -16,7 +18,8 @@ import * as moment from 'moment';
 })
 export class CheckInTopComponent implements OnInit {
   public checkInList: CheckIn[] | undefined
-  public date = ''
+  public loading = false
+  public selectDate = new FormControl('')
 
   constructor(
     private api: ApiService,
@@ -29,46 +32,57 @@ export class CheckInTopComponent implements OnInit {
 
   ngOnInit(): void {
     const query = this.activeRouter.snapshot.queryParamMap
+    let date = ''
     if (query.has('date')) {
-      this.date = <string>query.get('date')
+      date = <string>query.get('date')
     } else {
-      this.date = this.getTodayDate()
+      date = this.getTodayDate()
     }
-    console.log('query date=' + this.date)
-    this.refresh()
+    this.selectDate.valueChanges.subscribe(
+      d => this.refresh(moment(d).format('YYYYMMDD'))
+    )
+    this.selectDate.setValue(moment(date, 'YYYYMMDD'))
+    console.log('query date=' + date)
+  }
+
+  public get date() {
+    return moment(this.selectDate.value as string).format('YYYYMMDD')
   }
 
   public clickToday() {
     if (!this.isToday()) {
-      this.date = this.getTodayDate()
-      this.refresh()
+      this.selectDate.setValue(moment(this.getTodayDate(), 'YYYYMMDD'))
     }
   }
 
   public isToday(): boolean {
-    return this.getTodayDate() === this.date
+    return this.getTodayDate() === moment(this.selectDate.value as string).format('YYYYMMDD')
   }
 
-  private refresh() {
-    this.api.getCheckInTop(this.date).subscribe(data => {
-      this.checkInList = data
-      this.wechatService.refresh(location.href.split('#')[0]).subscribe(
-        () => {
-          const link = window.location.origin + `/web/check-in-top?date=${this.date}`
-          console.log('shared link: ' + link)
-          this.wechatService.wx.updateAppMessageShareData({
-            title: '打卡统计',
-            desc: `打卡人数: ${this.checkInList?.length}
+  private refresh(date: string) {
+    this.loading = true
+    this.api.getCheckInTop(date).subscribe(
+      data => {
+        this.checkInList = data
+        const shareData = {
+          title: '打卡统计',
+          desc: `打卡人数: ${this.checkInList?.length || 0}
 日期: ${this.date}`,
-            link: link,
-            imgUrl: 'https://storage-1313942024.cos.ap-shanghai.myqcloud.com/logo.jpeg', // 分享图标
-            success: function () {
-              console.log('shared success')
-            },
-          })
+          link: window.location.origin + `/web/check-in-top?date=${this.date}`,
+          imgUrl: 'https://storage-1313942024.cos.ap-shanghai.myqcloud.com/logo.jpeg', // 分享图标
+          success: function () {
+            console.log('shared success')
+          },
         }
-      )
-    })
+        console.log('shareData', shareData)
+        this.wechatService
+          .refresh(location.href.split('#')[0])
+          .subscribe(() => this.wechatService.wx.updateAppMessageShareData(shareData))
+      },
+      () => {
+      },
+      () => this.loading = false
+    )
   }
 
   private getTodayDate(): string {

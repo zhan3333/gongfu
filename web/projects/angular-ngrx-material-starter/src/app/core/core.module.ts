@@ -65,7 +65,7 @@ import {
   faRocket,
   faPowerOff,
   faUserCircle,
-  faPlayCircle, faPhone
+  faPlayCircle, faPhone, faArrowDown
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -132,7 +132,7 @@ export function httpLoaderFactory(http: HttpClient) {
     MatDatepickerModule,
 
     // ngrx
-    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreModule.forRoot(reducers, {metaReducers}),
     StoreRouterConnectingModule.forRoot(),
     EffectsModule.forRoot([
       AuthEffects,
@@ -141,8 +141,8 @@ export function httpLoaderFactory(http: HttpClient) {
     environment.production
       ? []
       : StoreDevtoolsModule.instrument({
-          name: 'Angular NgRx Material Starter'
-        }),
+        name: 'Angular NgRx Material Starter'
+      }),
 
     // 3rd party
     FontAwesomeModule,
@@ -156,10 +156,10 @@ export function httpLoaderFactory(http: HttpClient) {
   ],
   declarations: [],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpAuthInterceptor, multi: true },
-    { provide: ErrorHandler, useClass: AppErrorHandler },
-    { provide: RouterStateSerializer, useClass: CustomSerializer },
+    {provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: HttpAuthInterceptor, multi: true},
+    {provide: ErrorHandler, useClass: AppErrorHandler},
+    {provide: RouterStateSerializer, useClass: CustomSerializer},
   ],
   exports: [
     // angular
@@ -187,7 +187,7 @@ export class CoreModule {
   constructor(
     @Optional()
     @SkipSelf()
-    parentModule: CoreModule,
+      parentModule: CoreModule,
     faIconLibrary: FaIconLibrary
   ) {
     if (parentModule) {
@@ -206,6 +206,7 @@ export class CoreModule {
       faInstagram,
       faYoutube,
       faPhone,
+      faArrowDown,
     );
   }
 }
