@@ -5,11 +5,24 @@
   <mat-card-content>
     <!--已打卡-->
     <ng-container *ngIf="todayCheckIn">
-      <video controls [style.width]="'100%'">
-        <source [src]="todayCheckIn.url">
-        Your browser does not support the video tag.
-      </video>
-      <p>打卡时间: {{(todayCheckIn?.createdAt || 0) * 1000 | date: 'mediumTime'}}</p>
+      <mat-accordion>
+        <mat-expansion-panel hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              查看打卡视频
+            </mat-panel-title>
+            <mat-panel-description>
+              打卡时间: {{(todayCheckIn?.createdAt || 0) * 1000 | date: 'mediumTime'}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <ng-template matExpansionPanelContent>
+            <video controls [style.width]="'100%'">
+              <source [src]="todayCheckIn.url">
+              Your browser does not support the video tag.
+            </video>
+          </ng-template>
+        </mat-expansion-panel>
+      </mat-accordion>
     </ng-container>
     <!--未打卡-->
     <ng-container *ngIf="!todayCheckIn">

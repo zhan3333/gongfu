@@ -152,11 +152,11 @@ export class CheckInComponent implements OnInit {
   private getTodayCheckIn() {
     this.api.getTodayCheckIn().subscribe(
       checkInExist => {
-        console.log('ret', checkInExist)
         if (checkInExist.exists) {
           this.todayCheckIn = checkInExist.checkIn
-          console.log('todayCheckIn', this.todayCheckIn)
+
           this.refreshSharedData()
+          this.onMonthSelected(moment().toDate())
         }
       }
     )

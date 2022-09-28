@@ -9,12 +9,13 @@ import { CheckInTopComponent } from './check-in-top/check-in-top.component';
 import { CheckInCountComponent } from './check-in-count/check-in-count.component';
 import { CheckInContinuousComponent } from './check-in-continuous/check-in-continuous.component';
 import { CheckInHistoriesComponent } from './check-in-histories/check-in-histories.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 
 @NgModule({
   declarations: [CheckInComponent, CheckInShowComponent, CheckInTopComponent, CheckInCountComponent, CheckInContinuousComponent, CheckInHistoriesComponent],
   imports: [
-    CommonModule, SharedModule, CheckInRoutingModule, MatProgressBarModule
+    CommonModule, SharedModule, CheckInRoutingModule, MatProgressBarModule, MatExpansionModule
   ]
 })
 export class CheckInModule {
