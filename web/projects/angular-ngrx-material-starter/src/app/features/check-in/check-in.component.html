@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card class="m-1">
   <mat-card-title>今日打卡</mat-card-title>
   <mat-card-subtitle *ngIf="!todayCheckIn">今日还未打卡，点击按钮上传打卡文件</mat-card-subtitle>
   <mat-card-subtitle *ngIf="todayCheckIn">今日已打卡</mat-card-subtitle>
@@ -38,3 +38,12 @@
                       [value]="uploadProgressValue"></mat-progress-bar>
   </mat-card-footer>
 </mat-card>
+<mat-card class="m-1" *ngIf="userID !== 0">
+  <mat-calendar [dateClass]="dateClass()"
+                (monthSelected)="onMonthSelected($event)">
+  </mat-calendar>
+  <mat-card-footer>
+    <mat-progress-bar mode="query" *ngIf="calendarLoading"></mat-progress-bar>
+  </mat-card-footer>
+</mat-card>
+

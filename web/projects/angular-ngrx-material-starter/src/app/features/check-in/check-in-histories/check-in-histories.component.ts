@@ -17,7 +17,6 @@ export class CheckInHistoriesComponent implements OnInit {
   @ViewChild(MatCalendar) calendar: MatCalendar<Date> | undefined;
 
   public userID = 0
-  public selectedDate: Date | null = new Date();
   public checkInList: CheckInList = []
 
   constructor(

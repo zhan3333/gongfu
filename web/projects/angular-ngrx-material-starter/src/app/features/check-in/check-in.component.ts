@@ -1,30 +1,46 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { CheckIn } from '../../api/models/check-in';
+import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ViewEncapsulation } from '@angular/core';
+import { CheckIn, CheckInList } from '../../api/models/check-in';
 import { ApiService } from '../../api/api.service';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { WechatService } from '../../services/wechat.service';
+import { MatCalendar, MatCalendarCellCssClasses } from '@angular/material/datepicker';
+import * as moment from 'moment/moment';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'anms-check-in',
   templateUrl: './check-in.component.html',
   styleUrls: ['./check-in.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.Default,
+  encapsulation: ViewEncapsulation.None,
 })
 export class CheckInComponent implements OnInit {
+  @ViewChild(MatCalendar) calendar: MatCalendar<Date> | undefined;
   public todayCheckIn: CheckIn | undefined
   public file: File | undefined
   public loading = false
   public uploadProgressValue = 0
 
+  public userID = 0
+  public checkInList: CheckInList = []
+  public calendarLoading = false
+
   constructor(
     private api: ApiService,
     private notification: NotificationService,
     private wechatService: WechatService,
+    private auth: AuthService,
   ) {
   }
 
   ngOnInit(): void {
     this.getTodayCheckIn()
+    this.auth.user$.subscribe(user => {
+      if (user.id) {
+        this.userID = user.id
+        this.onMonthSelected(moment().toDate())
+      }
+    })
   }
 
   public onFileSelected(event: Event) {
@@ -77,6 +93,38 @@ export class CheckInComponent implements OnInit {
 
   public resetCheckIn() {
     this.todayCheckIn = undefined
+  }
+
+  public onMonthSelected(date: Date | null) {
+    this.calendarLoading = true
+    console.log('select month', date)
+    const startDate = moment(date).startOf('month').format('YYYYMMDD')
+    const endDate = moment(date).endOf('month').format('YYYYMMDD')
+    console.log('dates', startDate, endDate)
+    this.api.getCheckInHistories(this.userID, startDate, endDate).subscribe(
+      (data: CheckInList) => {
+        console.log('get histories', data)
+        this.checkInList = data
+        if (this.calendar !== undefined) {
+          this.calendar.updateTodaysDate()
+        }
+      },
+      () => {
+      },
+      () => this.calendarLoading = false
+    )
+  }
+
+  public dateClass() {
+    return (date: Date): MatCalendarCellCssClasses => {
+      const ds = moment(date).format('YYYYMMDD')
+      for (const checkIn of this.checkInList) {
+        if (checkIn.date === ds) {
+          return 'special-date'
+        }
+      }
+      return '';
+    }
   }
 
   private refreshSharedData() {

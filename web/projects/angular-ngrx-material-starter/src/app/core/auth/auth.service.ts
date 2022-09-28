@@ -2,9 +2,12 @@ import { Injectable } from '@angular/core';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { User } from '../../api/models/user';
+import { ApiService } from '../../api/api.service';
 
 const KEY_IS_AUTHENTICATED = 'isAuthenticated'
 const KEY_ACCESS_TOKEN = 'accessToken'
+const KEY_USER = 'user'
 const KEY_AUTH = 'auth'
 
 @Injectable({
@@ -13,6 +16,7 @@ const KEY_AUTH = 'auth'
 export class AuthService implements CanActivate {
   public isAuthenticated$ = new ReplaySubject<boolean>();
   public accessToken$ = new ReplaySubject<string>();
+  public user$ = new ReplaySubject<User>();
 
   private store
 
@@ -21,6 +25,7 @@ export class AuthService implements CanActivate {
     console.log('auth init', this.isAuthenticated(), this.getAccessToken())
     this.isAuthenticated$.next(this.isAuthenticated())
     this.accessToken$.next(this.getAccessToken())
+    this.user$.next(this.getUser())
   }
 
   isAuthenticated(): boolean {
@@ -29,6 +34,15 @@ export class AuthService implements CanActivate {
 
   getAccessToken(): string {
     return this.store.getItem(KEY_AUTH)[KEY_ACCESS_TOKEN] || ''
+  }
+
+  getUser(): User {
+    return this.store.getItem(KEY_USER)
+  }
+
+  setUser(user: User) {
+    this.store.setItem(KEY_USER, user)
+    this.user$.next(user)
   }
 
   login(accessToken: string) {

@@ -44,6 +44,9 @@ export class MeComponent implements OnInit {
         return
       } else {
         this.authService.login(this.accessToken)
+        this.api.me().subscribe(user => {
+          this.authService.setUser(user)
+        })
       }
     }
     this.displayUserInfo()

@@ -40,6 +40,10 @@ func (t token) GetAccessToken(userID uint) (string, error) {
 }
 
 func (t token) ParseAccessToken(accessToken string) (uint, error) {
+	sp := strings.Split(accessToken, " ")
+	if len(sp) != 2 {
+		return 0, fmt.Errorf("access token format error")
+	}
 	accessToken = strings.Split(accessToken, " ")[1]
 	token, err := jwt.ParseWithClaims(accessToken, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(t.Secret), nil
