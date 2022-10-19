@@ -43,13 +43,14 @@ import {
   faLightbulb,
   faWindowMaximize,
   faStream,
-  faBook, faFile, faVideo
+  faBook, faFile, faVideo, faArrowLeft, faArrowRight
 } from '@fortawesome/free-solid-svg-icons';
 import { faMediumM, faGithub } from '@fortawesome/free-brands-svg-icons';
 
 import { BigInputComponent } from './big-input/big-input/big-input.component';
 import { BigInputActionComponent } from './big-input/big-input-action/big-input-action.component';
 import { RtlSupportDirective } from './rtl-support/rtl-support.directive';
+import { CalendarHeaderComponent } from './calendar-header/calendar-header.component';
 
 @NgModule({
   imports: [
@@ -81,7 +82,8 @@ import { RtlSupportDirective } from './rtl-support/rtl-support.directive';
   declarations: [
     BigInputComponent,
     BigInputActionComponent,
-    RtlSupportDirective
+    RtlSupportDirective,
+    CalendarHeaderComponent
   ],
   exports: [
     CommonModule,
@@ -141,6 +143,8 @@ export class SharedModule {
       faBook,
       faFile,
       faVideo,
+      faArrowLeft,
+      faArrowRight,
     );
   }
 }

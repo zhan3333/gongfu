@@ -5,6 +5,7 @@ import { NotificationService } from '../../../core/notifications/notification.se
 import { MatCalendar, MatCalendarCellCssClasses } from '@angular/material/datepicker';
 import { CheckInList } from '../../../api/models/check-in';
 import * as moment from 'moment';
+import { CalendarHeaderComponent } from '../../../shared/calendar-header/calendar-header.component';
 
 @Component({
   selector: 'anms-check-in-histories',
@@ -15,6 +16,7 @@ import * as moment from 'moment';
 })
 export class CheckInHistoriesComponent implements OnInit {
   @ViewChild(MatCalendar) calendar: MatCalendar<Date> | undefined;
+  public calendarHeader = CalendarHeaderComponent
 
   public userID = 0
   public checkInList: CheckInList = []
@@ -47,10 +49,6 @@ export class CheckInHistoriesComponent implements OnInit {
       }
       return '';
     }
-  }
-
-  public selectedChange(date: Date | null) {
-    this.onMonthSelected(date)
   }
 
   public onMonthSelected(date: Date | null) {

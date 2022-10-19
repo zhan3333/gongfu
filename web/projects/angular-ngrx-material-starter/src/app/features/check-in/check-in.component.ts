@@ -3,9 +3,10 @@ import { CheckIn, CheckInList } from '../../api/models/check-in';
 import { ApiService } from '../../api/api.service';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { WechatService } from '../../services/wechat.service';
-import { MatCalendar, MatCalendarCellCssClasses } from '@angular/material/datepicker';
+import { MatCalendar, MatCalendarCellCssClasses, MatCalendarView } from '@angular/material/datepicker';
 import * as moment from 'moment/moment';
 import { AuthService } from '../../core/auth/auth.service';
+import { CalendarHeaderComponent } from '../../shared/calendar-header/calendar-header.component';
 
 @Component({
   selector: 'anms-check-in',
@@ -16,6 +17,7 @@ import { AuthService } from '../../core/auth/auth.service';
 })
 export class CheckInComponent implements OnInit {
   @ViewChild(MatCalendar) calendar: MatCalendar<Date> | undefined;
+  public calendarHeader = CalendarHeaderComponent
   public todayCheckIn: CheckIn | undefined
   public file: File | undefined
   public loading = false
@@ -127,6 +129,11 @@ export class CheckInComponent implements OnInit {
     }
   }
 
+
+  public calendarClick() {
+    console.log('calendarClick')
+  }
+
   private refreshSharedData() {
     if (this.todayCheckIn !== undefined) {
       this.wechatService.refresh(location.href.split('#')[0]).subscribe(
@@ -161,4 +168,5 @@ export class CheckInComponent implements OnInit {
       }
     )
   }
+
 }

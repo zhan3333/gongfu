@@ -53,7 +53,8 @@
 </mat-card>
 <mat-card class="m-1" *ngIf="userID !== 0">
   <mat-calendar [dateClass]="dateClass()"
-                (monthSelected)="onMonthSelected($event)">
+                (monthSelected)="onMonthSelected($event)"
+                [headerComponent]="calendarHeader">
   </mat-calendar>
   <mat-card-footer>
     <mat-progress-bar mode="query" *ngIf="calendarLoading"></mat-progress-bar>
