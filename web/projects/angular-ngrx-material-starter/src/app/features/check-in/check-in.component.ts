@@ -73,7 +73,7 @@ export class CheckInComponent implements OnInit {
             this.file = undefined
             this.getTodayCheckIn()
           },
-          error => this.notification.error('打卡失败，请稍后重试: ' + error),
+          error => this.notification.error('打卡失败，请稍后重试: ' + JSON.stringify(error)),
           () => {
             this.loading = false
             this.uploadProgressValue = 0
@@ -84,7 +84,7 @@ export class CheckInComponent implements OnInit {
       () => {
       },
       error => {
-        this.notification.error('上传文件失败，请稍后重试: ' + error)
+        this.notification.error('上传文件失败，请稍后重试: ' + JSON.stringify(error))
         this.loading = false
         this.uploadProgressValue = 0
       },

@@ -267,6 +267,11 @@ func (r Controller) GetCheckInHistories(c *app.Context) result.Result {
 		// 是否根据 date 去重
 		Unique *bool `json:"unique" form:"unique" binding:"omitempty"`
 	}{}
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.Message(http.StatusBadRequest, fmt.Sprintf("invalid request"))
+		return result.Err(nil)
+	}
+
 	unique := true
 	if req.Unique != nil {
 		unique = *req.Unique
@@ -275,10 +280,7 @@ func (r Controller) GetCheckInHistories(c *app.Context) result.Result {
 	if req.StartDate == "" || req.EndDate == "" {
 		length = 10
 	}
-	if err := c.ShouldBindQuery(&req); err != nil {
-		c.Message(http.StatusBadRequest, fmt.Sprintf("invalid request"))
-		return result.Err(nil)
-	}
+
 	items, err := r.Store.GetCheckInHistories(context.TODO(), service.GetCheckInHistoriesOptions{
 		UserID:    req.UserID,
 		Length:    length,
