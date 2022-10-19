@@ -65,7 +65,7 @@ import {
   faRocket,
   faPowerOff,
   faUserCircle,
-  faPlayCircle, faPhone, faArrowDown
+  faPlayCircle, faPhone, faArrowDown, faArrowLeft, faArrowRight
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -207,6 +207,8 @@ export class CoreModule {
       faYoutube,
       faPhone,
       faArrowDown,
+      faArrowLeft,
+      faArrowRight,
     );
   }
 }
