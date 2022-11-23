@@ -19,7 +19,7 @@ import {
   actionSettingsChangeLanguage
 } from '../core/settings/settings.actions';
 import { AuthService } from '../core/auth/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Router, RoutesRecognized } from '@angular/router';
 import { CHECK_IN_CONTINUOUS_TOP_PATH, CHECK_IN_COUNT_PATH, CHECK_IN_TOP_PATH } from '../core/router/route-path';
 
 @Component({
@@ -29,6 +29,7 @@ import { CHECK_IN_CONTINUOUS_TOP_PATH, CHECK_IN_COUNT_PATH, CHECK_IN_TOP_PATH } 
   animations: [routeAnimations]
 })
 export class AppComponent implements OnInit {
+  authLayout = false;
   displayFooter = false;
   isProd = env.production;
   envName = env.envName;
@@ -60,8 +61,16 @@ export class AppComponent implements OnInit {
     private store: Store<AppState>,
     private storageService: LocalStorageService,
     private authService: AuthService,
-    private router: Router
+    private activeRoute: ActivatedRoute,
+    private router: Router,
   ) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        const sp = event.url.split('?')
+        console.log('route event', event, sp[0])
+        this.authLayout = sp[0] === '/login';
+      }
+    })
   }
 
   private static isIEorEdgeOrSafari() {
@@ -94,6 +103,7 @@ export class AppComponent implements OnInit {
 
   onLogoutClick() {
     this.authService.logout()
+    location.reload()
   }
 
   onLanguageSelect(event: MatSelectChange) {

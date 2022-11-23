@@ -15,7 +15,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 @NgModule({
   declarations: [CheckInComponent, CheckInShowComponent, CheckInTopComponent, CheckInCountComponent, CheckInContinuousComponent, CheckInHistoriesComponent],
   imports: [
-    CommonModule, SharedModule, CheckInRoutingModule, MatProgressBarModule, MatExpansionModule
+    SharedModule, CheckInRoutingModule, MatProgressBarModule, MatExpansionModule
   ]
 })
 export class CheckInModule {

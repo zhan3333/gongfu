@@ -36,9 +36,10 @@ func (r Route) Route(app *gin.Engine) {
 		ExposeHeaders:    []string{"X-Request-Id"},
 		MaxAge:           12 * time.Hour,
 	}))
-	app.GET("login", controller.Wrap(r.Controller.Login))
+	app.GET("login", controller.Wrap(r.Controller.WeChatLogin))
 	api := app.Group("/api")
 	{
+		api.POST("/auth/login", controller.Wrap(r.Controller.Login))
 		authedApi := api.Group("", r.Middleware.Auth())
 		{
 			authedApi.GET("me", controller.Wrap(r.Controller.Me))

@@ -1,0 +1,67 @@
+<div class="d-flex px-3 bg align-items-center h-100">
+  <div class="w-100 m-0" style="max-width: 400px">
+    <mat-progress-bar mode="determinate" class="session-progress"></mat-progress-bar>
+    <mat-card>
+      <mat-card-content>
+        <div class="pb-1" style="text-align: center">
+          <img src="assets/logo-mini.png" alt="" class="mb-05">
+          <p class="text-muted m-0" *ngIf="isBindPhone">{{'您正在绑定手机号'}}</p>
+          <p class="text-muted m-0" *ngIf="isLogin">{{'登录'}}</p>
+        </div>
+        <form [formGroup]="signinForm" class="container">
+          <div class="row">
+            <mat-form-field class="col">
+              <mat-label>手机号</mat-label>
+              <input
+                matInput
+                type="tel"
+                name="phone"
+                [formControl]="signinForm.controls['phone'] | formControl"
+                placeholder="13888888888"
+                value="">
+              <mat-icon matSuffix (click)="cleanPhone()">
+                <fa-icon icon="trash"></fa-icon>
+              </mat-icon>
+            </mat-form-field>
+            <div class="col">
+              <button mat-raised-button class="w-100" color="primary" (click)="sendValidCode()" [disabled]="!canSendCode()">
+                <ng-template [ngIf]="sendCodeTime > 0">{{sendCodeTime}}s</ng-template>
+                <ng-template [ngIf]="sendCodeTime == 0">{{'发送'}}</ng-template>
+              </button>
+            </div>
+          </div>
+
+          <div class="">
+            <mat-form-field class="w-100">
+              <input
+                type="number"
+                name="code"
+                matInput
+                [formControl]="signinForm.controls['code'] | formControl"
+                placeholder="验证码"
+                value="">
+            </mat-form-field>
+          </div>
+
+          <div class="pb-1">
+            <mat-checkbox
+              name="rememberMe"
+              [formControl]="signinForm.controls['rememberMe'] | formControl"
+              class="pb-1">{{'记住我'}}
+            </mat-checkbox>
+          </div>
+
+          <button mat-raised-button class="mat-primary w-100 mb-1" [disabled]="signinForm.invalid" (click)="submit()">
+            Sign in
+          </button>
+          <div class="text-center">
+            <a [routerLink]="'/sessions/forgot-password'" class="mat-primary text-center w-100">Forgot password</a>
+            <span class="flex-wrap"></span>
+            <a [routerLink]="'/sessions/signup'" class="mat-primary text-center w-100">Create a new account</a>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+

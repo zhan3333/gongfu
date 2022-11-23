@@ -1,6 +1,6 @@
 <div [class]="'theme-wrapper ' + (theme$ | async)">
 
-  <mat-sidenav-container>
+  <mat-sidenav-container *ngIf="!authLayout">
 
     <mat-sidenav #sidenav mode="push">
       <div class="branding">
@@ -24,15 +24,15 @@
 
           </button>
 
-<!--          <span routerLink="me" class="branding spacer center d-inline d-sm-none">-->
-<!--            <img [src]="logo" [alt]="logo"/>-->
-<!--          </span>-->
-<!--          <span routerLink="me" class="branding spacer center d-none d-sm-inline d-md-none">-->
-<!--            <img [src]="logo" [alt]="logo"/> {{'anms.title.short' | translate }}-->
-<!--          </span>-->
-<!--          <span routerLink="" class="branding spacer d-none d-md-inline">-->
-<!--            <img [src]="logo" [alt]="logo"/> {{ 'anms.title.long' | translate}}-->
-<!--          </span>-->
+          <!--          <span routerLink="me" class="branding spacer center d-inline d-sm-none">-->
+          <!--            <img [src]="logo" [alt]="logo"/>-->
+          <!--          </span>-->
+          <!--          <span routerLink="me" class="branding spacer center d-none d-sm-inline d-md-none">-->
+          <!--            <img [src]="logo" [alt]="logo"/> {{'anms.title.short' | translate }}-->
+          <!--          </span>-->
+          <!--          <span routerLink="" class="branding spacer d-none d-md-inline">-->
+          <!--            <img [src]="logo" [alt]="logo"/> {{ 'anms.title.long' | translate}}-->
+          <!--          </span>-->
           <span class="branding spacer center d-inline d-sm-none">
             {{ 'anms.title.short' | translate}}
           </span>
@@ -75,13 +75,13 @@
             <fa-icon [icon]="['fab','github']"></fa-icon>
           </a>
 
-<!--          <span *ngIf="language$ | async as language">-->
-<!--            <mat-select [ngModel]="language" (selectionChange)="onLanguageSelect($event)">-->
-<!--              <mat-option *ngFor="let l of languages" [value]="l">-->
-<!--                {{ l.toUpperCase() }}-->
-<!--              </mat-option>-->
-<!--            </mat-select>-->
-<!--          </span>-->
+          <!--          <span *ngIf="language$ | async as language">-->
+          <!--            <mat-select [ngModel]="language" (selectionChange)="onLanguageSelect($event)">-->
+          <!--              <mat-option *ngFor="let l of languages" [value]="l">-->
+          <!--                {{ l.toUpperCase() }}-->
+          <!--              </mat-option>-->
+          <!--            </mat-select>-->
+          <!--          </span>-->
         </mat-toolbar>
       </div>
 
@@ -137,4 +137,7 @@
 
   </mat-sidenav-container>
 
+  <ng-template [ngIf]="authLayout">
+    <router-outlet #o="outlet"></router-outlet>
+  </ng-template>
 </div>

@@ -16,6 +16,7 @@ const getCheckInTop = '/check-in/top'
 const getCheckInCountTop = '/check-in/top/count'
 const getCheckInContinuousTop = '/check-in/top/continuous'
 const getCheckInHistories = '/check-in/histories'
+const login = '/auth/login'
 
 @Injectable({
   providedIn: 'root'
@@ -112,6 +113,11 @@ export class ApiService {
   // 获取用户打卡历史
   getCheckInHistories(userID: number, startDate: string, endDate: string) {
     return this.http.get<CheckInList>(getCheckInHistories, {params: {userID, startDate, endDate}})
+  }
+
+  // 手机号登录
+  login(phone: string, code: string) {
+    return this.http.post(login, {phone, code})
   }
 }
 

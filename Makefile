@@ -26,3 +26,7 @@ restart:
 
 run:
 	go run cmd/main.go
+
+.PHONY: web
+web:
+	cd web && npm run start

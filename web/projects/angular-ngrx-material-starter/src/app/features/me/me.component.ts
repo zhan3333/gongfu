@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { ApiService } from '../../api/api.service';
@@ -33,6 +33,7 @@ export class MeComponent implements OnInit {
     private authService: AuthService,
     private readonly notificationService: NotificationService,
     private api: ApiService,
+    private router: Router
   ) {
   }
 
@@ -57,36 +58,15 @@ export class MeComponent implements OnInit {
     }, 1000)
   }
 
-  public sendValidCode() {
-    this.sendValidCodeLimiting = 60
-    const phone = this.bindPhone.value
-    this.api.sendValidCode(phone).subscribe(
-      () => {
-        this.notificationService.success('发送验证码成功')
-      },
-      error => {
-        this.notificationService.error('发送验证码失败: ' + error)
-      }
-    )
+  public toBindPhonePage() {
+    this.router.navigate(['/login'], {queryParams: {type: 'bind_phone'}})
   }
 
-  public clickBindPhone() {
-    const phone = this.bindPhone.value
-    const code = this.validCode.value
-    this.api.validCode(phone, code).subscribe(
-      () => {
-        this.notificationService.success('绑定成功')
-        if (this.user) {
-          this.user.phone = phone
-        }
-      },
-      error => {
-        this.notificationService.error('绑定失败: ' + error)
-      }
-    )
+  public toLoginPage() {
+    this.router.navigate(['/login'], {queryParams: {type: 'login'}})
   }
 
-  public toAuthLogin() {
+  public toWeChatLogin() {
     window.location.href = '/login'
   }
 

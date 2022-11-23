@@ -1,43 +1,21 @@
-<div *ngIf="!user" class="container">
+<div *ngIf="!user" class="d-flex align-items-center h-100">
+  <div class="container">
+    <div class="row m-1">
+      <button mat-raised-button color="primary" (click)="toLoginPage()" class="col align-content-center">登录
+      </button>
+    </div>
+    <div class="row m-1 mt-3">
+      <button mat-raised-button color="primary" (click)="toWeChatLogin()" class="col align-content-center">微信授权登录
+      </button>
+    </div>
+  </div>
+</div>
+<div *ngIf="user && !user?.phone" class="container">
   <div class="row justify-content-center p-1">
-    <button mat-raised-button color="primary" (click)="toAuthLogin()" class="col align-content-center">微信授权登录
+    <button mat-raised-button color="primary" (click)="toBindPhonePage()" class="col align-content-center">绑定手机号
     </button>
   </div>
 </div>
-<mat-card *ngIf="user && !user?.phone" class="mt-1">
-  <mat-card-title>绑定手机号后使用</mat-card-title>
-  <mat-card-content>
-    <div class="container">
-      <div class="row-cols-2">
-        <mat-form-field appearance="legacy">
-          <mat-label>输入要绑定的手机号</mat-label>
-          <input matInput placeholder="phone" [formControl]="bindPhone">
-          <mat-icon matSuffix>
-            <fa-icon icon="phone"></fa-icon>
-          </mat-icon>
-        </mat-form-field>
-        <button mat-raised-button color="warn" [disabled]="bindPhone.invalid || sendValidCodeLimiting > 0"
-                (click)="sendValidCode()">发送验证码
-          <ng-container *ngIf="sendValidCodeLimiting > 0">({{sendValidCodeLimiting}}s)</ng-container>
-        </button>
-      </div>
-      <div class="row">
-        <mat-form-field appearance="legacy">
-          <mat-label>输入验证码</mat-label>
-          <input matInput placeholder="code" [formControl]="validCode">
-        </mat-form-field>
-      </div>
-    </div>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-raised-button color="primary" [disabled]="bindPhone.invalid || validCode.invalid"
-            (click)="clickBindPhone()">确定
-    </button>
-  </mat-card-actions>
-  <mat-card-footer>
-    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-  </mat-card-footer>
-</mat-card>
 <mat-card *ngIf="user">
   <mat-card-header>
     <img
@@ -50,6 +28,8 @@
   <mat-card-actions *ngIf="user?.phone">
     <button mat-raised-button color="primary" routerLink="/check-in">去打卡</button>
     <button mat-raised-button color="primary" routerLink="/check-in-top">查看今日打卡榜单</button>
-    <button mat-raised-button color="primary" routerLink="/check-in-histories" [queryParams]="{userID: user?.id}">查看历史打卡</button>
+    <button mat-raised-button color="primary" routerLink="/check-in-histories" [queryParams]="{userID: user?.id}">
+      查看历史打卡
+    </button>
   </mat-card-actions>
 </mat-card>
