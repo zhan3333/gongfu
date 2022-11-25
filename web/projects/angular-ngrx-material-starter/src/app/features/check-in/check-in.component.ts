@@ -7,6 +7,7 @@ import { MatCalendar, MatCalendarCellCssClasses, MatCalendarView } from '@angula
 import * as moment from 'moment/moment';
 import { AuthService } from '../../core/auth/auth.service';
 import { CalendarHeaderComponent } from '../../shared/calendar-header/calendar-header.component';
+import { isWechat } from '../../core/util';
 
 @Component({
   selector: 'anms-check-in',
@@ -135,7 +136,7 @@ export class CheckInComponent implements OnInit {
   }
 
   private refreshSharedData() {
-    if (this.todayCheckIn !== undefined) {
+    if (this.todayCheckIn !== undefined && isWechat()) {
       this.wechatService.refresh(location.href.split('#')[0]).subscribe(
         () => {
           let checkInAtStr = '无'

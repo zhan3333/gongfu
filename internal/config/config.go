@@ -57,6 +57,10 @@ type Config struct {
 	Logger Logger
 }
 
+func (c Config) IsProd() bool {
+	return c.Env == "production"
+}
+
 type WeChat struct {
 	AppID     string
 	AppSecret string

@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { CheckInComponent } from './check-in.component';
 import { CheckInRoutingModule } from './check-in-routing.module';

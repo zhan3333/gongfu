@@ -53,7 +53,8 @@ const routes: Routes = [
     loadChildren: () =>
       import('./features/me/me.module').then(
         (m) => m.MeModule
-      )
+      ),
+    canActivate: [AuthService]
   },
   {
     path: 'check-in',

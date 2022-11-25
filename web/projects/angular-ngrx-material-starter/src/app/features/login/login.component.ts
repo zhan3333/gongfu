@@ -51,16 +51,20 @@ export class LoginComponent implements OnInit {
   }
 
   public sendValidCode() {
-    this.sendCodeTime = 60
     const phone = this.signinForm.get('phone')?.value
-    this.api.sendValidCode(phone).subscribe(
-      () => {
-        this.notify.success('发送验证码成功')
-      },
-      error => {
-        this.notify.error('发送验证码失败: ' + error)
-      }
-    )
+    if (this.isBindPhone) {
+      this.api.sendValidCode(phone).subscribe(
+        () => {
+          this.notify.success('发送验证码成功')
+        },
+        error => {
+          this.notify.error('发送验证码失败: ' + error)
+        }
+      )
+      this.sendCodeTime = 60
+    } else {
+      this.notify.warn('暂不支持手机号登录')
+    }
   }
 
   submit() {
@@ -99,19 +103,18 @@ export class LoginComponent implements OnInit {
               this.notify.error('invalid login response')
               return
             }
-            this.auth.login(data.accessToken);
-            this.router.navigate(['/me']);
-            this.notify.success('Login success');
+            this.auth.login(data.accessToken)
+            this.notify.success('Login success')
+            // 这里有个 bug，不刷新页面的话，导航到 /me 后所有链接都点击不正常
+            this.router.navigate(['/me']).then(() => location.reload())
           },
-          error => {
-          },
-          () => {
-            if (this.submitButton !== undefined && this.progressBar !== undefined) {
-              this.submitButton.disabled = false;
-              this.progressBar.mode = 'determinate';
-            }
+        )
+        .add(() => {
+          if (this.submitButton !== undefined && this.progressBar !== undefined) {
+            this.submitButton.disabled = false;
+            this.progressBar.mode = 'determinate';
           }
-        );
+        });
     }
   }
 
@@ -128,5 +131,9 @@ export class LoginComponent implements OnInit {
   // 清空手机号
   cleanPhone() {
     this.signinForm.get('phone')?.setValue('')
+  }
+
+  toWechatLogin() {
+    window.location.href = '/wechat-login'
   }
 }

@@ -1,5 +1,5 @@
 import browser from 'browser-detect';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -26,7 +26,8 @@ import { CHECK_IN_CONTINUOUS_TOP_PATH, CHECK_IN_COUNT_PATH, CHECK_IN_TOP_PATH } 
   selector: 'anms-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  animations: [routeAnimations]
+  animations: [routeAnimations],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class AppComponent implements OnInit {
   authLayout = false;
@@ -98,7 +99,7 @@ export class AppComponent implements OnInit {
   }
 
   onLoginClick() {
-    window.location.href = '/login'
+      this.router.navigate(['/login'], {queryParams: {'type': 'login'}})
   }
 
   onLogoutClick() {

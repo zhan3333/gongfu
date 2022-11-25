@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { User } from '../../api/models/user';
 import { ApiService } from '../../api/api.service';
+import { map } from 'rxjs/operators';
 
 const KEY_IS_AUTHENTICATED = 'isAuthenticated'
 const KEY_ACCESS_TOKEN = 'accessToken'
@@ -20,7 +21,7 @@ export class AuthService implements CanActivate {
 
   private store
 
-  constructor(store: LocalStorageService) {
+  constructor(store: LocalStorageService, private router: Router) {
     this.store = store
     console.log('auth init', this.isAuthenticated(), this.getAccessToken())
     this.isAuthenticated$.next(this.isAuthenticated())
@@ -59,6 +60,11 @@ export class AuthService implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.isAuthenticated$;
+    console.log('check auth', this.isAuthenticated())
+    if (this.isAuthenticated()) {
+      return true
+    } else {
+      return this.router.parseUrl('/login?type=login')
+    }
   }
 }

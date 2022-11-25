@@ -21,7 +21,7 @@ var meURL = "/web/me"
 // 如果用户已登录，则直接重定向到 /me
 func (r Controller) WeChatLogin(c *app.Context) result.Result {
 	if c.Query("code") == "" {
-		authPage, err := r.OfficialAccount.GetOauth().GetRedirectURL("http://gongfu.grianchan.com/login", "snsapi_userinfo", "login")
+		authPage, err := r.OfficialAccount.GetOauth().GetRedirectURL("http://gongfu.grianchan.com/wechat-login", "snsapi_userinfo", "login")
 		if err != nil {
 			return result.Err(fmt.Errorf("get redirect url: %w", err))
 		}
@@ -79,11 +79,26 @@ func (r Controller) Login(c *app.Context) result.Result {
 		return result.Err(nil)
 	}
 	user, err := r.Store.GetUserByPhone(context.TODO(), req.Phone)
-	jwtToken, err := r.Token.GetAccessToken(user.ID)
 	if err != nil {
 		return result.Err(err)
 	}
-	return result.Ok(gin.H{
-		"accessToken": jwtToken,
-	})
+	if user == nil {
+		c.Message(http.StatusBadRequest, "user not exist")
+		return result.Err(nil)
+	}
+	// 检查验证码
+	if !r.Config.IsProd() && req.Code == "2222" {
+		// 通过
+		jwtToken, err := r.Token.GetAccessToken(user.ID)
+		if err != nil {
+			return result.Err(err)
+		}
+		return result.Ok(gin.H{
+			"accessToken": jwtToken,
+		})
+	} else {
+		// 验证码错误
+		c.Message(http.StatusBadRequest, "code error")
+		return result.Err(nil)
+	}
 }

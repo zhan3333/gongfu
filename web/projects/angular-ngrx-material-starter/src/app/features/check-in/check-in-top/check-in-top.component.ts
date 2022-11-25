@@ -9,6 +9,7 @@ import { formatDate } from '@angular/common';
 import * as moment from 'moment';
 import { FormControl } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { isWechat } from '../../../core/util';
 
 @Component({
   selector: 'anms-check-in-top',
@@ -75,9 +76,11 @@ export class CheckInTopComponent implements OnInit {
           },
         }
         console.log('shareData', shareData)
-        this.wechatService
-          .refresh(location.href.split('#')[0])
-          .subscribe(() => this.wechatService.wx.updateAppMessageShareData(shareData))
+        if (isWechat()) {
+          this.wechatService
+            .refresh(location.href.split('#')[0])
+            .subscribe(() => this.wechatService.wx.updateAppMessageShareData(shareData))
+        }
       },
       () => {
       },

@@ -51,14 +51,12 @@
             </mat-checkbox>
           </div>
 
-          <button mat-raised-button class="mat-primary w-100 mb-1" [disabled]="signinForm.invalid" (click)="submit()">
-            Sign in
+          <button mat-raised-button color="primary" class="w-100 mb-1" [disabled]="signinForm.invalid" (click)="submit()">
+            登录
           </button>
-          <div class="text-center">
-            <a [routerLink]="'/sessions/forgot-password'" class="mat-primary text-center w-100">Forgot password</a>
-            <span class="flex-wrap"></span>
-            <a [routerLink]="'/sessions/signup'" class="mat-primary text-center w-100">Create a new account</a>
-          </div>
+          <button mat-raised-button color="primary" class="w-100 mb-1" (click)="toWechatLogin()">
+            微信登录
+          </button>
         </form>
       </mat-card-content>
     </mat-card>

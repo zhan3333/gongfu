@@ -12,24 +12,46 @@
 </div>
 <div *ngIf="user && !user?.phone" class="container">
   <div class="row justify-content-center p-1">
-    <button mat-raised-button color="primary" (click)="toBindPhonePage()" class="col align-content-center">绑定手机号
+    <button mat-raised-button color="primary" (click)="toBindPhonePage()" class="col align-content-center">绑定手机号后开始使用
     </button>
   </div>
 </div>
-<mat-card *ngIf="user">
-  <mat-card-header>
-    <img
-      mat-card-avatar
-      [src]="user?.headimgurl"
-    />
-    <mat-card-title>{{ user?.nickname }}</mat-card-title>
-    <mat-card-subtitle>{{ user?.phone }}</mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-actions *ngIf="user?.phone">
-    <button mat-raised-button color="primary" routerLink="/check-in">去打卡</button>
-    <button mat-raised-button color="primary" routerLink="/check-in-top">查看今日打卡榜单</button>
-    <button mat-raised-button color="primary" routerLink="/check-in-histories" [queryParams]="{userID: user?.id}">
-      查看历史打卡
-    </button>
-  </mat-card-actions>
-</mat-card>
+<div *ngIf="user">
+
+  <mat-card *ngIf="user">
+    <mat-card-header>
+      <img
+        mat-card-avatar
+        [src]="user?.headimgurl"
+        alt="head_img" style="height: 55px; width: 55px; border-radius: 20%"/>
+      <mat-card-title>{{ user?.nickname }}</mat-card-title>
+      <mat-card-subtitle>手机号：{{ user?.phone }}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+  <mat-card class="mt-3 p-0">
+    <mat-card-content>
+      <mat-selection-list [multiple]="false">
+        <mat-list-option>
+          <mat-icon matListIcon>
+            <fa-icon icon="check"></fa-icon>
+          </mat-icon>
+          <div matLine routerLink="/check-in">去打卡</div>
+        </mat-list-option>
+        <mat-divider></mat-divider>
+        <mat-list-option>
+          <mat-icon matListIcon>
+            <fa-icon icon="calendar"></fa-icon>
+          </mat-icon>
+          <div matLine routerLink="/check-in-top">历史打卡</div>
+        </mat-list-option>
+        <mat-divider></mat-divider>
+        <mat-list-option>
+          <mat-icon matListIcon>
+            <fa-icon icon="bolt"></fa-icon>
+          </mat-icon>
+          <div matLine routerLink="/check-in-histories" [queryParams]="{userID: user?.id}">打卡榜单</div>
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-card-content>
+  </mat-card>
+</div>

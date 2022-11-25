@@ -36,7 +36,7 @@ func (r Route) Route(app *gin.Engine) {
 		ExposeHeaders:    []string{"X-Request-Id"},
 		MaxAge:           12 * time.Hour,
 	}))
-	app.GET("login", controller.Wrap(r.Controller.WeChatLogin))
+	app.GET("wechat-login", controller.Wrap(r.Controller.WeChatLogin))
 	api := app.Group("/api")
 	{
 		api.POST("/auth/login", controller.Wrap(r.Controller.Login))
