@@ -15,10 +15,34 @@ export class AppErrorHandler extends ErrorHandler {
   }
 
   handleError(error: Error | HttpErrorResponse) {
-    let displayMessage = 'An error occurred.';
-
-    if (!environment.production) {
-      displayMessage += ' See console for details.';
+    let displayMessage = '';
+    if (error instanceof HttpErrorResponse) {
+      switch (error.status) {
+        case 400:
+          if (error.error !== null && error.error['msg']) {
+            displayMessage += error.error['msg']
+          } else {
+            displayMessage += `客户端错误: ${error.message}`
+          }
+          break;
+        case 500:
+          if (error.error !== null && error.error['msg']) {
+            displayMessage += '服务器错误: '
+            displayMessage += error.error['msg']
+          } else {
+            displayMessage += `服务器错误: ${error.message}`
+          }
+          break;
+        default:
+          displayMessage += `未知的网络请求错误: ${error.message}`
+          break;
+      }
+    }else {
+      // 其他类型错误
+      displayMessage = '有错误发生: '
+      if (!environment.production) {
+        displayMessage += ' 从控制台查看详情.';
+      }
     }
 
     this.notificationsService.error(displayMessage);
