@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-var meURL = "/web/me"
+var wechatLoginURL = "/web/login"
 
 // WeChatLogin 公众号登录
 // /login 时会 302 到微信授权登录页面, 用户确认授权后返回到 /login?code={} 地址
@@ -60,7 +60,7 @@ func (r Controller) WeChatLogin(c *app.Context) result.Result {
 		if err != nil {
 			return result.Err(err)
 		}
-		c.Redirect(http.StatusFound, fmt.Sprintf("%s?accessToken=%s", meURL, jwtToken))
+		c.Redirect(http.StatusFound, fmt.Sprintf("%s?accessToken=%s", wechatLoginURL, jwtToken))
 		return result.Ok(nil)
 	}
 }

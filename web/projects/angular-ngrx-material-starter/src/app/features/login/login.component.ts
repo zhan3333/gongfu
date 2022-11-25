@@ -33,11 +33,27 @@ export class LoginComponent implements OnInit {
     private notify: NotificationService,
     private api: ApiService,
     private activeRoute: ActivatedRoute,
+    private authService: AuthService,
   ) {
   }
 
   ngOnInit() {
     console.log('snapshot', this.activeRoute.snapshot)
+    if (!this.authService.isAuthenticated()) {
+      const accessToken = this.activeRoute.snapshot.queryParamMap.get('accessToken') ?? '';
+      if (accessToken !== '') {
+        this.authService.login(accessToken)
+        this.api.me().subscribe(user => {
+            this.authService.setUser(user)
+          },
+          () => {
+          },
+          () => this.router.navigate(['/me']).then(() => location.reload())
+        )
+        return
+      }
+    }
+
     if (this.activeRoute.snapshot.queryParamMap.get('type') === 'login') {
       this.isLogin = true
     } else {

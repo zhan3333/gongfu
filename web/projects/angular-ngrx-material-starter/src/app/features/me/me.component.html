@@ -40,17 +40,17 @@
         <mat-divider></mat-divider>
         <mat-list-option>
           <mat-icon matListIcon>
-            <fa-icon icon="calendar"></fa-icon>
-          </mat-icon>
-          <div matLine routerLink="/check-in-top">历史打卡</div>
-        </mat-list-option>
-        <mat-divider></mat-divider>
-        <mat-list-option>
-          <mat-icon matListIcon>
             <fa-icon icon="bolt"></fa-icon>
           </mat-icon>
-          <div matLine routerLink="/check-in-histories" [queryParams]="{userID: user?.id}">打卡榜单</div>
+          <div matLine routerLink="/check-in-histories" [queryParams]="{userID: user?.id}">历史打卡</div>
         </mat-list-option>
+        <mat-list-option>
+          <mat-icon matListIcon>
+            <fa-icon icon="calendar"></fa-icon>
+          </mat-icon>
+          <div matLine routerLink="/check-in-top">打卡榜单</div>
+        </mat-list-option>
+        <mat-divider></mat-divider>
       </mat-selection-list>
     </mat-card-content>
   </mat-card>

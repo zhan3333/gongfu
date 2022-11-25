@@ -38,18 +38,6 @@ export class MeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!this.authService.isAuthenticated()) {
-      this.accessToken = this.activeRoute.snapshot.queryParamMap.get('accessToken') ?? '';
-      if (this.accessToken === '') {
-        this.notificationService.warn('no login')
-        return
-      } else {
-        this.authService.login(this.accessToken)
-        this.api.me().subscribe(user => {
-          this.authService.setUser(user)
-        })
-      }
-    }
     this.displayUserInfo()
     setInterval(() => {
       if (this.sendValidCodeLimiting > 0) {
