@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   public isBindPhone = false;
   public isLogin = false;
   public inSubmit = false;
+  public inLoading = false;
 
   public signinForm: FormGroup = new FormGroup({
     phone: new FormControl('', Validators.required),
@@ -94,6 +95,7 @@ export class LoginComponent implements OnInit {
     if (this.isBindPhone) {
       // 绑定
       this.progressBar.mode = 'indeterminate';
+      this.inLoading = true
       const phone = signinData['phone']
       const code = signinData['code']
       this.api.validCode(phone, code).subscribe(
@@ -109,10 +111,12 @@ export class LoginComponent implements OnInit {
           this.progressBar.mode = 'determinate';
         }
         this.inSubmit = false
+        this.inLoading = false
       })
     } else {
       // 登录
       this.progressBar.mode = 'indeterminate';
+      this.inLoading = true
       this.api.login(signinData['phone'], signinData['code'] + '')
         .subscribe(
           (data: Login) => {
@@ -131,6 +135,7 @@ export class LoginComponent implements OnInit {
             this.progressBar.mode = 'determinate';
           }
           this.inSubmit = false
+          this.inLoading = false
         })
     }
   }
