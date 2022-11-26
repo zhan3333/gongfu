@@ -10,16 +10,16 @@ import { Login } from '../../api/models/login';
 
 @Component({
   selector: 'anms-login',
-  templateUrl: './login.component.html',
+  templateUrl: './login1.component.html',
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class LoginComponent implements OnInit {
   @ViewChild(MatProgressBar) public progressBar: MatProgressBar | undefined;
-  @ViewChild(MatButton) public submitButton: MatButton | undefined;
   public sendCodeTime = 0
   public isBindPhone = false;
   public isLogin = false;
+  public inSubmit = false;
 
   public signinForm: FormGroup = new FormGroup({
     phone: new FormControl('', Validators.required),
@@ -39,6 +39,13 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     console.log('snapshot', this.activeRoute.snapshot)
+    // 默认是登录页
+    if (this.activeRoute.snapshot.queryParamMap.get('type') === 'bind_phone') {
+      this.isBindPhone = true
+    } else {
+      this.isLogin = true
+    }
+
     if (!this.authService.isAuthenticated()) {
       const accessToken = this.activeRoute.snapshot.queryParamMap.get('accessToken') ?? '';
       if (accessToken !== '') {
@@ -54,11 +61,6 @@ export class LoginComponent implements OnInit {
       }
     }
 
-    if (this.activeRoute.snapshot.queryParamMap.get('type') === 'login') {
-      this.isLogin = true
-    } else {
-      this.isBindPhone = true
-    }
     setInterval(() => {
       if (this.sendCodeTime > 0) {
         this.sendCodeTime--
@@ -85,7 +87,7 @@ export class LoginComponent implements OnInit {
 
   submit() {
     const signinData = this.signinForm.value;
-    if (this.submitButton === undefined || this.progressBar === undefined) {
+    if (this.progressBar === undefined) {
       return
     }
 
@@ -102,13 +104,12 @@ export class LoginComponent implements OnInit {
         error => {
           this.notify.error('绑定失败: ' + error)
         },
-        () => {
-          if (this.submitButton !== undefined && this.progressBar !== undefined) {
-            this.submitButton.disabled = false;
-            this.progressBar.mode = 'determinate';
-          }
+      ).add(() => {
+        if (this.progressBar !== undefined) {
+          this.progressBar.mode = 'determinate';
         }
-      )
+        this.inSubmit = false
+      })
     } else {
       // 登录
       this.progressBar.mode = 'indeterminate';
@@ -126,11 +127,11 @@ export class LoginComponent implements OnInit {
           },
         )
         .add(() => {
-          if (this.submitButton !== undefined && this.progressBar !== undefined) {
-            this.submitButton.disabled = false;
+          if (this.progressBar !== undefined) {
             this.progressBar.mode = 'determinate';
           }
-        });
+          this.inSubmit = false
+        })
     }
   }
 

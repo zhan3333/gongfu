@@ -23,16 +23,10 @@
                 <fa-icon icon="trash"></fa-icon>
               </mat-icon>
             </mat-form-field>
-            <div class="col">
-              <button mat-raised-button class="w-100" color="primary" (click)="sendValidCode()" [disabled]="!canSendCode()">
-                <ng-template [ngIf]="sendCodeTime > 0">{{sendCodeTime}}s</ng-template>
-                <ng-template [ngIf]="sendCodeTime == 0">{{'发送'}}</ng-template>
-              </button>
-            </div>
           </div>
 
-          <div class="">
-            <mat-form-field class="w-100">
+          <div class="row">
+            <mat-form-field class="w-100 col">
               <input
                 type="number"
                 name="code"
@@ -41,6 +35,13 @@
                 placeholder="验证码"
                 value="">
             </mat-form-field>
+            <div class="col">
+              <button mat-raised-button class="w-100" color="primary" (click)="sendValidCode()"
+                      [disabled]="!canSendCode()">
+                <ng-template [ngIf]="sendCodeTime > 0">{{sendCodeTime}}s</ng-template>
+                <ng-template [ngIf]="sendCodeTime == 0">{{'发送'}}</ng-template>
+              </button>
+            </div>
           </div>
 
           <div class="pb-1">
@@ -51,11 +52,17 @@
             </mat-checkbox>
           </div>
 
-          <button mat-raised-button color="primary" class="w-100 mb-1" [disabled]="signinForm.invalid" (click)="submit()">
-            登录
+          <button mat-raised-button color="primary" class="w-100 mb-1" [disabled]="signinForm.invalid"
+                  (click)="submit()">
+            <ng-template [ngIf]="isLogin">
+              {{'登录'}}
+            </ng-template>
+            <ng-template [ngIf]="isBindPhone">
+              {{'绑定'}}
+            </ng-template>
           </button>
-          <button mat-raised-button color="primary" class="w-100 mb-1" (click)="toWechatLogin()">
-            微信登录
+          <button mat-raised-button color="primary" class="w-100 mb-1" (click)="toWechatLogin()" *ngIf="isLogin">
+            {{'微信登录'}}
           </button>
         </form>
       </mat-card-content>

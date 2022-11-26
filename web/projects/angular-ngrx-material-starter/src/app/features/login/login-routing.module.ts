@@ -8,7 +8,7 @@ const routes: Routes = [
     path: '',
     component: LoginComponent,
     data: {title: 'anms.menu.login'}
-  }
+  },
 ];
 
 @NgModule({

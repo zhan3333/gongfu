@@ -43,7 +43,7 @@ import {
   faLightbulb,
   faWindowMaximize,
   faStream,
-  faBook, faFile, faVideo, faArrowLeft, faArrowRight, faPaperPlane, faCalendar
+  faBook, faFile, faVideo, faArrowLeft, faArrowRight, faPaperPlane, faCalendar, faPhone
 } from '@fortawesome/free-solid-svg-icons';
 import { faMediumM, faGithub } from '@fortawesome/free-brands-svg-icons';
 
@@ -152,7 +152,8 @@ export class SharedModule {
       faPaperPlane,
       faTrash,
       faCalendar,
-      faBolt
+      faBolt,
+      faPhone,
     );
   }
 }

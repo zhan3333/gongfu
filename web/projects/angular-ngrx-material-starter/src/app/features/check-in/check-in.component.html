@@ -27,23 +27,31 @@
     <!--未打卡-->
     <ng-container *ngIf="!todayCheckIn">
       <!--从相册中选择-->
-      <input type="file" [style.display]="'none'"
-             (change)="onFileSelected($event)" #fileUpload accept="video/*">
-      <button mat-fab color="primary" aria-label="选择打卡视频" (click)="fileUpload.click()" class="ms-1">
-        <mat-icon>
-          <fa-icon icon="file"></fa-icon>
-        </mat-icon>
-      </button>
-      <p *ngIf="file">已选择: {{file.name}}</p>
+      <div class="container my-5">
+        <div class="row justify-content-center">
+          <div class="col-auto">
+            <input type="file" [style.display]="'none'"
+                   (change)="onFileSelected($event)" #fileUpload accept="video/*">
+            <button mat-fab color="primary" aria-label="选择打卡视频" (click)="fileUpload.click()" class="ms-1">
+              <mat-icon>
+                <fa-icon icon="file"></fa-icon>
+              </mat-icon>
+            </button>
+          </div>
+          <div class="col-auto">
+            <p *ngIf="file">已选择: {{file.name}}</p>
+          </div>
+        </div>
+      </div>
     </ng-container>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="confirmCheckIn()" *ngIf="!todayCheckIn"
+    <button mat-raised-button color="primary" class="w-100" (click)="confirmCheckIn()" *ngIf="!todayCheckIn"
             [disabled]="!file || loading">
-      确认打卡
+      {{'确认打卡'}}
     </button>
-    <button mat-raised-button color="warn" (click)="resetCheckIn()" *ngIf="todayCheckIn">
-      重新打卡
+    <button mat-raised-button color="warn" class="w-100" (click)="resetCheckIn()" *ngIf="todayCheckIn">
+      {{'重新打卡'}}
     </button>
   </mat-card-actions>
   <mat-card-footer>

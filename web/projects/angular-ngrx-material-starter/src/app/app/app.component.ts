@@ -69,7 +69,7 @@ export class AppComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         const sp = event.url.split('?')
         console.log('route event', event, sp[0])
-        this.authLayout = sp[0] === '/login';
+        this.authLayout = sp[0].startsWith('/login');
       }
     })
   }
