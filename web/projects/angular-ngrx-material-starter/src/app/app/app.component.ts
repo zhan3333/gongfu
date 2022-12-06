@@ -1,26 +1,26 @@
 import browser from 'browser-detect';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
-import { Store, select } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { environment as env } from '../../environments/environment';
 
 import {
-  routeAnimations,
+  AppState,
   LocalStorageService,
-  selectSettingsStickyHeader,
-  selectSettingsLanguage,
+  routeAnimations,
   selectEffectiveTheme,
-  AppState
+  selectSettingsLanguage,
+  selectSettingsStickyHeader
 } from '../core/core.module';
 import {
   actionSettingsChangeAnimationsPageDisabled,
   actionSettingsChangeLanguage
 } from '../core/settings/settings.actions';
 import { AuthService } from '../core/auth/auth.service';
-import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Router, RoutesRecognized } from '@angular/router';
-import { CHECK_IN_CONTINUOUS_TOP_PATH, CHECK_IN_COUNT_PATH, CHECK_IN_TOP_PATH } from '../core/router/route-path';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { CHECK_IN_TOP_PATH } from '../core/router/route-path';
 
 @Component({
   selector: 'anms-root',
@@ -44,9 +44,7 @@ export class AppComponent implements OnInit {
     // {link: 'examples', label: 'anms.menu.examples'},
     {link: 'me', label: '我的'},
     {link: 'check-in', label: '打卡'},
-    {link: CHECK_IN_TOP_PATH, label: '日打卡排行'},
-    {link: CHECK_IN_COUNT_PATH, label: '总打卡排行'},
-    {link: CHECK_IN_CONTINUOUS_TOP_PATH, label: '连续打卡排行'}
+    {link: CHECK_IN_TOP_PATH, label: '打卡排行'},
   ];
   navigationSideMenu = [
     ...this.navigation,
@@ -99,7 +97,7 @@ export class AppComponent implements OnInit {
   }
 
   onLoginClick() {
-      this.router.navigate(['/login'], {queryParams: {'type': 'login'}})
+    this.router.navigate(['/login'], {queryParams: {'type': 'login'}})
   }
 
   onLogoutClick() {

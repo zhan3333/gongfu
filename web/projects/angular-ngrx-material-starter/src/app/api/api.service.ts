@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent, HttpEventType, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpRequest } from '@angular/common/http';
 import { User } from './models/user';
 import { CheckIn, CheckInCountList, CheckInExist, CheckInList } from './models/check-in';
 import { last, map, switchMap, tap } from 'rxjs/operators';

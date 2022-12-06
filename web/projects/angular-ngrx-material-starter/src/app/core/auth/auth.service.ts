@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from '../local-storage/local-storage.service';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { User } from '../../api/models/user';
-import { ApiService } from '../../api/api.service';
-import { map } from 'rxjs/operators';
 
 const KEY_IS_AUTHENTICATED = 'isAuthenticated'
 const KEY_ACCESS_TOKEN = 'accessToken'

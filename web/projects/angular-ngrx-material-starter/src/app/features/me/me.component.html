@@ -23,9 +23,15 @@
       <img
         mat-card-avatar
         [src]="user?.headimgurl"
-        alt="head_img" style="height: 55px; width: 55px; border-radius: 20%"/>
+        alt="head_img" class="user_header"/>
       <mat-card-title>{{ user?.nickname }}</mat-card-title>
       <mat-card-subtitle>手机号：{{ user?.phone }}</mat-card-subtitle>
+      <mat-card-subtitle>
+        角色：
+        <ng-template [ngIf]="user.role === 'admin'">{{'管理员'}}</ng-template>
+        <ng-template [ngIf]="user.role === 'user'">{{'用户'}}</ng-template>
+        <ng-template [ngIf]="user.role === 'coach'">{{'教练'}}</ng-template>
+      </mat-card-subtitle>
     </mat-card-header>
   </mat-card>
   <mat-card class="mt-3 p-0">
@@ -42,7 +48,7 @@
           <mat-icon matListIcon>
             <fa-icon icon="bolt"></fa-icon>
           </mat-icon>
-          <div matLine routerLink="/check-in-histories" [queryParams]="{userID: user?.id}">历史打卡</div>
+          <div matLine routerLink="/check-in-histories" [queryParams]="{userID: user?.id}">我的历史打卡</div>
         </mat-list-option>
         <mat-divider></mat-divider>
         <mat-list-option>

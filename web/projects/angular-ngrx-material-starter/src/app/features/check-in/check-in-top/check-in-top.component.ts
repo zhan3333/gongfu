@@ -1,15 +1,13 @@
-import { Component, OnInit, ChangeDetectionStrategy, LOCALE_ID } from '@angular/core';
-import { CheckIn } from '../../../api/models/check-in';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { CheckIn, CheckInCountList } from '../../../api/models/check-in';
 import { ApiService } from '../../../api/api.service';
 import { NotificationService } from '../../../core/notifications/notification.service';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WechatService } from '../../../services/wechat.service';
-import { HttpParams } from '@angular/common/http';
-import { formatDate } from '@angular/common';
 import * as moment from 'moment';
 import { FormControl } from '@angular/forms';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { isWechat } from '../../../core/util';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'anms-check-in-top',
@@ -19,6 +17,8 @@ import { isWechat } from '../../../core/util';
 })
 export class CheckInTopComponent implements OnInit {
   public checkInList: CheckIn[] | undefined
+  public checkInContinuousList: CheckInCountList | undefined;
+  public checkInCountList: CheckInCountList | undefined;
   public loading = false
   public selectDate = new FormControl('')
 
@@ -44,6 +44,9 @@ export class CheckInTopComponent implements OnInit {
     )
     this.selectDate.setValue(moment(date, 'YYYYMMDD'))
     console.log('query date=' + date)
+
+    this.api.getCheckInCountTop().subscribe(data => this.checkInCountList = data)
+    this.api.getCheckInContinuousTop().subscribe(data => this.checkInContinuousList = data)
   }
 
   public get date() {

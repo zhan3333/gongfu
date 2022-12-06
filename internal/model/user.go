@@ -19,4 +19,27 @@ type User struct {
 	City       string         `json:"city" gorm:"column:city"`
 	Country    string         `json:"country" gorm:"column:country"`
 	HeadImgURL string         `json:"headimgurl" gorm:"column:head_img_url"`
+	// 用户角色，可以为 admin/user/coach
+	Role string `json:"role" gorm:"column:role;index;default:user"`
 }
+
+func (u User) IsAdmin() bool {
+	return u.Role == ROLE_ADMIN
+}
+
+func (u User) IsUser() bool {
+	return u.Role == ROLE_USER
+}
+
+func (u User) IsCoach() bool {
+	return u.Role == ROLE_COACH
+}
+
+// ROLE_ADMIN 管理员
+const ROLE_ADMIN = "admin"
+
+// ROLE_USER 用户
+const ROLE_USER = "user"
+
+// ROLE_COACH 教练
+const ROLE_COACH = "coach"
