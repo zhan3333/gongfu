@@ -6,6 +6,8 @@ import { CoreModule } from './core/core.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app/app.component';
+import { SettingComponent } from './features/setting/setting.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   imports: [
@@ -18,9 +20,9 @@ import { AppComponent } from './app/app.component';
 
     // app
     AppRoutingModule,
-
+    SharedModule,
   ],
-  declarations: [AppComponent],
+  declarations: [AppComponent, SettingComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {

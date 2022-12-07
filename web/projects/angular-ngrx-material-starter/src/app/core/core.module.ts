@@ -65,7 +65,7 @@ import {
   faRocket,
   faPowerOff,
   faUserCircle,
-  faPlayCircle, faPhone, faArrowDown, faArrowLeft, faArrowRight, faCalendar
+  faPlayCircle, faPhone, faArrowDown, faArrowLeft, faArrowRight, faCalendar, faWrench
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -210,6 +210,7 @@ export class CoreModule {
       faArrowLeft,
       faArrowRight,
       faCalendar,
+      faWrench,
     );
   }
 }

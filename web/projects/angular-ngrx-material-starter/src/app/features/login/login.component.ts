@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { MatProgressBar } from '@angular/material/progress-bar';
-import { MatButton } from '@angular/material/button';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../core/notifications/notification.service';
@@ -47,20 +46,26 @@ export class LoginComponent implements OnInit {
       this.isLogin = true
     }
 
-    if (!this.authService.isAuthenticated()) {
-      const accessToken = this.activeRoute.snapshot.queryParamMap.get('accessToken') ?? '';
-      if (accessToken !== '') {
-        this.authService.login(accessToken)
-        this.api.me().subscribe(user => {
-            this.authService.setUser(user)
-          },
-          () => {
-          },
-          () => this.router.navigate(['/me']).then(() => location.reload())
-        )
-        return
+    if (this.isLogin) {
+      if (!this.authService.isAuthenticated()) {
+        const accessToken = this.activeRoute.snapshot.queryParamMap.get('accessToken') ?? '';
+        if (accessToken !== '') {
+          this.authService.login(accessToken)
+          this.api.me().subscribe(user => {
+              this.authService.setUser(user)
+            },
+            () => {
+            },
+            () => this.router.navigate(['/me']).then(() => location.reload())
+          )
+          return
+        }
+      } else {
+        // 已登录且在登录页，跳转到 /me
+        this.toMe()
       }
     }
+
 
     setInterval(() => {
       if (this.sendCodeTime > 0) {
@@ -157,5 +162,9 @@ export class LoginComponent implements OnInit {
 
   toWechatLogin() {
     window.location.href = '/wechat-login'
+  }
+
+  toMe() {
+    this.router.navigate(['/me'])
   }
 }
