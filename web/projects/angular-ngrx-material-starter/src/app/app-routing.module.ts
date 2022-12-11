@@ -5,7 +5,6 @@ import { CheckInShowComponent } from './features/check-in/check-in-show/check-in
 import { CheckInTopComponent } from './features/check-in/check-in-top/check-in-top.component';
 import { CheckInHistoriesComponent } from './features/check-in/check-in-histories/check-in-histories.component';
 import { CHECK_IN_HISTORIES_PATH, CHECK_IN_TOP_PATH } from './core/router/route-path';
-import { SettingComponent } from './features/setting/setting.component';
 
 const routes: Routes = [
   {
@@ -75,7 +74,10 @@ const routes: Routes = [
   },
   {
     path: 'setting',
-    component: SettingComponent,
+    loadChildren: () =>
+      import('./features/setting/setting.module').then(
+        (m) => m.SettingModule
+      ),
     canActivate: [AuthService]
   },
   {

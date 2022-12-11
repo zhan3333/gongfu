@@ -1,42 +1,32 @@
 <mat-card class="m-1">
   <mat-card-title>今日打卡</mat-card-title>
   <mat-card-subtitle *ngIf="!todayCheckIn">今日还未打卡，点击按钮上传打卡文件</mat-card-subtitle>
-  <mat-card-subtitle *ngIf="todayCheckIn">今日已打卡</mat-card-subtitle>
+  <mat-card-subtitle *ngIf="todayCheckIn">已打卡</mat-card-subtitle>
   <mat-card-content>
-    <!--已打卡-->
-    <ng-container *ngIf="todayCheckIn">
-      <mat-accordion>
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              查看打卡视频
-            </mat-panel-title>
-            <mat-panel-description>
-              打卡时间: {{(todayCheckIn?.createdAt || 0) * 1000 | date: 'mediumTime'}}
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-          <ng-template matExpansionPanelContent>
-            <video controls [style.width]="'100%'">
-              <source [src]="todayCheckIn.url">
-              Your browser does not support the video tag.
-            </video>
-          </ng-template>
-        </mat-expansion-panel>
-      </mat-accordion>
-    </ng-container>
-    <!--未打卡-->
-    <ng-container *ngIf="!todayCheckIn">
+    <ng-container>
       <!--从相册中选择-->
       <div class="container my-5">
         <div class="row justify-content-center">
           <div class="col-auto">
-            <input type="file" [style.display]="'none'"
-                   (change)="onFileSelected($event)" #fileUpload accept="video/*">
-            <button mat-fab color="primary" aria-label="选择打卡视频" (click)="fileUpload.click()" class="ms-1" [disabled]="loading">
-              <mat-icon>
-                <fa-icon icon="file"></fa-icon>
-              </mat-icon>
-            </button>
+            <!--未打卡时-->
+            <ng-container *ngIf="!todayCheckIn">
+              <input type="file" [style.display]="'none'"
+                     (change)="onFileSelected($event)" #fileUpload accept="video/*">
+              <button mat-fab color="primary" aria-label="选择打卡视频" (click)="fileUpload.click()" class="ms-1"
+                      [disabled]="loading">
+                <mat-icon>
+                  <fa-icon icon="file"></fa-icon>
+                </mat-icon>
+              </button>
+            </ng-container>
+            <!--已打卡时-->
+            <ng-container *ngIf="todayCheckIn">
+              <button mat-fab style="background-color: green" aria-label="重新选择打卡视频" class="ms-1">
+                <mat-icon>
+                  <fa-icon icon="check"></fa-icon>
+                </mat-icon>
+              </button>
+            </ng-container>
           </div>
         </div>
         <div class="row justify-content-center">
@@ -52,9 +42,23 @@
             [disabled]="!file || loading">
       {{'确认打卡'}}
     </button>
-    <button mat-raised-button color="warn" class="w-100" (click)="resetCheckIn()" *ngIf="todayCheckIn">
-      {{'重新打卡'}}
-    </button>
+    <ng-container *ngIf="todayCheckIn">
+      <div class="container">
+        <div class="row">
+          <div class="col-6">
+            <button mat-raised-button color="accent" class="w-100" (click)="toShowCheckIn(todayCheckIn?.key)">
+              {{'查看视频'}}
+            </button>
+          </div>
+          <div class="col-6">
+            <button mat-button color="warn" class="w-100" (click)="resetCheckIn()">
+              {{'重新打卡'}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
   </mat-card-actions>
   <mat-card-footer>
     <mat-progress-bar mode="determinate" *ngIf="uploadProgressValue != 0"

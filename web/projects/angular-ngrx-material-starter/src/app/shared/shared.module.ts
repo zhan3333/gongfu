@@ -20,32 +20,37 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
-  FontAwesomeModule,
-  FaIconLibrary
-} from '@fortawesome/angular-fontawesome';
-import {
-  faPlus,
-  faEdit,
-  faTrash,
-  faTimes,
-  faCaretUp,
+  faArrowLeft,
+  faArrowRight,
+  faBook,
+  faCalendar,
+  faCalendarAlt,
   faCaretDown,
-  faExclamationTriangle,
-  faFilter,
-  faTasks,
+  faCaretUp,
   faCheck,
-  faSquare,
+  faEdit,
+  faExclamationTriangle,
+  faFile,
+  faFilter,
   faLanguage,
-  faPaintBrush,
   faLightbulb,
-  faWindowMaximize,
+  faPaintBrush,
+  faPaperPlane,
+  faPhone,
+  faPlus,
+  faSquare,
   faStream,
-  faBook, faFile, faVideo, faArrowLeft, faArrowRight, faPaperPlane, faCalendar, faPhone, faCalendarAlt
+  faTasks,
+  faTimes,
+  faTrash,
+  faVideo,
+  faWindowMaximize
 } from '@fortawesome/free-solid-svg-icons';
-import { faMediumM, faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faGithub, faMediumM } from '@fortawesome/free-brands-svg-icons';
 
 import { BigInputComponent } from './big-input/big-input/big-input.component';
 import { BigInputActionComponent } from './big-input/big-input-action/big-input-action.component';
@@ -53,6 +58,8 @@ import { RtlSupportDirective } from './rtl-support/rtl-support.directive';
 import { CalendarHeaderComponent } from './calendar-header/calendar-header.component';
 import { FormControlPipe } from './form-control.pipe';
 import { faBolt } from '@fortawesome/free-solid-svg-icons/faBolt';
+import { BottomSheetComponent } from './bottom-sheet.component';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 @NgModule({
   imports: [
@@ -79,7 +86,9 @@ import { faBolt } from '@fortawesome/free-solid-svg-icons/faBolt';
     MatDatepickerModule,
     MatNativeDateModule,
 
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatBottomSheetModule,
+    MatRippleModule
   ],
   declarations: [
     BigInputComponent,
@@ -87,6 +96,7 @@ import { faBolt } from '@fortawesome/free-solid-svg-icons/faBolt';
     RtlSupportDirective,
     CalendarHeaderComponent,
     FormControlPipe,
+    BottomSheetComponent,
   ],
   exports: [
     CommonModule,
@@ -120,7 +130,7 @@ import { faBolt } from '@fortawesome/free-solid-svg-icons/faBolt';
     BigInputComponent,
     BigInputActionComponent,
     RtlSupportDirective,
-    FormControlPipe
+    FormControlPipe,
   ]
 })
 export class SharedModule {

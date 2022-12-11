@@ -1,13 +1,14 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CheckIn, CheckInList } from '../../api/models/check-in';
 import { ApiService } from '../../api/api.service';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { WechatService } from '../../services/wechat.service';
-import { MatCalendar, MatCalendarCellCssClasses, MatCalendarView } from '@angular/material/datepicker';
+import { MatCalendar, MatCalendarCellCssClasses } from '@angular/material/datepicker';
 import * as moment from 'moment/moment';
 import { AuthService } from '../../core/auth/auth.service';
 import { CalendarHeaderComponent } from '../../shared/calendar-header/calendar-header.component';
 import { isWechat } from '../../core/util';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'anms-check-in',
@@ -33,6 +34,7 @@ export class CheckInComponent implements OnInit {
     private notification: NotificationService,
     private wechatService: WechatService,
     private auth: AuthService,
+    private router: Router
   ) {
   }
 
@@ -135,6 +137,13 @@ export class CheckInComponent implements OnInit {
     console.log('calendarClick')
   }
 
+  toShowCheckIn(key: string | undefined) {
+    if (key === undefined) {
+      return
+    }
+    this.router.navigate(['/check-in', key])
+  }
+
   private refreshSharedData() {
     if (this.todayCheckIn !== undefined && isWechat()) {
       this.wechatService.refresh(location.href.split('#')[0]).subscribe(
@@ -169,5 +178,6 @@ export class CheckInComponent implements OnInit {
       }
     )
   }
+
 
 }
