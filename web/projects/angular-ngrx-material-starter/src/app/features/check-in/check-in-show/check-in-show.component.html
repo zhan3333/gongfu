@@ -1,10 +1,17 @@
 <mat-card>
-  <img *ngIf="checkIn?.headImgUrl"
-       mat-card-avatar
-       [src]="checkIn?.headImgUrl"
-  />
-  <mat-card-title>{{checkIn?.userName}} 的今日打卡</mat-card-title>
-  <mat-card-subtitle>打卡时间: {{(checkIn?.createdAt || 0) *1000 | date: 'mediumTime'}}</mat-card-subtitle>
+  <div class="container">
+    <div class="row justify-content-center">
+      <img *ngIf="checkIn?.headImgUrl"
+           class="avatar"
+           [src]="checkIn?.headImgUrl"
+      />
+    </div>
+    <div class="row">
+      <h2 class="text-center">{{checkIn?.userName}}</h2>
+    </div>
+  </div>
+  <mat-card-title><div class="text-center">打卡排名: {{checkIn?.dayRank}}</div></mat-card-title>
+  <mat-card-subtitle><div class="text-center">打卡时间: {{(checkIn?.createdAt || 0) * 1000 | date: 'mediumTime'}}</div></mat-card-subtitle>
   <mat-card-content>
     <ng-container *ngIf="checkIn">
       <video controls [style.width]="'100%'">

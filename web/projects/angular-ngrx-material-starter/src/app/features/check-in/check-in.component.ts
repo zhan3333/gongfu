@@ -7,7 +7,7 @@ import { MatCalendar, MatCalendarCellCssClasses } from '@angular/material/datepi
 import * as moment from 'moment/moment';
 import { AuthService } from '../../core/auth/auth.service';
 import { CalendarHeaderComponent } from '../../shared/calendar-header/calendar-header.component';
-import { isWechat } from '../../core/util';
+import { refreshSharedCheckInToWechat } from '../../core/util';
 import { Router } from '@angular/router';
 
 @Component({
@@ -144,35 +144,16 @@ export class CheckInComponent implements OnInit {
     this.router.navigate(['/check-in', key])
   }
 
-  private refreshSharedData() {
-    if (this.todayCheckIn !== undefined && isWechat()) {
-      this.wechatService.refresh(location.href.split('#')[0]).subscribe(
-        () => {
-          let checkInAtStr = '无'
-          if (this.todayCheckIn?.createdAt) {
-            checkInAtStr = new Date(this.todayCheckIn?.createdAt * 1000 ?? 0).toLocaleString('chinese', {hour12: false})
-          }
-          this.wechatService.wx.updateAppMessageShareData({
-            title: this.todayCheckIn?.userName + ' 的今日打卡',
-            desc: '打卡时间: ' + checkInAtStr,
-            link: window.location.origin + '/web/check-in/' + this.todayCheckIn?.key, // 分享链接，该链接域名或路径必须与当前页面对应的公众号 JS 安全域名一致
-            imgUrl: this.todayCheckIn?.headImgUrl, // 分享图标
-            success: function () {
-              console.log('shared success')
-            },
-          })
-        }
-      )
-    }
-  }
-
   private getTodayCheckIn() {
     this.api.getTodayCheckIn().subscribe(
       checkInExist => {
         if (checkInExist.exists) {
           this.todayCheckIn = checkInExist.checkIn
 
-          this.refreshSharedData()
+          if (this.todayCheckIn !== undefined) {
+            refreshSharedCheckInToWechat(this.wechatService, this.todayCheckIn)
+          }
+
           this.onMonthSelected(moment().toDate())
         }
       }

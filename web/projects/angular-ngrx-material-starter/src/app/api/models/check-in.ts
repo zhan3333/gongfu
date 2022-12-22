@@ -9,6 +9,8 @@ export interface CheckIn {
   headImgUrl?: string,
   key?: string,
   date?: string,
+  // 日排名
+  dayRank?: number,
 }
 
 export type CheckInList = CheckIn[]

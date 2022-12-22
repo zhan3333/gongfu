@@ -23,6 +23,8 @@ type Store interface {
 type CheckIn interface {
 	CreateCheckIn(ctx context.Context, checkIn *model.CheckIn) error
 	GetCheckIn(ctx context.Context, options GetCheckInOption) (*model.CheckIn, error)
+	// GetCheckInRankNum 获取 checkIn 的排名
+	GetCheckInRankNum(ctx context.Context, checkIn *model.CheckIn) (int64, error)
 }
 
 type User interface {
@@ -52,6 +54,22 @@ var _ Store = (*DBStore)(nil)
 
 type DBStore struct {
 	DB *gorm.DB
+}
+
+func (s DBStore) GetCheckInRankNum(ctx context.Context, checkIn *model.CheckIn) (int64, error) {
+	checkInDate := date.GetDateFromTime(checkIn.CreatedAt)
+	checkInNum := int64(0)
+	// 相同日期下，创建时间比传入 checkIn 早，且 userID 去重的 checkIn 数量
+	q := s.DB.Model(&model.CheckInDay{}).
+		Distinct("user_id").
+		Where("date = ?", checkInDate).
+		Where("created_at <= ?", checkIn.CreatedAt).
+		Where("check_in_id != ?", checkIn.ID).
+		Count(&checkInNum)
+	if q.Error != nil {
+		return 0, q.Error
+	}
+	return checkInNum + 1, nil
 }
 
 func (s DBStore) GetCheckInCountTop(ctx context.Context, length uint) ([]*model.CheckInCount, error) {

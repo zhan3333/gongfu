@@ -55,7 +55,6 @@ const routes: Routes = [
       import('./features/check-in/check-in.module').then(
         (m) => m.CheckInModule
       ),
-    canActivate: [AuthService]
   },
   {
     path: CHECK_IN_TOP_PATH,
@@ -65,11 +64,6 @@ const routes: Routes = [
   {
     path: CHECK_IN_HISTORIES_PATH,
     component: CheckInHistoriesComponent,
-    canActivate: []
-  },
-  {
-    path: 'check-in/:key',
-    component: CheckInShowComponent,
     canActivate: []
   },
   {

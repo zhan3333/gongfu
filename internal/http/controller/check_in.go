@@ -50,6 +50,7 @@ type CheckInResp struct {
 	UserID     uint   `json:"userID"`
 	HeadImgUrl string `json:"headImgUrl"`
 	Date       string `json:"date"`
+	DayRank    int64  `json:"dayRank"`
 }
 
 // GetTodayCheckIn 获取当前用户的今日打卡记录
@@ -76,6 +77,12 @@ func (r Controller) GetTodayCheckIn(c *app.Context) result.Result {
 	if err != nil {
 		return result.Err(fmt.Errorf("get visit url: %w", err))
 	}
+
+	// 日排名
+	dayRank, err := r.Store.GetCheckInRankNum(context.TODO(), checkIn)
+	if err != nil {
+		return result.Err(fmt.Errorf("get rank num: %w", err))
+	}
 	return result.Ok(gin.H{
 		"exists": true,
 		"checkIn": CheckInResp{
@@ -87,6 +94,7 @@ func (r Controller) GetTodayCheckIn(c *app.Context) result.Result {
 			UserID:     userID,
 			HeadImgUrl: headImgUrl,
 			Date:       date.GetDateFromTime(checkIn.CreatedAt),
+			DayRank:    dayRank,
 		},
 	})
 }
@@ -114,6 +122,11 @@ func (r Controller) GetCheckIn(c *app.Context) result.Result {
 	if user != nil {
 		headImgUrl, userName, userID = user.HeadImgURL, user.Nickname, user.ID
 	}
+	// 日排名
+	dayRank, err := r.Store.GetCheckInRankNum(context.TODO(), checkIn)
+	if err != nil {
+		return result.Err(fmt.Errorf("get rank num: %w", err))
+	}
 	visitUrl, err := r.Storage.GetVisitURL(context.TODO(), checkIn.Key)
 	if err != nil {
 		return result.Err(fmt.Errorf("get visit url: %w", err))
@@ -126,6 +139,7 @@ func (r Controller) GetCheckIn(c *app.Context) result.Result {
 		UserName:   userName,
 		UserID:     userID,
 		HeadImgUrl: headImgUrl,
+		DayRank:    dayRank,
 	})
 }
 
