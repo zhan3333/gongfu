@@ -106,6 +106,7 @@ func getStore(conf *config.DB) (service.Store, error) {
 		&model.CheckIn{},
 		&model.CheckInDay{},
 		&model.CheckInCount{},
+		&model.Coach{},
 	); err != nil {
 		return nil, fmt.Errorf("auto migrate: %w", err)
 	}

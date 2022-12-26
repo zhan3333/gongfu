@@ -24,9 +24,10 @@ import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
+  faAddressBook,
   faArrowLeft,
   faArrowRight,
-  faBook,
+  faBook, faBuilding,
   faCalendar,
   faCalendarAlt,
   faCaretDown,
@@ -37,7 +38,7 @@ import {
   faFile,
   faFilter,
   faLanguage,
-  faLightbulb,
+  faLightbulb, faList,
   faPaintBrush,
   faPaperPlane,
   faPhone,
@@ -46,7 +47,7 @@ import {
   faStream,
   faTasks,
   faTimes,
-  faTrash,
+  faTrash, faUser,
   faVideo,
   faWindowMaximize
 } from '@fortawesome/free-solid-svg-icons';
@@ -165,6 +166,10 @@ export class SharedModule {
       faCalendarAlt,
       faBolt,
       faPhone,
+      faUser,
+      faBuilding,
+      faList,
+      faAddressBook
     );
   }
 }

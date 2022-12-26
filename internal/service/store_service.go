@@ -36,6 +36,7 @@ type User interface {
 	CreateUser(ctx context.Context, user *model.User) error
 	UpdateUser(ctx context.Context, user *model.User) error
 	GetUsersMap(ctx context.Context, userIDs []uint) (UsersMap, error)
+	GetCoach(ctx context.Context, userID uint) (*model.Coach, error)
 }
 
 type CheckInCount interface {
@@ -54,6 +55,18 @@ var _ Store = (*DBStore)(nil)
 
 type DBStore struct {
 	DB *gorm.DB
+}
+
+func (s DBStore) GetCoach(ctx context.Context, userID uint) (*model.Coach, error) {
+	coach := model.Coach{}
+	err := s.DB.WithContext(ctx).Where("user_id = ?", userID).Find(&coach).Error
+	if err != nil {
+		return nil, err
+	}
+	if coach.ID == 0 {
+		return nil, nil
+	}
+	return &coach, nil
 }
 
 func (s DBStore) GetCheckInRankNum(ctx context.Context, checkIn *model.CheckIn) (int64, error) {

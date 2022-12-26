@@ -18,6 +18,7 @@ export class AuthService implements CanActivate {
   public user$ = new ReplaySubject<User>();
 
   private store
+  private role = 'user';
 
   constructor(store: LocalStorageService, private router: Router) {
     this.store = store
@@ -64,5 +65,13 @@ export class AuthService implements CanActivate {
     } else {
       return this.router.parseUrl('/login?type=login')
     }
+  }
+
+  setRole(role: string) {
+    this.role = role
+  }
+
+  getRole(): string{
+    return this.role
   }
 }

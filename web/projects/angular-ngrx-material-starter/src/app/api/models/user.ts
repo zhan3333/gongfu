@@ -32,3 +32,13 @@ export const ROLE_USER = 'user'
 
 // 教练
 export const ROLE_COACH = 'coach'
+
+// 教练信息
+export class Coach {
+  id?: number;
+  userID?: number;
+  level?: string; // 等级
+  teachingSpace?: string; // 任教单位
+  teachingAge?: string; // 任教年限
+  teachingExperiences?: string[]; // 任教经历
+}
