@@ -10,6 +10,7 @@ export class User {
   unionid?: string;
   phone?: string;
   role?: string;
+  uuid?: string;
 
   isAdmin() {
     return this.role === ROLE_ADMIN
@@ -41,4 +42,16 @@ export class Coach {
   teachingSpace?: string; // 任教单位
   teachingAge?: string; // 任教年限
   teachingExperiences?: string[]; // 任教经历
+}
+
+// 显示教练等级
+export function displayLevel(level: string | undefined) {
+  if (level === undefined) {
+    return '未知'
+  }
+  switch (level) {
+    case '1-1':
+      return '初级1'
+  }
+  return level;
 }

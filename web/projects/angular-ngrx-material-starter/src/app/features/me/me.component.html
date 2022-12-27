@@ -32,38 +32,6 @@
         <ng-template [ngIf]="user?.role === 'coach'">{{'教练'}}</ng-template>
       </mat-card-subtitle>
     </mat-card-header>
-    <mat-divider></mat-divider>
-    <mat-card-content>
-      <mat-list *ngIf="user?.role === 'coach'">
-        <mat-list-item>
-          <mat-icon matListIcon>
-            <fa-icon icon="user"></fa-icon>
-          </mat-icon>
-          <div mat-line>{{'教练级别: ' + displayLevel(coach?.level)}}</div>
-        </mat-list-item>
-        <mat-list-item>
-          <mat-icon matListIcon>
-            <fa-icon icon="building"></fa-icon>
-          </mat-icon>
-          <div mat-line>{{'任教单位: ' + coach?.teachingSpace}}</div>
-        </mat-list-item>
-        <mat-list-item>
-          <mat-icon matListIcon>
-            <fa-icon icon="address-book"></fa-icon>
-          </mat-icon>
-          <div mat-line>{{'任教年限: ' + coach?.teachingAge}}</div>
-        </mat-list-item>
-        <mat-list-item>
-          <mat-icon matListIcon>
-            <fa-icon icon="list"></fa-icon>
-          </mat-icon>
-          <div mat-line>{{'任教经历: '}}</div>
-          <div mat-line *ngFor="let e of coach?.teachingExperiences">
-            <div class="ms-3">{{'- ' + e}}</div>
-          </div>
-        </mat-list-item>
-      </mat-list>
-    </mat-card-content>
   </mat-card>
   <mat-card class="mt-3 p-0">
     <mat-card-content>
@@ -87,6 +55,13 @@
             <fa-icon icon="calendar"></fa-icon>
           </mat-icon>
           <div matLine routerLink="/check-in-top">打卡榜单</div>
+        </mat-list-option>
+        <mat-divider></mat-divider>
+        <mat-list-option>
+          <mat-icon matListIcon>
+            <fa-icon icon="user"></fa-icon>
+          </mat-icon>
+          <div matLine [routerLink]="'/profile/' + user?.uuid">个人信息</div>
         </mat-list-option>
         <mat-divider></mat-divider>
         <mat-list-option>

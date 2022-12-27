@@ -21,6 +21,8 @@ type User struct {
 	HeadImgURL string         `json:"headimgurl" gorm:"column:head_img_url"`
 	// 用户角色，可以为 admin/user/coach
 	Role string `json:"role" gorm:"column:role;index;default:user"`
+	// 用户唯一编码
+	UUID string `json:"uuid" gorm:"unique"`
 }
 
 func (u User) IsAdmin() bool {

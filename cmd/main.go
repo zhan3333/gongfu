@@ -2,9 +2,11 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
+	"github.com/google/uuid"
 	"github.com/silenceper/wechat/v2"
 	"github.com/silenceper/wechat/v2/cache"
 	"github.com/silenceper/wechat/v2/officialaccount"
@@ -26,6 +28,7 @@ import (
 	"gorm.io/gorm"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -107,10 +110,53 @@ func getStore(conf *config.DB) (service.Store, error) {
 		&model.CheckInDay{},
 		&model.CheckInCount{},
 		&model.Coach{},
+		&model.Migrate{},
 	); err != nil {
 		return nil, fmt.Errorf("auto migrate: %w", err)
 	}
+	migrates := map[string]func(db2 *gorm.DB) error{
+		"init_users_uuid": initUsersUUID,
+	}
+	for action, migrate := range migrates {
+		var version = model.Migrate{}
+		err = db.Model(&model.Migrate{}).Where("action = ?", action).First(&version).Error
+		if err != nil {
+			if !errors.Is(err, gorm.ErrRecordNotFound) {
+				return nil, fmt.Errorf("find max version: %w", err)
+			}
+			// 未找到记录
+			if err := migrate(db); err != nil {
+				return nil, fmt.Errorf("migrate action=%s: %w", action, err)
+			}
+			version.Action = action
+			if err = db.Create(&version).Error; err != nil {
+				return nil, fmt.Errorf("create migrate: %w", err)
+			}
+			logrus.Infof("migrate action=%s migrated success", action)
+		} else {
+			logrus.Infof("migrate action=%s already migrated", action)
+		}
+	}
+
 	return service.NewDBStore(db), nil
+}
+
+func initUsersUUID(db *gorm.DB) error {
+	// 为所有用户加上 uuid
+	users := []*model.User{}
+	err := db.Debug().Where("uuid is null").FindInBatches(&users, 2000, func(tx *gorm.DB, batch int) error {
+		for _, user := range users {
+			user.UUID = strings.ReplaceAll(uuid.New().String(), "-", "")
+			if err := db.Save(user).Error; err != nil {
+				return fmt.Errorf("update user: %w", err)
+			}
+		}
+		return nil
+	}).Error
+	if err != nil {
+		return fmt.Errorf("set users uuid: %w", err)
+	}
+	return nil
 }
 
 func getAuthCode(conf *config.Tencent, redis redis.Cmdable) service.AuthCode {

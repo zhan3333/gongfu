@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { ApiService } from '../../api/api.service';
-import { Coach, User } from '../../api/models/user';
+import { Coach, displayLevel, User } from '../../api/models/user';
 import { FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -14,6 +14,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class MeComponent implements OnInit {
+  public displayLevel = displayLevel
   public accessToken = ''
   public user: User | undefined;
   public coach: Coach | undefined;
@@ -57,17 +58,6 @@ export class MeComponent implements OnInit {
 
   public toWeChatLogin() {
     window.location.href = '/login'
-  }
-
-  displayLevel(level: string | undefined) {
-    if (level === undefined) {
-      return '未知'
-    }
-    switch (level) {
-      case '1-1':
-        return '初级1'
-    }
-    return level;
   }
 
   private displayUserInfo() {

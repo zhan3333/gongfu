@@ -32,6 +32,7 @@ type User interface {
 	OpenIDExists(ctx context.Context, openID string) (bool, error)
 	GetUserByOpenID(ctx context.Context, openID string) (*model.User, error)
 	GetUserByPhone(ctx context.Context, phone string) (*model.User, error)
+	GetUserByUUID(ctx context.Context, uuid string) (*model.User, error)
 	GetUser(ctx context.Context, userID uint) (*model.User, error)
 	CreateUser(ctx context.Context, user *model.User) error
 	UpdateUser(ctx context.Context, user *model.User) error
@@ -295,6 +296,18 @@ func (s DBStore) GetCheckIn(ctx context.Context, options GetCheckInOption) (*mod
 func (s DBStore) GetUserByPhone(ctx context.Context, phone string) (*model.User, error) {
 	var user = &model.User{}
 	err := s.DB.WithContext(ctx).Where("phone = ?", phone).Find(user).Error
+	if err != nil {
+		return nil, err
+	}
+	if user.ID == 0 {
+		return nil, nil
+	}
+	return user, nil
+}
+
+func (s DBStore) GetUserByUUID(ctx context.Context, uuid string) (*model.User, error) {
+	var user = &model.User{}
+	err := s.DB.WithContext(ctx).Where("uuid = ?", uuid).Find(user).Error
 	if err != nil {
 		return nil, err
 	}

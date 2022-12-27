@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthService } from './core/auth/auth.service';
-import { CheckInShowComponent } from './features/check-in/check-in-show/check-in-show.component';
 import { CheckInTopComponent } from './features/check-in/check-in-top/check-in-top.component';
 import { CheckInHistoriesComponent } from './features/check-in/check-in-histories/check-in-histories.component';
 import { CHECK_IN_HISTORIES_PATH, CHECK_IN_TOP_PATH } from './core/router/route-path';
@@ -48,6 +47,13 @@ const routes: Routes = [
         (m) => m.MeModule
       ),
     canActivate: [AuthService]
+  },
+  {
+    path: 'profile/:uuid',
+    loadChildren: () =>
+      import('./features/profile/profile.module').then(
+        (m) => m.ProfileModule
+      ),
   },
   {
     path: 'check-in',

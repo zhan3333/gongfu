@@ -57,6 +57,9 @@ func (r Route) Route(app *gin.Engine) {
 		api.GET("check-in/top/continuous", controller.Wrap(r.Controller.GetCheckInContinuousTop))
 		api.GET("check-in/histories", controller.Wrap(r.Controller.GetCheckInHistories))
 		api.GET("check-in/:key", controller.Wrap(r.Controller.GetCheckIn))
+
+		// 用户详情页
+		api.GET("profile/:uuid", controller.Wrap(r.Controller.Profile))
 	}
 
 	app.GET("/", func(c *gin.Context) {

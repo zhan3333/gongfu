@@ -3,6 +3,7 @@ import { HttpClient, HttpEventType, HttpRequest } from '@angular/common/http';
 import { Coach, User } from './models/user';
 import { CheckIn, CheckInCountList, CheckInExist, CheckInList } from './models/check-in';
 import { last, map, switchMap, tap } from 'rxjs/operators';
+import { Profile } from './models/profile';
 
 const meUrl = '/me'
 const sendValidCodeUrl = '/bind/phone'
@@ -18,6 +19,7 @@ const getCheckInContinuousTop = '/check-in/top/continuous'
 const getCheckInHistories = '/check-in/histories'
 const login = '/auth/login'
 const getCoach = '/coach'
+const getProfile = '/profile'
 
 @Injectable({
   providedIn: 'root'
@@ -124,6 +126,10 @@ export class ApiService {
   // 获取教练信息
   getCoach() {
     return this.http.get<Coach>(getCoach)
+  }
+
+  getProfile(uuid: string) {
+    return this.http.get<Profile>(getProfile + '/' + uuid)
   }
 }
 
