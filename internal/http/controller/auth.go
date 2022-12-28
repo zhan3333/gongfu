@@ -9,6 +9,7 @@ import (
 	"gongfu/internal/result"
 	"gongfu/pkg/util"
 	"net/http"
+	"strings"
 )
 
 var wechatLoginURL = "/web/login"
@@ -67,8 +68,56 @@ func (r Controller) WeChatLogin(c *app.Context) result.Result {
 	}
 }
 
+type MeResponse struct {
+	ID         uint    `json:"id"`
+	OpenID     *string `json:"openid"`
+	Phone      *string `json:"phone"`
+	Nickname   string  `json:"nickname"`
+	HeadImgURL string  `json:"headimgurl"`
+	Role       string  `json:"role"`
+	UUID       string  `json:"uuid"`
+}
+
 func (r Controller) Me(c *app.Context) result.Result {
-	return result.Ok(c.User)
+	var err error
+	avatarURL := c.User.HeadImgURL
+	if !strings.HasPrefix(avatarURL, "http") {
+		avatarURL = r.Storage.GetPublicVisitURL(context.Background(), avatarURL) + "!avatar"
+		if err != nil {
+			return result.Err(err)
+		}
+	}
+	return result.Ok(MeResponse{
+		ID:         c.User.ID,
+		OpenID:     c.User.OpenID,
+		Phone:      c.User.Phone,
+		Nickname:   c.User.Nickname,
+		HeadImgURL: avatarURL,
+		Role:       c.User.Role,
+		UUID:       c.User.UUID,
+	})
+}
+
+// EditMe 编辑用户信息
+func (r Controller) EditMe(c *app.Context) result.Result {
+	req := struct {
+		AvatarKey string `json:"avatarKey" binding:"required"`
+	}{}
+	if err := c.ShouldBind(&req); err != nil {
+		return result.Err(err)
+	}
+	// 检查储存中文件是否已经上传
+	if exists, err := r.Storage.KeyExists(context.TODO(), req.AvatarKey); err != nil {
+		return result.Err(err)
+	} else if !exists {
+		c.Message(http.StatusBadRequest, fmt.Sprintf("key %s no exists", req.AvatarKey))
+		return result.Err(nil)
+	}
+	c.User.HeadImgURL = req.AvatarKey
+	if err := r.Store.UpdateUser(context.TODO(), &c.User); err != nil {
+		return result.Err(err)
+	}
+	return result.Ok(nil)
 }
 
 func (r Controller) Login(c *app.Context) result.Result {

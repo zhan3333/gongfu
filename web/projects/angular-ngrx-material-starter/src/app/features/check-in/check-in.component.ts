@@ -67,6 +67,7 @@ export class CheckInComponent implements OnInit {
     this.loading = true
     this.api.uploadFile(
       this.file,
+      '',
       value => this.uploadProgressValue = value,
       key => {
         console.log('upload file return key: ', key)

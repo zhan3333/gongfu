@@ -18,6 +18,8 @@ export class SettingComponent implements OnInit {
   public user: User | undefined
   // 当前角色
   public curRole = new FormControl(this.authService.getRole());
+  public loading = false
+  public uploadProgressValue = 0
 
   constructor(
     private api: ApiService,
@@ -28,11 +30,15 @@ export class SettingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.api.me().subscribe(user => {
-      this.user = user
-    })
+    this.refreshUser()
     this.curRole.valueChanges.subscribe(v => {
       this.authService.setRole(v)
+    })
+  }
+
+  refreshUser() {
+    this.api.me().subscribe(user => {
+      this.user = user
     })
   }
 
@@ -65,6 +71,34 @@ export class SettingComponent implements OnInit {
       return
     }
     const file = input.files[0]
-    this.notification.warn('更换头像功能开发中') // todo 上传头像功能
+
+    this.loading = true
+    this.api.uploadFile(
+      file,
+      'avatar',
+      value => this.uploadProgressValue = value,
+      avatarKey => {
+        // @ts-ignore
+        this.api.editMe(avatarKey).subscribe(
+          () => {
+            this.notification.success('修改成功')
+            this.refreshUser()
+          },
+          error => this.notification.error('修改失败，请稍后重试: ' + JSON.stringify(error)),
+          () => {
+            this.loading = false
+            this.uploadProgressValue = 0
+          }
+        )
+      }
+    ).subscribe(
+      () => {
+      },
+      error => {
+        this.notification.error('上传头像失败，请稍后重试: ' + JSON.stringify(error))
+        this.loading = false
+        this.uploadProgressValue = 0
+      },
+    )
   }
 }

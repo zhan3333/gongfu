@@ -12,6 +12,7 @@ type Storage interface {
 	GetPresignedURL(ctx context.Context, key string) (string, error)
 	KeyExists(ctx context.Context, key string) (bool, error)
 	GetVisitURL(ctx context.Context, key string) (string, error)
+	GetPublicVisitURL(ctx context.Context, key string) string
 }
 
 type storage struct {
@@ -26,6 +27,11 @@ func (s storage) GetVisitURL(ctx context.Context, key string) (string, error) {
 		return "", err
 	}
 	return u.String(), nil
+}
+
+func (s storage) GetPublicVisitURL(ctx context.Context, key string) string {
+	u := s.Cos.Object.GetObjectURL(key)
+	return u.String()
 }
 
 func (s storage) KeyExists(ctx context.Context, key string) (bool, error) {

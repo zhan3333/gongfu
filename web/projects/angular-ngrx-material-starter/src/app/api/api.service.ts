@@ -20,6 +20,7 @@ const getCheckInHistories = '/check-in/histories'
 const login = '/auth/login'
 const getCoach = '/coach'
 const getProfile = '/profile'
+const editMe = '/me'
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,11 @@ export class ApiService {
 
   me() {
     return this.http.get<User>(meUrl)
+  }
+
+  // 编辑用户信息
+  editMe(avatarKey: string) {
+    return this.http.post(editMe, {avatarKey: avatarKey})
   }
 
   sendValidCode(phone: string) {
@@ -49,16 +55,17 @@ export class ApiService {
     return this.http.post(checkInUrl, {key: fileKey, fileName: fileName})
   }
 
-  getUploadUrl(fileName: string) {
+  getUploadUrl(fileName: string, dir: string = '') {
     return this.http.get<GetUploadTokenResponse>(getUploadTokenUrl, {
       params: {
-        fileName: fileName
+        fileName: fileName,
+        dir: dir,
       }
     })
   }
 
-  uploadFile(file: File, onProgress: (value: number) => void, onCompletely: (key: string) => void) {
-    return this.getUploadUrl(file.name).pipe(
+  uploadFile(file: File, dir: string, onProgress: (value: number) => void, onCompletely: (key: string) => void) {
+    return this.getUploadUrl(file.name, dir).pipe(
       switchMap(token => {
         const req = new HttpRequest('PUT', token.uploadUrl, file, {
           reportProgress: true

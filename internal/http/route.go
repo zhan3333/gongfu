@@ -42,6 +42,7 @@ func (r Route) Route(app *gin.Engine) {
 		api.POST("/auth/login", controller.Wrap(r.Controller.Login))
 		authedApi := api.Group("", r.Middleware.Auth())
 		{
+			authedApi.POST("me", controller.Wrap(r.Controller.EditMe))
 			authedApi.GET("me", controller.Wrap(r.Controller.Me))
 			authedApi.POST("bind/phone", controller.Wrap(r.Controller.GetBindCode))
 			authedApi.POST("bind/phone/valid", controller.Wrap(r.Controller.ValidBindCode))
