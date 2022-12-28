@@ -26,7 +26,7 @@ import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontaweso
 import {
   faAddressBook,
   faArrowLeft,
-  faArrowRight,
+  faArrowRight, faBars,
   faBook, faBuilding,
   faCalendar,
   faCalendarAlt,
@@ -171,6 +171,7 @@ export class SharedModule {
       faList,
       faAddressBook,
       faUsers,
+      faBars,
     );
   }
 }

@@ -110,4 +110,12 @@ export class AppComponent implements OnInit {
       actionSettingsChangeLanguage({language: event.value})
     );
   }
+
+  onProfileClick() {
+    this.router.navigate(['/profile', this.authService.getUser().uuid])
+  }
+
+  onSettingClick() {
+    this.router.navigate(['/setting'])
+  }
 }

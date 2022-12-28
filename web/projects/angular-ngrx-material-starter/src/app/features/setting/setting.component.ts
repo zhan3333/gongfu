@@ -4,7 +4,7 @@ import { ApiService } from '../../api/api.service';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { BottomSheetComponent } from '../../shared/bottom-sheet.component';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
@@ -20,6 +20,9 @@ export class SettingComponent implements OnInit {
   public curRole = new FormControl(this.authService.getRole());
   public loading = false
   public uploadProgressValue = 0
+  public userForm = new FormGroup({
+    nickname: new FormControl('', [Validators.required])
+  });
 
   constructor(
     private api: ApiService,
@@ -39,6 +42,7 @@ export class SettingComponent implements OnInit {
   refreshUser() {
     this.api.me().subscribe(user => {
       this.user = user
+      this.userForm.get('nickname')?.setValue(user?.nickname)
     })
   }
 
@@ -79,7 +83,7 @@ export class SettingComponent implements OnInit {
       value => this.uploadProgressValue = value,
       avatarKey => {
         // @ts-ignore
-        this.api.editMe(avatarKey).subscribe(
+        this.api.editMe({avatarKey}).subscribe(
           () => {
             this.notification.success('修改成功')
             this.refreshUser()
@@ -99,6 +103,21 @@ export class SettingComponent implements OnInit {
         this.loading = false
         this.uploadProgressValue = 0
       },
+    )
+  }
+
+  public saveUserForm() {
+    this.loading = true
+    this.api.editMe({nickname: this.userForm.get('nickname')?.value as string}).subscribe(
+      () => {
+        this.notification.success('修改成功')
+        this.refreshUser()
+      },
+      () => {
+      },
+      () => {
+        this.loading = false
+      }
     )
   }
 }

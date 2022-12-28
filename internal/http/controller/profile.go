@@ -58,7 +58,7 @@ func (r Controller) Profile(c *app.Context) result.Result {
 	return result.Ok(ProfileResponse{
 		ID:         user.ID,
 		Nickname:   user.Nickname,
-		HeadImgURL: r.getUserHeadImgUrl(&c.User),
+		HeadImgURL: r.getUserHeadImgUrl(user),
 		Role:       user.Role,
 		UUID:       user.UUID,
 		Coach: ProfileCoach{

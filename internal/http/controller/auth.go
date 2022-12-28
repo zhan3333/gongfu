@@ -92,19 +92,27 @@ func (r Controller) Me(c *app.Context) result.Result {
 // EditMe 编辑用户信息
 func (r Controller) EditMe(c *app.Context) result.Result {
 	req := struct {
-		AvatarKey string `json:"avatarKey" binding:"required"`
+		AvatarKey string `json:"avatarKey" binding:"omitempty"`
+		Nickname  string `json:"nickname" binding:"omitempty,max=20"`
 	}{}
 	if err := c.ShouldBind(&req); err != nil {
 		return result.Err(err)
 	}
-	// 检查储存中文件是否已经上传
-	if exists, err := r.Storage.KeyExists(context.TODO(), req.AvatarKey); err != nil {
-		return result.Err(err)
-	} else if !exists {
-		c.Message(http.StatusBadRequest, fmt.Sprintf("key %s no exists", req.AvatarKey))
-		return result.Err(nil)
+	if req.AvatarKey != "" {
+		// 修改头像
+		// 检查储存中文件是否已经上传
+		if exists, err := r.Storage.KeyExists(context.TODO(), req.AvatarKey); err != nil {
+			return result.Err(err)
+		} else if !exists {
+			c.Message(http.StatusBadRequest, fmt.Sprintf("key %s no exists", req.AvatarKey))
+			return result.Err(nil)
+		}
+		c.User.HeadImgURL = req.AvatarKey
 	}
-	c.User.HeadImgURL = req.AvatarKey
+	if req.Nickname != "" {
+		c.User.Nickname = req.Nickname
+	}
+
 	if err := r.Store.UpdateUser(context.TODO(), &c.User); err != nil {
 		return result.Err(err)
 	}

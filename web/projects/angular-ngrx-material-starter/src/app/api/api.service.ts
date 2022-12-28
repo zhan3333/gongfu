@@ -34,8 +34,8 @@ export class ApiService {
   }
 
   // 编辑用户信息
-  editMe(avatarKey: string) {
-    return this.http.post(editMe, {avatarKey: avatarKey})
+  editMe(data: { avatarKey?: string, nickname?: string }) {
+    return this.http.post(editMe, {avatarKey: data.avatarKey, nickname: data.nickname})
   }
 
   sendValidCode(phone: string) {

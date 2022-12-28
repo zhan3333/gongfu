@@ -54,6 +54,18 @@
             <fa-icon icon="user-circle"></fa-icon>
           </button>
           <mat-menu #toolbarUserMenu="matMenu">
+            <button mat-menu-item (click)="onProfileClick()">
+              <mat-icon>
+                <fa-icon icon="user"></fa-icon>
+              </mat-icon>
+              <span>{{ '个人' | translate }}</span>
+            </button>
+            <button mat-menu-item (click)="onSettingClick()">
+              <mat-icon>
+                <fa-icon icon="wrench"></fa-icon>
+              </mat-icon>
+              <span>{{ '设置' | translate }}</span>
+            </button>
             <button mat-menu-item (click)="onLogoutClick()">
               <mat-icon>
                 <fa-icon icon="power-off"></fa-icon>
