@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../core/auth/auth.service';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { ApiService } from '../../api/api.service';
 import { displayLevel } from '../../api/models/user';
 import { Profile } from '../../api/models/profile';
+import { refreshSharedProfileToWechat } from '../../core/util';
+import { WechatService } from '../../services/wechat.service';
 
 @Component({
   selector: 'anms-profile',
@@ -20,6 +21,7 @@ export class ProfileComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private notificationService: NotificationService,
     private api: ApiService,
+    private wechat: WechatService,
   ) {
   }
 
@@ -29,6 +31,9 @@ export class ProfileComponent implements OnInit {
       this.notificationService.error('invalid uuid')
       return
     }
-    this.api.getProfile(uuid).subscribe(data => this.profile = data)
+    this.api.getProfile(uuid).subscribe(data => {
+      this.profile = data
+      refreshSharedProfileToWechat(this.wechat, this.profile)
+    })
   }
 }

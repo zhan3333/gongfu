@@ -7,6 +7,7 @@ import (
 	"gongfu/internal/app"
 	"gongfu/internal/model"
 	"gongfu/internal/result"
+	"gongfu/pkg/util"
 	"net/http"
 )
 
@@ -51,6 +52,7 @@ func (r Controller) WeChatLogin(c *app.Context) result.Result {
 				City:       uInfo.City,
 				Country:    uInfo.Country,
 				HeadImgURL: uInfo.HeadImgURL,
+				UUID:       util.UUID(),
 			}
 			if err := r.Store.CreateUser(context.TODO(), user); err != nil {
 				return result.Err(fmt.Errorf("create user: %w", err))

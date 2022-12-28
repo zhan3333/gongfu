@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
-	"github.com/google/uuid"
 	"github.com/silenceper/wechat/v2"
 	"github.com/silenceper/wechat/v2/cache"
 	"github.com/silenceper/wechat/v2/officialaccount"
@@ -24,11 +23,11 @@ import (
 	"gongfu/internal/http/middlewares"
 	"gongfu/internal/model"
 	"gongfu/internal/service"
+	"gongfu/pkg/util"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"net/http"
 	"net/url"
-	"strings"
 	"time"
 )
 
@@ -146,7 +145,7 @@ func initUsersUUID(db *gorm.DB) error {
 	users := []*model.User{}
 	err := db.Debug().Where("uuid is null").FindInBatches(&users, 2000, func(tx *gorm.DB, batch int) error {
 		for _, user := range users {
-			user.UUID = strings.ReplaceAll(uuid.New().String(), "-", "")
+			user.UUID = util.UUID()
 			if err := db.Save(user).Error; err != nil {
 				return fmt.Errorf("update user: %w", err)
 			}

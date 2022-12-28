@@ -5,5 +5,6 @@ export class Profile {
   nickname?: string;
   headimgurl?: string;
   role?: string;
-  coach?: Coach
+  uuid?: string;
+  coach?: Coach;
 }

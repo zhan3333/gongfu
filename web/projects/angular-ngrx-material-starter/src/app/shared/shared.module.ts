@@ -47,7 +47,7 @@ import {
   faStream,
   faTasks,
   faTimes,
-  faTrash, faUser,
+  faTrash, faUser, faUsers,
   faVideo,
   faWindowMaximize
 } from '@fortawesome/free-solid-svg-icons';
@@ -169,7 +169,8 @@ export class SharedModule {
       faUser,
       faBuilding,
       faList,
-      faAddressBook
+      faAddressBook,
+      faUsers,
     );
   }
 }
