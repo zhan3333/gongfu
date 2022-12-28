@@ -51,6 +51,7 @@ type CheckInResp struct {
 	HeadImgUrl string `json:"headImgUrl"`
 	Date       string `json:"date"`
 	DayRank    int64  `json:"dayRank"`
+	UserUUID   string `json:"userUUID"`
 }
 
 // GetTodayCheckIn 获取当前用户的今日打卡记录
@@ -114,13 +115,13 @@ func (r Controller) GetCheckIn(c *app.Context) result.Result {
 		c.Message(http.StatusNotFound, "check in not found")
 		return result.Err(nil)
 	}
-	userName, headImgUrl, userID := "not found user", "", uint(0)
 	user, err := r.Store.GetUser(context.TODO(), checkIn.UserID)
 	if err != nil {
 		return result.Err(fmt.Errorf("get user: %w", err))
 	}
-	if user != nil {
-		headImgUrl, userName, userID = r.getUserHeadImgUrl(user), user.Nickname, user.ID
+	if user == nil {
+		c.JSON(http.StatusNotFound, gin.H{"msg": "user not found"})
+		return result.Err(nil)
 	}
 	// 日排名
 	dayRank, err := r.Store.GetCheckInRankNum(context.TODO(), checkIn)
@@ -136,10 +137,11 @@ func (r Controller) GetCheckIn(c *app.Context) result.Result {
 		CreatedAt:  checkIn.CreatedAt.Unix(),
 		Url:        visitUrl,
 		Key:        checkIn.Key,
-		UserName:   userName,
-		UserID:     userID,
-		HeadImgUrl: headImgUrl,
+		UserName:   user.Nickname,
+		UserID:     user.ID,
+		HeadImgUrl: r.getUserHeadImgUrl(user),
 		DayRank:    dayRank,
+		UserUUID:   user.UUID,
 	})
 }
 
@@ -154,6 +156,7 @@ func (r Controller) GetCheckInTop(c *app.Context) result.Result {
 		UserName   string `json:"userName"`
 		HeadImgUrl string `json:"headImgUrl"`
 		Key        string `json:"key"`
+		UserUUID   string `json:"userUUID"`
 	}
 	if err := c.ShouldBindQuery(&req); err != nil {
 		return result.Err(err)
@@ -176,24 +179,21 @@ func (r Controller) GetCheckInTop(c *app.Context) result.Result {
 			return result.Err(fmt.Errorf("get users map: %w", err))
 		}
 		for _, checkIn := range checkInList {
-			userName := "not found user name"
-			headImgUrl := ""
-			if user, ok := usersMap[checkIn.UserID]; ok {
-				userName = user.Nickname
-				headImgUrl = r.getUserHeadImgUrl(user)
-			}
+			user := usersMap.DefaultGet(checkIn.UserID)
 			resp = append(resp, struct {
 				CreatedAt  int64  `json:"createdAt"`
 				ID         uint   `json:"id"`
 				UserName   string `json:"userName"`
 				HeadImgUrl string `json:"headImgUrl"`
 				Key        string `json:"key"`
+				UserUUID   string `json:"userUUID"`
 			}{
 				CreatedAt:  checkIn.CreatedAt.Unix(),
 				ID:         checkIn.ID,
-				UserName:   userName,
-				HeadImgUrl: headImgUrl,
+				UserName:   user.Nickname,
+				HeadImgUrl: r.getUserHeadImgUrl(user),
 				Key:        checkIn.Key,
+				UserUUID:   user.UUID,
 			})
 		}
 		return result.Ok(resp)
@@ -206,7 +206,8 @@ type CheckInCountItem struct {
 	UserID     uint   `json:"userID"`
 	HeadImgUrl string `json:"headImgUrl"`
 	// 打卡总次数
-	CheckInCount uint `json:"checkInCount"`
+	CheckInCount uint   `json:"checkInCount"`
+	UserUUID     string `json:"userUUID"`
 }
 
 // GetCheckInCountTop 获取总打卡次数排行榜
@@ -225,12 +226,14 @@ func (r Controller) GetCheckInCountTop(_ *app.Context) result.Result {
 	}
 	var res []CheckInCountItem
 	for _, item := range checkInList {
+		user := usersMap.DefaultGet(item.UserID)
 		res = append(res, CheckInCountItem{
 			ID:           item.ID,
-			UserName:     usersMap.DefaultGet(item.UserID).Nickname,
+			UserName:     user.Nickname,
 			UserID:       item.UserID,
-			HeadImgUrl:   r.getUserHeadImgUrl(usersMap.DefaultGet(item.UserID)),
+			HeadImgUrl:   r.getUserHeadImgUrl(user),
 			CheckInCount: item.CheckInCount,
+			UserUUID:     user.UUID,
 		})
 	}
 	return result.Ok(res)
@@ -242,7 +245,8 @@ type CheckInContinuousItem struct {
 	UserID     uint   `json:"userID"`
 	HeadImgUrl string `json:"headImgUrl"`
 	// 连续打卡次数
-	CheckInContinuous uint `json:"checkInContinuous"`
+	CheckInContinuous uint   `json:"checkInContinuous"`
+	UserUUID          string `json:"userUUID"`
 }
 
 // GetCheckInContinuousTop 获取连续打卡排行榜
@@ -261,12 +265,14 @@ func (r Controller) GetCheckInContinuousTop(_ *app.Context) result.Result {
 	}
 	var res []CheckInContinuousItem
 	for _, item := range checkInList {
+		user := usersMap.DefaultGet(item.UserID)
 		res = append(res, CheckInContinuousItem{
 			ID:                item.ID,
-			UserName:          usersMap.DefaultGet(item.UserID).Nickname,
+			UserName:          user.Nickname,
 			UserID:            item.UserID,
-			HeadImgUrl:        r.getUserHeadImgUrl(usersMap.DefaultGet(item.UserID)),
+			HeadImgUrl:        r.getUserHeadImgUrl(user),
 			CheckInContinuous: item.CheckInContinuous,
+			UserUUID:          user.UUID,
 		})
 	}
 	return result.Ok(res)

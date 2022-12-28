@@ -1,7 +1,7 @@
 <div *ngIf="profile">
   <mat-card class="m-2">
     <div class="text-center">
-      <img mat-card-avatar [src]="profile?.headimgurl" alt="head_img" class="head_img">
+      <img [src]="profile?.headimgurl" alt="head_img" class="head_img">
       <div class="mt-1">@{{profile?.nickname}}</div>
     </div>
   </mat-card>

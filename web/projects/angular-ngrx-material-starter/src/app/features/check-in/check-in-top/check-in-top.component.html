@@ -37,7 +37,9 @@
                 <img
                   mat-card-avatar
                   [src]="checkIn?.headImgUrl"
+                  [routerLink]="'/profile/' + checkIn?.userUUID"
                 />
+
                 <mat-card-title>Top {{i + 1}}</mat-card-title>
                 <mat-card-subtitle>@{{checkIn?.userName}}</mat-card-subtitle>
               </mat-card-header>
@@ -74,6 +76,7 @@
                 <img
                   mat-card-avatar
                   [src]="count?.headImgUrl"
+                  [routerLink]="'/profile/' + count?.userUUID"
                 />
                 <mat-card-title>Top {{i + 1}}</mat-card-title>
                 <mat-card-subtitle>@{{count?.userName}}</mat-card-subtitle>
@@ -112,6 +115,7 @@
                 <img
                   mat-card-avatar
                   [src]="count?.headImgUrl"
+                  [routerLink]="'/profile/' + count?.userUUID"
                 />
                 <mat-card-title>Top {{i + 1}}</mat-card-title>
                 <mat-card-subtitle>@{{count?.userName}}</mat-card-subtitle>

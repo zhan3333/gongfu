@@ -7,6 +7,7 @@ export interface CheckIn {
   fileName?: string,
   userName?: string,
   headImgUrl?: string,
+  userUUID?: string,
   key?: string,
   date?: string,
   // 日排名
@@ -27,6 +28,7 @@ export interface CheckInCount {
   headImgUrl?: string;
   checkInCount?: number;
   checkInContinuous?: number;
+  userUUID?: string;
 }
 
 export type CheckInCountList = CheckInCount[]
