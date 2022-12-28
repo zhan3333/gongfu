@@ -9,7 +9,6 @@ import (
 	"gongfu/internal/result"
 	"gongfu/pkg/util"
 	"net/http"
-	"strings"
 )
 
 var wechatLoginURL = "/web/login"
@@ -79,20 +78,12 @@ type MeResponse struct {
 }
 
 func (r Controller) Me(c *app.Context) result.Result {
-	var err error
-	avatarURL := c.User.HeadImgURL
-	if !strings.HasPrefix(avatarURL, "http") {
-		avatarURL = r.Storage.GetPublicVisitURL(context.Background(), avatarURL) + "!avatar"
-		if err != nil {
-			return result.Err(err)
-		}
-	}
 	return result.Ok(MeResponse{
 		ID:         c.User.ID,
 		OpenID:     c.User.OpenID,
 		Phone:      c.User.Phone,
 		Nickname:   c.User.Nickname,
-		HeadImgURL: avatarURL,
+		HeadImgURL: r.getUserHeadImgUrl(&c.User),
 		Role:       c.User.Role,
 		UUID:       c.User.UUID,
 	})

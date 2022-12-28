@@ -8,7 +8,6 @@ import (
 	"gongfu/internal/result"
 	"gorm.io/datatypes"
 	"net/http"
-	"strings"
 )
 
 type ProfileResponse struct {
@@ -56,17 +55,10 @@ func (r Controller) Profile(c *app.Context) result.Result {
 	if coach.TeachingExperiences == nil {
 		coach.TeachingExperiences = datatypes.JSON{}
 	}
-	avatarURL := user.HeadImgURL
-	if !strings.HasPrefix(avatarURL, "http") {
-		avatarURL = r.Storage.GetPublicVisitURL(context.Background(), avatarURL) + "!avatar"
-		if err != nil {
-			return result.Err(err)
-		}
-	}
 	return result.Ok(ProfileResponse{
 		ID:         user.ID,
 		Nickname:   user.Nickname,
-		HeadImgURL: avatarURL,
+		HeadImgURL: r.getUserHeadImgUrl(&c.User),
 		Role:       user.Role,
 		UUID:       user.UUID,
 		Coach: ProfileCoach{

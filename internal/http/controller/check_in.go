@@ -70,7 +70,7 @@ func (r Controller) GetTodayCheckIn(c *app.Context) result.Result {
 	}
 	var userName, headImgUrl, userID = "", "", uint(0)
 	if user != nil {
-		userName, headImgUrl, userID = user.Nickname, user.HeadImgURL, user.ID
+		userName, headImgUrl, userID = user.Nickname, r.getUserHeadImgUrl(user), user.ID
 	}
 
 	visitUrl, err := r.Storage.GetVisitURL(context.TODO(), checkIn.Key)
@@ -120,7 +120,7 @@ func (r Controller) GetCheckIn(c *app.Context) result.Result {
 		return result.Err(fmt.Errorf("get user: %w", err))
 	}
 	if user != nil {
-		headImgUrl, userName, userID = user.HeadImgURL, user.Nickname, user.ID
+		headImgUrl, userName, userID = r.getUserHeadImgUrl(user), user.Nickname, user.ID
 	}
 	// 日排名
 	dayRank, err := r.Store.GetCheckInRankNum(context.TODO(), checkIn)
@@ -180,7 +180,7 @@ func (r Controller) GetCheckInTop(c *app.Context) result.Result {
 			headImgUrl := ""
 			if user, ok := usersMap[checkIn.UserID]; ok {
 				userName = user.Nickname
-				headImgUrl = user.HeadImgURL
+				headImgUrl = r.getUserHeadImgUrl(user)
 			}
 			resp = append(resp, struct {
 				CreatedAt  int64  `json:"createdAt"`
@@ -229,7 +229,7 @@ func (r Controller) GetCheckInCountTop(_ *app.Context) result.Result {
 			ID:           item.ID,
 			UserName:     usersMap.DefaultGet(item.UserID).Nickname,
 			UserID:       item.UserID,
-			HeadImgUrl:   usersMap.DefaultGet(item.UserID).HeadImgURL,
+			HeadImgUrl:   r.getUserHeadImgUrl(usersMap.DefaultGet(item.UserID)),
 			CheckInCount: item.CheckInCount,
 		})
 	}
@@ -265,7 +265,7 @@ func (r Controller) GetCheckInContinuousTop(_ *app.Context) result.Result {
 			ID:                item.ID,
 			UserName:          usersMap.DefaultGet(item.UserID).Nickname,
 			UserID:            item.UserID,
-			HeadImgUrl:        usersMap.DefaultGet(item.UserID).HeadImgURL,
+			HeadImgUrl:        r.getUserHeadImgUrl(usersMap.DefaultGet(item.UserID)),
 			CheckInContinuous: item.CheckInContinuous,
 		})
 	}
@@ -326,7 +326,7 @@ func (r Controller) GetCheckInHistories(c *app.Context) result.Result {
 			Key:        item.Key,
 			UserName:   usersMap.DefaultGet(item.UserID).Nickname,
 			UserID:     item.UserID,
-			HeadImgUrl: usersMap.DefaultGet(item.UserID).HeadImgURL,
+			HeadImgUrl: r.getUserHeadImgUrl(usersMap.DefaultGet(item.UserID)),
 			Date:       date.GetDateFromTime(item.CreatedAt),
 		})
 	}
