@@ -68,13 +68,13 @@ func (r Controller) WeChatLogin(c *app.Context) result.Result {
 }
 
 type MeResponse struct {
-	ID         uint    `json:"id"`
-	OpenID     *string `json:"openid"`
-	Phone      *string `json:"phone"`
-	Nickname   string  `json:"nickname"`
-	HeadImgURL string  `json:"headimgurl"`
-	Role       string  `json:"role"`
-	UUID       string  `json:"uuid"`
+	ID         uint     `json:"id"`
+	OpenID     *string  `json:"openid"`
+	Phone      *string  `json:"phone"`
+	Nickname   string   `json:"nickname"`
+	HeadImgURL string   `json:"headimgurl"`
+	RoleNames  []string `json:"roleNames"`
+	UUID       string   `json:"uuid"`
 }
 
 func (r Controller) Me(c *app.Context) result.Result {
@@ -84,7 +84,7 @@ func (r Controller) Me(c *app.Context) result.Result {
 		Phone:      c.User.Phone,
 		Nickname:   c.User.Nickname,
 		HeadImgURL: r.getUserHeadImgUrl(&c.User),
-		Role:       c.User.Role,
+		RoleNames:  c.User.GetRoleNames(),
 		UUID:       c.User.UUID,
 	})
 }

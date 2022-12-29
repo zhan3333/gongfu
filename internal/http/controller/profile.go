@@ -14,7 +14,7 @@ type ProfileResponse struct {
 	ID         uint         `json:"id"`
 	Nickname   string       `json:"nickname"`
 	HeadImgURL string       `json:"headimgurl"`
-	Role       string       `json:"role"`
+	RoleNames  []string     `json:"roleNames"`
 	UUID       string       `json:"uuid"`
 	Coach      ProfileCoach `json:"coach"`
 }
@@ -59,7 +59,7 @@ func (r Controller) Profile(c *app.Context) result.Result {
 		ID:         user.ID,
 		Nickname:   user.Nickname,
 		HeadImgURL: r.getUserHeadImgUrl(user),
-		Role:       user.Role,
+		RoleNames:  user.GetRoleNames(),
 		UUID:       user.UUID,
 		Coach: ProfileCoach{
 			Level:               coach.Level,

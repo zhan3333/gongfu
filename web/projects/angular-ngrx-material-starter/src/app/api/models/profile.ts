@@ -1,10 +1,28 @@
-import { Coach } from './user';
+import { Coach, displayRoles } from './user';
 
 export class Profile {
-  id?: number;
-  nickname?: string;
-  headimgurl?: string;
+  id = 0;
+  nickname = '';
+  headimgurl = '';
   role?: string;
-  uuid?: string;
-  coach?: Coach;
+  roleNames: string[] = [];
+  uuid = '';
+  coach = new Coach();
+
+  constructor(payload: Partial<Profile>) {
+    this.id = payload.id || 0
+    this.nickname = payload.nickname || ''
+    this.headimgurl =payload.headimgurl || ''
+    this.roleNames = payload.roleNames || []
+    this.uuid = payload.uuid || ''
+    this.coach = payload.coach || new Coach()
+  }
+
+
+  displayRoles(): string {
+    if (this.roleNames === undefined) {
+      return ''
+    }
+    return displayRoles(this.roleNames)
+  }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEventType, HttpRequest } from '@angular/common/http';
-import { Coach, User } from './models/user';
+import { Coach, User, UsersPage } from './models/user';
 import { CheckIn, CheckInCountList, CheckInExist, CheckInList } from './models/check-in';
 import { last, map, switchMap, tap } from 'rxjs/operators';
 import { Profile } from './models/profile';
@@ -21,6 +21,7 @@ const login = '/auth/login'
 const getCoach = '/coach'
 const getProfile = '/profile'
 const editMe = '/me'
+const getUsers = '/admin/users'
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,9 @@ export class ApiService {
   }
 
   me() {
-    return this.http.get<User>(meUrl)
+    return this.http.get<User>(meUrl).pipe(
+      map(v => new User(v))
+    )
   }
 
   // 编辑用户信息
@@ -136,8 +139,30 @@ export class ApiService {
   }
 
   getProfile(uuid: string) {
-    return this.http.get<Profile>(getProfile + '/' + uuid)
+    return this.http.get<Profile>(getProfile + '/' + uuid).pipe(
+      map(v => new Profile(v))
+    )
   }
+
+  getUsers(data: GetUsersParams) {
+    return this.http.get<UsersPage>(getUsers, {
+      params: {
+        page: data.page,
+        limit: data.limit,
+        keyword: data.keyword,
+        desc: data.desc,
+      }
+    }).pipe(
+      map(v => new UsersPage(v))
+    )
+  }
+}
+
+export interface GetUsersParams {
+  page: number,
+  limit: number,
+  keyword: string,
+  desc: boolean
 }
 
 interface GetUploadTokenResponse {

@@ -1,27 +1,66 @@
 export class User {
-  id?: number;
-  openid?: string;
-  nickname?: string;
-  sex?: Number;
-  province?: string;
-  city?: string;
-  country?: string;
-  headimgurl?: string;
-  unionid?: string;
-  phone?: string;
-  role?: string;
-  uuid?: string;
+  id = 0;
+  openid = '';
+  nickname = '';
+  sex = 0;
+  headimgurl = '';
+  phone = '';
+  roleNames: string[] = [];
+  uuid = '';
 
-  isAdmin() {
-    return this.role === ROLE_ADMIN
+  constructor(payload: Partial<User>) {
+    this.id = payload.id || 0
+    this.openid = payload.openid || ''
+    this.nickname = payload.nickname || ''
+    this.sex = payload.sex || 0
+    this.headimgurl = payload.headimgurl || ''
+    this.phone = payload.phone || ''
+    this.roleNames = payload.roleNames || []
+    this.uuid = payload.uuid || ''
   }
 
-  isUser() {
-    return this.role === ROLE_USER
+  hasRole(role: string): boolean {
+    if (this.roleNames === undefined) {
+      return false
+    }
+    for (const roleName of this.roleNames) {
+      if (roleName === role) {
+        return true
+      }
+    }
+    return false
   }
 
-  isCoach() {
-    return this.role === ROLE_COACH
+  displayRoles(): string {
+    if (this.roleNames === undefined) {
+      return ''
+    }
+    return displayRoles(this.roleNames)
+  }
+}
+
+export function displayRoles(roleNames: string[]): string {
+  let ret = ''
+  for (let i = 0; i < roleNames?.length; i++) {
+    if (i === 0) {
+      ret += getRoleName(roleNames[i])
+    } else {
+      ret += '|' + getRoleName(roleNames[i])
+    }
+  }
+  return ret
+}
+
+function getRoleName(name: string): string {
+  switch (name) {
+    case ROLE_ADMIN:
+      return '管理员'
+    case ROLE_COACH:
+      return '教练'
+    case ROLE_USER:
+      return '会员'
+    default:
+      return name
   }
 }
 
@@ -54,4 +93,23 @@ export function displayLevel(level: string | undefined) {
       return '初级1'
   }
   return level;
+}
+
+
+export class UsersPage {
+  users: User[] = [];
+  page = 0;
+  count = 0;
+  limit = 0;
+
+  constructor(payload: Partial<UsersPage>) {
+    const users = []
+    for (const user of payload.users || []) {
+      users.push(new User(user))
+    }
+    this.users = users
+    this.page = payload.page || 0
+    this.count = payload.count || 0
+    this.limit = payload.limit || 0
+  }
 }

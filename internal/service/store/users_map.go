@@ -1,4 +1,4 @@
-package service
+package store
 
 import (
 	"gongfu/internal/model"

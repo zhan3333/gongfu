@@ -7,6 +7,7 @@ import (
 	"gongfu/internal/config"
 	"gongfu/internal/http/controller"
 	"gongfu/internal/http/middlewares"
+	"gongfu/internal/model"
 	"net/http"
 	"strings"
 	"time"
@@ -51,6 +52,11 @@ func (r Route) Route(app *gin.Engine) {
 			// 获取上传文件的 token
 			authedApi.GET("storage/upload-token", controller.Wrap(r.Controller.GetUploadToken))
 			authedApi.GET("coach", controller.Wrap(r.Controller.GetCoach))
+
+			adminApi := authedApi.Group("admin", r.Middleware.Role(model.ROLE_ADMIN))
+			{
+				adminApi.GET("users", controller.Wrap(r.Controller.GetUsers))
+			}
 		}
 		api.GET("wechat/js-config", controller.Wrap(r.Controller.JSConfig))
 		api.GET("check-in/top", controller.Wrap(r.Controller.GetCheckInTop))

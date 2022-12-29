@@ -26,10 +26,7 @@
       <mat-card-title>{{ user?.nickname }}</mat-card-title>
       <mat-card-subtitle>手机号：{{ user?.phone }}</mat-card-subtitle>
       <mat-card-subtitle>
-        角色：
-        <ng-template [ngIf]="user?.role === 'admin'">{{'管理员'}}</ng-template>
-        <ng-template [ngIf]="user?.role === 'user'">{{'用户'}}</ng-template>
-        <ng-template [ngIf]="user?.role === 'coach'">{{'教练'}}</ng-template>
+        角色：{{user?.displayRoles()}}
       </mat-card-subtitle>
     </mat-card-header>
   </mat-card>
@@ -69,6 +66,13 @@
             <fa-icon icon="wrench"></fa-icon>
           </mat-icon>
           <div matLine routerLink="/setting">设置</div>
+        </mat-list-option>
+        <mat-divider></mat-divider>
+        <mat-list-option *ngIf="user?.hasRole('admin')">
+          <mat-icon matListIcon>
+            <fa-icon icon="users"></fa-icon>
+          </mat-icon>
+          <div matLine routerLink="/admin/users">管理用户</div>
         </mat-list-option>
         <mat-divider></mat-divider>
       </mat-selection-list>

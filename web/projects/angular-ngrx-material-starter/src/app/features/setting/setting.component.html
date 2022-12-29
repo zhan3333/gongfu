@@ -29,14 +29,3 @@
 
   </form>
 </mat-card>
-
-<mat-card *ngIf="isAdmin()">
-  <mat-form-field appearance="fill">
-    <mat-label>设置当前角色</mat-label>
-    <mat-select [formControl]="curRole">
-      <mat-option value="admin">管理员</mat-option>
-      <mat-option value="coach">教练</mat-option>
-      <mat-option value="user">用户</mat-option>
-    </mat-select>
-  </mat-form-field>
-</mat-card>

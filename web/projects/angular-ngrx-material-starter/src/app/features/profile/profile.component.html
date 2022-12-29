@@ -12,10 +12,7 @@
           <fa-icon icon="users"></fa-icon>
         </mat-icon>
         <div mat-line>
-          {{'角色: '}}
-          <ng-template [ngIf]="profile?.role === 'admin'">{{'管理员'}}</ng-template>
-          <ng-template [ngIf]="profile?.role === 'user'">{{'用户'}}</ng-template>
-          <ng-template [ngIf]="profile?.role === 'coach'">{{'教练'}}</ng-template>
+          {{'角色: ' + profile?.displayRoles()}}
         </div>
       </mat-list-item>
       <mat-list-item *ngIf="profile?.coach">

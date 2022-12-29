@@ -10,6 +10,7 @@ import (
 	"gongfu/internal/model"
 	"gongfu/internal/result"
 	"gongfu/internal/service"
+	"gongfu/internal/service/store"
 	"net/http"
 	"strings"
 )
@@ -19,7 +20,7 @@ type Controller struct {
 	OfficialAccount *officialaccount.OfficialAccount
 	AuthCode        service.AuthCode
 	Token           service.Token
-	Store           service.Store
+	Store           store.Store
 	Storage         service.Storage
 }
 
@@ -28,7 +29,7 @@ func NewController(
 	officialAccount *officialaccount.OfficialAccount,
 	authCode service.AuthCode,
 	token service.Token,
-	store service.Store,
+	store store.Store,
 	storage service.Storage,
 ) *Controller {
 	return &Controller{Config: config, OfficialAccount: officialAccount, AuthCode: authCode, Token: token, Store: store, Storage: storage}

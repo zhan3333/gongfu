@@ -65,7 +65,7 @@ export class MeComponent implements OnInit {
       user => {
         this.user = user
         this.authService.setUser(user)
-        if (user.role === 'coach') {
+        if (user.hasRole('coach')) {
           this.api.getCoach().subscribe(data => this.coach = data)
         }
       },

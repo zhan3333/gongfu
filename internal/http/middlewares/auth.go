@@ -4,20 +4,23 @@ import (
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"gongfu/internal/model"
 	"gongfu/internal/service"
+	"gongfu/internal/service/store"
 	"net/http"
 )
 
 type Middlewares interface {
 	Auth() gin.HandlerFunc
+	Role(roleName string) gin.HandlerFunc
 }
 
 type middlewares struct {
 	Token service.Token
-	Store service.Store
+	Store store.Store
 }
 
-func NewMiddlewares(token service.Token, store service.Store) Middlewares {
+func NewMiddlewares(token service.Token, store store.Store) Middlewares {
 	return &middlewares{Token: token, Store: store}
 }
 
@@ -42,5 +45,21 @@ func (m middlewares) Auth() gin.HandlerFunc {
 			}
 		}
 		c.Next()
+	}
+}
+
+// Role 验证登录用户是否属于某个角色
+func (m middlewares) Role(roleName string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if user, ok := c.Get("user"); ok {
+			if user, ok := user.(model.User); ok {
+				if user.HasRole(roleName) {
+					c.Next()
+					return
+				}
+			}
+		}
+		c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"msg": "role must contain " + roleName})
+		return
 	}
 }

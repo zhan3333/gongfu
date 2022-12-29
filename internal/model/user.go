@@ -19,22 +19,26 @@ type User struct {
 	City       string         `json:"city" gorm:"column:city"`
 	Country    string         `json:"country" gorm:"column:country"`
 	HeadImgURL string         `json:"headimgurl" gorm:"column:head_img_url"`
-	// 用户角色，可以为 admin/user/coach
-	Role string `json:"role" gorm:"column:role;index;default:user"`
 	// 用户唯一编码
-	UUID string `json:"uuid" gorm:"unique"`
+	UUID  string `json:"uuid" gorm:"unique"`
+	Roles []UserHasRole
 }
 
-func (u User) IsAdmin() bool {
-	return u.Role == ROLE_ADMIN
+func (u User) GetRoleNames() []string {
+	ret := []string{}
+	for _, v := range u.Roles {
+		ret = append(ret, v.RoleName)
+	}
+	return ret
 }
 
-func (u User) IsUser() bool {
-	return u.Role == ROLE_USER
-}
-
-func (u User) IsCoach() bool {
-	return u.Role == ROLE_COACH
+func (u User) HasRole(role string) bool {
+	for _, v := range u.Roles {
+		if v.RoleName == role {
+			return true
+		}
+	}
+	return false
 }
 
 // ROLE_ADMIN 管理员

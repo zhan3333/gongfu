@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ROLE_ADMIN, User } from '../../api/models/user';
+import { User } from '../../api/models/user';
 import { ApiService } from '../../api/api.service';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
@@ -16,8 +16,6 @@ import { AuthService } from '../../core/auth/auth.service';
 export class SettingComponent implements OnInit {
   @ViewChild('fileUpload') fileUpload!: ElementRef;
   public user: User | undefined
-  // 当前角色
-  public curRole = new FormControl(this.authService.getRole());
   public loading = false
   public uploadProgressValue = 0
   public userForm = new FormGroup({
@@ -34,9 +32,6 @@ export class SettingComponent implements OnInit {
 
   ngOnInit(): void {
     this.refreshUser()
-    this.curRole.valueChanges.subscribe(v => {
-      this.authService.setRole(v)
-    })
   }
 
   refreshUser() {
@@ -44,13 +39,6 @@ export class SettingComponent implements OnInit {
       this.user = user
       this.userForm.get('nickname')?.setValue(user?.nickname)
     })
-  }
-
-  isAdmin() {
-    if (this.user === undefined) {
-      return false
-    }
-    return this.user.role === ROLE_ADMIN
   }
 
   selectHeadImage() {

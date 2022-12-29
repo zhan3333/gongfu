@@ -81,6 +81,14 @@ const routes: Routes = [
     canActivate: [AuthService]
   },
   {
+    path: 'admin',
+    loadChildren: () =>
+      import('./features/admin/admin.module').then(
+        (m) => m.AdminModule
+      ),
+    canActivate: [AuthService]
+  },
+  {
     path: 'examples',
     loadChildren: () =>
       import('./features/examples/examples.module').then(

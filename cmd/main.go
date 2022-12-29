@@ -23,6 +23,7 @@ import (
 	"gongfu/internal/http/middlewares"
 	"gongfu/internal/model"
 	"gongfu/internal/service"
+	"gongfu/internal/service/store"
 	"gongfu/pkg/util"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -98,7 +99,7 @@ func initLogger(conf *config.Logger) error {
 	return nil
 }
 
-func getStore(conf *config.DB) (service.Store, error) {
+func getStore(conf *config.DB) (store.Store, error) {
 	db, err := gorm.Open(mysql.Open(conf.DSN()), &gorm.Config{})
 	if err != nil {
 		return nil, fmt.Errorf("open db: %w", err)
@@ -110,11 +111,14 @@ func getStore(conf *config.DB) (service.Store, error) {
 		&model.CheckInCount{},
 		&model.Coach{},
 		&model.Migrate{},
+		&model.Role{},
+		&model.UserHasRole{},
 	); err != nil {
 		return nil, fmt.Errorf("auto migrate: %w", err)
 	}
 	migrates := map[string]func(db2 *gorm.DB) error{
 		"init_users_uuid": initUsersUUID,
+		"init_roles":      initRoles,
 	}
 	for action, migrate := range migrates {
 		var version = model.Migrate{}
@@ -137,13 +141,58 @@ func getStore(conf *config.DB) (service.Store, error) {
 		}
 	}
 
-	return service.NewDBStore(db), nil
+	return store.NewDBStore(db), nil
+}
+
+func initRoles(db *gorm.DB) error {
+	roles := []*model.Role{
+		{
+			ID:   1,
+			Name: "admin",
+		},
+		{
+			ID:   2,
+			Name: "coach",
+		},
+		{
+			ID:   3,
+			Name: "user",
+		},
+	}
+	if err := db.Create(&roles).Error; err != nil {
+		return fmt.Errorf("create roles: %w", err)
+	}
+
+	// 为所有用户赋予普通用户角色
+	users := []*model.User{}
+	err := db.FindInBatches(&users, 2000, func(tx *gorm.DB, batch int) error {
+		var userRoles []*model.UserHasRole
+		for _, user := range users {
+			userRoles = append(userRoles, &model.UserHasRole{
+				UserID:   user.ID,
+				RoleID:   3,
+				RoleName: "user",
+			})
+		}
+		if err := db.Create(userRoles).Error; err != nil {
+			return fmt.Errorf("create user roles: %w", err)
+		}
+		return nil
+	}).Error
+	if err != nil {
+		return fmt.Errorf("set users roles: %w", err)
+	}
+	// 删除 role 列
+	if err := db.Migrator().DropColumn(&model.User{}, "role"); err != nil {
+		return fmt.Errorf("drop user role column: %w", err)
+	}
+	return nil
 }
 
 func initUsersUUID(db *gorm.DB) error {
 	// 为所有用户加上 uuid
 	users := []*model.User{}
-	err := db.Debug().Where("uuid is null").FindInBatches(&users, 2000, func(tx *gorm.DB, batch int) error {
+	err := db.Where("uuid is null").FindInBatches(&users, 2000, func(tx *gorm.DB, batch int) error {
 		for _, user := range users {
 			user.UUID = util.UUID()
 			if err := db.Save(user).Error; err != nil {

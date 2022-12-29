@@ -7,7 +7,7 @@ import (
 	"gongfu/internal/app"
 	"gongfu/internal/model"
 	"gongfu/internal/result"
-	"gongfu/internal/service"
+	"gongfu/internal/service/store"
 	"gongfu/pkg/date"
 	"net/http"
 	"time"
@@ -56,7 +56,7 @@ type CheckInResp struct {
 
 // GetTodayCheckIn 获取当前用户的今日打卡记录
 func (r Controller) GetTodayCheckIn(c *app.Context) result.Result {
-	checkIn, err := r.Store.GetCheckIn(context.TODO(), service.GetCheckInOption{UserID: c.UserID, Date: date.GetTodayDate()})
+	checkIn, err := r.Store.GetCheckIn(context.TODO(), store.GetCheckInOption{UserID: c.UserID, Date: date.GetTodayDate()})
 	if err != nil {
 		return result.Err(err)
 	}
@@ -107,7 +107,7 @@ func (r Controller) GetCheckIn(c *app.Context) result.Result {
 		c.Message(http.StatusBadRequest, "invalid check in key: "+checkInKey)
 		return result.Err(nil)
 	}
-	checkIn, err := r.Store.GetCheckIn(context.TODO(), service.GetCheckInOption{Key: checkInKey})
+	checkIn, err := r.Store.GetCheckIn(context.TODO(), store.GetCheckInOption{Key: checkInKey})
 	if err != nil {
 		return result.Err(fmt.Errorf("get check in: %w", err))
 	}
@@ -301,7 +301,7 @@ func (r Controller) GetCheckInHistories(c *app.Context) result.Result {
 		length = 10
 	}
 
-	items, err := r.Store.GetCheckInHistories(context.TODO(), service.GetCheckInHistoriesOptions{
+	items, err := r.Store.GetCheckInHistories(context.TODO(), store.GetCheckInHistoriesOptions{
 		UserID:    req.UserID,
 		Length:    length,
 		Unique:    unique,
