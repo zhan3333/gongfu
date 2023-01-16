@@ -7,6 +7,7 @@ import (
 
 type Coach interface {
 	GetCoach(ctx context.Context, userID uint) (*model.Coach, error)
+	InsertOrUpdateCoach(ctx context.Context, coach *model.Coach) error
 }
 
 func (s DBStore) GetCoach(ctx context.Context, userID uint) (*model.Coach, error) {
@@ -19,4 +20,8 @@ func (s DBStore) GetCoach(ctx context.Context, userID uint) (*model.Coach, error
 		return nil, nil
 	}
 	return &coach, nil
+}
+
+func (s DBStore) InsertOrUpdateCoach(ctx context.Context, coach *model.Coach) error {
+	return s.DB.WithContext(ctx).Save(coach).Error
 }

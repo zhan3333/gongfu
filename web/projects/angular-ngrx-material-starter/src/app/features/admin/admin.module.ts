@@ -4,9 +4,10 @@ import { UsersComponent } from './users/users.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { AdminRoutingModule } from './admin-routing.module';
+import { UserEditComponent } from './user-edit/user-edit.component';
 
 @NgModule({
-  declarations: [UsersComponent],
+  declarations: [UsersComponent, UserEditComponent],
   imports: [
     SharedModule,
     MatTableModule,

@@ -131,8 +131,7 @@ export class LoginComponent implements OnInit {
             }
             this.auth.login(data.accessToken)
             this.notify.success('Login success')
-            // 这里有个 bug，不刷新页面的话，导航到 /me 后所有链接都点击不正常
-            this.router.navigate(['/me']).then(() => location.reload())
+            this.toMe()
           },
         )
         .add(() => {
@@ -165,6 +164,7 @@ export class LoginComponent implements OnInit {
   }
 
   toMe() {
-    this.router.navigate(['/me'])
+    // 这里有个 bug，不刷新页面的话，导航到 /me 后所有链接都点击不正常
+    this.router.navigate(['/me']).then(() => location.reload())
   }
 }

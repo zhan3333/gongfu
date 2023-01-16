@@ -11,7 +11,8 @@ const routes: Routes = [
     component: CheckInComponent,
     data: {title: 'anms.menu.check-in'},
     canActivate: [AuthService]
-  }, {
+  },
+  {
     path: ':key',
     component: CheckInShowComponent,
     canActivate: []

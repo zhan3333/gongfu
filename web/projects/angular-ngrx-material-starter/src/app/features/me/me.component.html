@@ -25,8 +25,8 @@
         alt="head_img" class="user_header"/>
       <mat-card-title>{{ user?.nickname }}</mat-card-title>
       <mat-card-subtitle>手机号：{{ user?.phone }}</mat-card-subtitle>
-      <mat-card-subtitle>
-        角色：{{user?.displayRoles()}}
+      <mat-card-subtitle [routerLink]="'/profile/' + user?.uuid">
+        角色：{{user?.displayRoles()}} >
       </mat-card-subtitle>
     </mat-card-header>
   </mat-card>
@@ -58,7 +58,7 @@
           <mat-icon matListIcon>
             <fa-icon icon="user"></fa-icon>
           </mat-icon>
-          <div matLine [routerLink]="'/profile/' + user?.uuid">个人信息</div>
+          <div matLine [routerLink]="'/profile/' + user?.uuid">更多信息</div>
         </mat-list-option>
         <mat-divider></mat-divider>
         <mat-list-option>

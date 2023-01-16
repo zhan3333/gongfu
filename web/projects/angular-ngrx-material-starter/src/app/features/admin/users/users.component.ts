@@ -3,6 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { User } from '../../../api/models/user';
 import { ApiService } from '../../../api/api.service';
 import { MatPaginator } from '@angular/material/paginator';
+import { AdminApiService } from '../../../api/admin/admin-api.service';
 
 @Component({
   selector: 'anms-users',
@@ -17,7 +18,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
   public dataSource = new MatTableDataSource<User>([]);
 
   constructor(
-    private api: ApiService,
+    private adminApi: AdminApiService,
   ) {
   }
 
@@ -28,7 +29,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     if (this.paginator === undefined) {
       return
     }
-    this.api.getUsers({
+    this.adminApi.getUsers({
       desc: true,
       keyword: '',
       limit: this.paginator.pageSize,

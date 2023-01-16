@@ -22,6 +22,8 @@ const getCoach = '/coach'
 const getProfile = '/profile'
 const editMe = '/me'
 const getUsers = '/admin/users'
+const getUser = '/admin/user'
+const updateUser = '/admin/user'
 
 @Injectable({
   providedIn: 'root'
@@ -156,7 +158,15 @@ export class ApiService {
       map(v => new UsersPage(v))
     )
   }
+
+  // 获取用户信息
+  getUser(id: number) {
+    return this.http.get<User>(getUser + '/' + id).pipe(
+      map(v => new User(v))
+    )
+  }
 }
+
 
 export interface GetUsersParams {
   page: number,

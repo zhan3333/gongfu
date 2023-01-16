@@ -36,6 +36,7 @@ func (r Route) Route(app *gin.Engine) {
 		AllowCredentials: true,
 		ExposeHeaders:    []string{"X-Request-Id"},
 		MaxAge:           12 * time.Hour,
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
 	}))
 	app.GET("wechat-login", controller.Wrap(r.Controller.WeChatLogin))
 	api := app.Group("/api")
@@ -55,7 +56,10 @@ func (r Route) Route(app *gin.Engine) {
 
 			adminApi := authedApi.Group("admin", r.Middleware.Role(model.ROLE_ADMIN))
 			{
-				adminApi.GET("users", controller.Wrap(r.Controller.GetUsers))
+				adminApi.GET("users", controller.Wrap(r.Controller.AdminGetUsers))
+				adminApi.GET("user/:id", controller.Wrap(r.Controller.AdminGetUser))
+				adminApi.PUT("user/:id", controller.Wrap(r.Controller.AdminUpdateUser))
+				adminApi.GET("coach/:id", controller.Wrap(r.Controller.AdminGetCoach))
 			}
 		}
 		api.GET("wechat/js-config", controller.Wrap(r.Controller.JSConfig))

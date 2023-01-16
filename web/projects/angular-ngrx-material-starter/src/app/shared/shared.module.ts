@@ -26,8 +26,11 @@ import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontaweso
 import {
   faAddressBook,
   faArrowLeft,
-  faArrowRight, faBars,
-  faBook, faBuilding,
+  faArrowRight,
+  faBan,
+  faBars,
+  faBook,
+  faBuilding,
   faCalendar,
   faCalendarAlt,
   faCaretDown,
@@ -38,7 +41,8 @@ import {
   faFile,
   faFilter,
   faLanguage,
-  faLightbulb, faList,
+  faLightbulb,
+  faList,
   faPaintBrush,
   faPaperPlane,
   faPhone,
@@ -47,7 +51,9 @@ import {
   faStream,
   faTasks,
   faTimes,
-  faTrash, faUser, faUsers,
+  faTrash,
+  faUser,
+  faUsers,
   faVideo,
   faWindowMaximize
 } from '@fortawesome/free-solid-svg-icons';
@@ -172,6 +178,7 @@ export class SharedModule {
       faAddressBook,
       faUsers,
       faBars,
+      faBan,
     );
   }
 }

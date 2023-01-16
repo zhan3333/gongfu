@@ -1,0 +1,62 @@
+<mat-card class="m-1">
+  <mat-card-header>
+    <mat-card-title>{{'编辑个人信息'}}</mat-card-title>
+  </mat-card-header>
+  <form [formGroup]="form" class="container">
+    <!--昵称-->
+    <mat-form-field appearance="legacy" class="w-100 row">
+      <mat-label>{{'输入新的昵称'}}</mat-label>
+      <input matInput formControlName="nickname">
+    </mat-form-field>
+    <!--手机号-->
+    <mat-form-field appearance="legacy" class="w-100 row">
+      <mat-label>{{'手机号'}}</mat-label>
+      <input matInput formControlName="phone">
+    </mat-form-field>
+    <!--教练级别-->
+    <mat-form-field appearance="legacy" class="w-100 row">
+      <mat-label>教练级别</mat-label>
+      <mat-select formControlName="level">
+        <mat-option *ngFor="let lv of levels" [value]="lv.value">{{lv.key}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!--任教单位-->
+    <mat-form-field appearance="legacy" class="w-100 row">
+      <mat-label>{{'任教单位'}}</mat-label>
+      <input matInput formControlName="teachingSpace">
+    </mat-form-field>
+    <!--任教年限-->
+    <mat-form-field appearance="legacy" class="w-100 row">
+      <mat-label>{{'任教年限'}}</mat-label>
+      <input matInput formControlName="teachingAge">
+    </mat-form-field>
+    <!--任教经历-->
+    <div class="w-100 row">
+      <mat-form-field appearance="fill">
+        <mat-label>任教经历</mat-label>
+        <mat-chip-list #chipList aria-label="Fruit selection">
+          <mat-chip *ngFor="let exp of form.get('teachingExperiences')?.value"
+                    [removable]="true" (removed)="onRemoveExp(exp)">
+            {{exp}}
+            <button matChipRemove>
+              <mat-icon><fa-icon icon="ban"></fa-icon></mat-icon>
+            </button>
+          </mat-chip>
+          <input placeholder="新的经历"
+                 [matChipInputFor]="chipList"
+                 [matChipInputAddOnBlur]="true"
+                 (matChipInputTokenEnd)="onAddExp($event)">
+        </mat-chip-list>
+      </mat-form-field>
+    </div>
+
+    <!--保存按钮-->
+    <div class="row justify-content-end">
+      <div class="col-auto">
+        <button mat-raised-button color="accent" (click)="onClickSave()"
+                [disabled]="form.invalid || loading">{{'保存'}}</button>
+      </div>
+    </div>
+
+  </form>
+</mat-card>
