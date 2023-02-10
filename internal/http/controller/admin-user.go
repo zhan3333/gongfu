@@ -83,13 +83,13 @@ func (r Controller) AdminGetUser(c *app.Context) result.Result {
 		return result.Err(nil)
 	}
 	return result.Ok(MeResponse{
-		ID:         c.User.ID,
-		OpenID:     c.User.OpenID,
-		Phone:      c.User.Phone,
-		Nickname:   c.User.Nickname,
-		HeadImgURL: r.getUserHeadImgUrl(&c.User),
-		RoleNames:  c.User.GetRoleNames(),
-		UUID:       c.User.UUID,
+		ID:         user.ID,
+		OpenID:     user.OpenID,
+		Phone:      user.Phone,
+		Nickname:   user.Nickname,
+		HeadImgURL: r.getUserHeadImgUrl(user),
+		RoleNames:  user.GetRoleNames(),
+		UUID:       user.UUID,
 	})
 }
 

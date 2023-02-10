@@ -148,10 +148,7 @@ export class LoginComponent implements OnInit {
     if (this.sendCodeTime > 0) {
       return false
     }
-    if (!this.signinForm.get('phone')?.valid) {
-      return false
-    }
-    return true
+    return !!this.signinForm.get('phone')?.valid
   }
 
   // 清空手机号

@@ -90,10 +90,6 @@ export class AppComponent implements OnInit {
     this.stickyHeader$ = this.store.pipe(select(selectSettingsStickyHeader));
     this.language$ = this.store.pipe(select(selectSettingsLanguage));
     this.theme$ = this.store.pipe(select(selectEffectiveTheme));
-    if (this.authService.isAuthenticated() && !this.authService.getUser().id) {
-      this.authService.logout()
-      return
-    }
   }
 
   onLoginClick() {
