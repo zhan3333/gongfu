@@ -58,6 +58,9 @@ func (r Controller) WeChatLogin(c *app.Context) result.Result {
 				return result.Err(fmt.Errorf("create user: %w", err))
 			}
 			// 给用户默认的 user 角色
+			if err := r.Store.SyncUserRoles(context.TODO(), user.ID, []string{"user"}); err != nil {
+				return result.Err(fmt.Errorf("sync user role: %w", err))
+			}
 		}
 		jwtToken, err := r.Token.GetAccessToken(user.ID)
 		if err != nil {
