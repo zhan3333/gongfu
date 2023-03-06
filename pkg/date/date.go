@@ -12,18 +12,21 @@ func GetTodayDate() string {
 	return GetDateFromTime(time.Now())
 }
 
-// GetTodayStartEnd 获取今天的开始时间结束时间
-func GetTodayStartEnd() (time.Time, time.Time) {
-	now := time.Now()
-	if now.Hour() >= dayStartHours {
+func GetDayStartEnd(t time.Time) (time.Time, time.Time) {
+	if t.Hour() >= dayStartHours {
 		// 今天
-		return time.Date(now.Year(), now.Month(), now.Day(), dayStartHours, 0, 0, 0, time.Local),
-			time.Date(now.Year(), now.Month(), now.Day()+1, dayStartHours, 0, 0, 0, time.Local)
+		return time.Date(t.Year(), t.Month(), t.Day(), dayStartHours, 0, 0, 0, time.Local),
+			time.Date(t.Year(), t.Month(), t.Day()+1, dayStartHours, 0, 0, 0, time.Local)
 	} else {
 		// 昨天
-		return time.Date(now.Year(), now.Month(), now.Day()-1, dayStartHours, 0, 0, 0, time.Local),
-			time.Date(now.Year(), now.Month(), now.Day(), dayStartHours, 0, 0, 0, time.Local)
+		return time.Date(t.Year(), t.Month(), t.Day()-1, dayStartHours, 0, 0, 0, time.Local),
+			time.Date(t.Year(), t.Month(), t.Day(), dayStartHours, 0, 0, 0, time.Local)
 	}
+}
+
+// GetTodayStartEnd 获取今天的开始时间结束时间
+func GetTodayStartEnd() (time.Time, time.Time) {
+	return GetDayStartEnd(time.Now())
 }
 
 // GetDateFromTime 从时间中获取日期
