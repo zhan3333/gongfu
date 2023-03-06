@@ -26,14 +26,17 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const uuid = this.activeRoute.snapshot.paramMap.get('uuid')
-    if (uuid === '' || uuid === null) {
-      this.notificationService.error('invalid uuid')
-      return
-    }
-    this.api.getProfile(uuid).subscribe(data => {
-      this.profile = data
-      refreshSharedProfileToWechat(this.wechat, this.profile)
+    this.activeRoute.paramMap.subscribe(data => {
+      const uuid = data.get('uuid')
+      if (uuid === '' || uuid === null) {
+        this.notificationService.error('invalid uuid')
+        return
+      }
+      this.api.getProfile(uuid).subscribe(profile => {
+        this.profile = profile
+        refreshSharedProfileToWechat(this.wechat, this.profile)
+      })
     })
+
   }
 }
