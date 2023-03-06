@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"gongfu/internal/model"
+	"gongfu/pkg/date"
 	"time"
 )
 
@@ -81,7 +82,13 @@ func (s DBStore) GetCheckInCountTop(ctx context.Context, length uint) ([]*model.
 
 func (s DBStore) GetCheckInContinuousTop(ctx context.Context, length uint) ([]*model.CheckInCount, error) {
 	var counts = []*model.CheckInCount{}
-	err := s.DB.WithContext(ctx).Where("check_in_continuous != ?", 0).Order("`check_in_continuous` desc").Limit(int(length)).Find(&counts).Error
+	// 更新时间需要在今日
+	start, end := date.GetTodayStartEnd()
+	err := s.DB.WithContext(ctx).
+		Where("check_in_continuous != ?", 0).
+		Where("updated_at between ? and ?", start, end).
+		Order("`check_in_continuous` desc").
+		Limit(int(length)).Find(&counts).Error
 	return counts, err
 }
 
