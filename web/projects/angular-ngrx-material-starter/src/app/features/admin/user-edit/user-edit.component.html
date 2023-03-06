@@ -13,6 +13,13 @@
       <mat-label>{{'手机号'}}</mat-label>
       <input matInput formControlName="phone">
     </mat-form-field>
+    <!--角色-->
+    <mat-form-field appearance="legacy" class="w-100 row">
+      <mat-label>角色</mat-label>
+      <mat-select formControlName="roleNames" [multiple]="true">
+        <mat-option *ngFor="let roleName of roleNames" [value]="roleName">{{displayRoleName(roleName)}}</mat-option>
+      </mat-select>
+    </mat-form-field>
     <!--教练级别-->
     <mat-form-field appearance="legacy" class="w-100 row">
       <mat-label>教练级别</mat-label>
@@ -39,7 +46,9 @@
                     [removable]="true" (removed)="onRemoveExp(exp)">
             {{exp}}
             <button matChipRemove>
-              <mat-icon><fa-icon icon="ban"></fa-icon></mat-icon>
+              <mat-icon>
+                <fa-icon icon="ban"></fa-icon>
+              </mat-icon>
             </button>
           </mat-chip>
           <input placeholder="新的经历"

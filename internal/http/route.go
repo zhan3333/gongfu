@@ -60,6 +60,7 @@ func (r Route) Route(app *gin.Engine) {
 				adminApi.GET("user/:id", controller.Wrap(r.Controller.AdminGetUser))
 				adminApi.PUT("user/:id", controller.Wrap(r.Controller.AdminUpdateUser))
 				adminApi.GET("coach/:id", controller.Wrap(r.Controller.AdminGetCoach))
+				adminApi.GET("role-names", controller.Wrap(r.Controller.AdminGetRoleNames))
 			}
 		}
 		api.GET("wechat/js-config", controller.Wrap(r.Controller.JSConfig))

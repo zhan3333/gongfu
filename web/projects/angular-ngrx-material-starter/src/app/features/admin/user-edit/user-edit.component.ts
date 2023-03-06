@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { AdminApiService } from '../../../api/admin/admin-api.service';
 import { MatChipInputEvent } from '@angular/material/chips';
+import { displayRoleName } from '../../../api/models/user';
 
 // 用户编辑页，可以设置用户角色，设置教练信息等
 @Component({
@@ -21,8 +22,12 @@ export class UserEditComponent implements OnInit {
     teachingSpace: new FormControl(''),
     teachingAge: new FormControl(''),
     teachingExperiences: new FormControl([]),
+    roleNames: new FormControl([]), // 角色组
   })
   public loading = false
+  // 角色名选项
+  public roleNames: string[] = []
+  public displayRoleName = displayRoleName
 
   public levels = [
     {key: '初级一', value: '1-1'},
@@ -55,6 +60,7 @@ export class UserEditComponent implements OnInit {
       this.form.patchValue({
         nickname: user.nickname,
         phone: user.phone,
+        roleNames: user.roleNames,
       })
     })
     this.adminApi.getCoach(this.id).subscribe((coach) => {
@@ -64,6 +70,9 @@ export class UserEditComponent implements OnInit {
         teachingAge: coach.teachingAge,
         teachingExperiences: coach.teachingExperiences,
       })
+    })
+    this.adminApi.getRoleNames().subscribe((roleNames) => {
+      this.roleNames = roleNames
     })
   }
 
@@ -76,7 +85,8 @@ export class UserEditComponent implements OnInit {
       phone: data.phone,
       teachingAge: data.teachingAge,
       teachingExperiences: data.teachingExperiences,
-      teachingSpace: data.teachingSpace
+      teachingSpace: data.teachingSpace,
+      roleNames: data.roleNames,
     }).subscribe(() => {
       this.notification.success('保存成功')
     }, error => {

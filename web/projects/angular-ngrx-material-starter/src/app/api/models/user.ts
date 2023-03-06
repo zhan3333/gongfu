@@ -43,15 +43,15 @@ export function displayRoles(roleNames: string[]): string {
   let ret = ''
   for (let i = 0; i < roleNames?.length; i++) {
     if (i === 0) {
-      ret += getRoleName(roleNames[i])
+      ret += displayRoleName(roleNames[i])
     } else {
-      ret += '|' + getRoleName(roleNames[i])
+      ret += '|' + displayRoleName(roleNames[i])
     }
   }
   return ret
 }
 
-function getRoleName(name: string): string {
+export function displayRoleName(name: string): string {
   switch (name) {
     case ROLE_ADMIN:
       return '管理员'

@@ -46,6 +46,11 @@ export class AdminApiService {
   getCoach(userID: number) {
     return this.http.get<Coach>(getCoach + '/' + userID)
   }
+
+  // 获取角色名列表
+  getRoleNames() {
+    return this.http.get<string[]>('/admin/role-names')
+  }
 }
 
 
@@ -63,4 +68,5 @@ export interface UpdateUserParams {
   teachingExperiences: string[];
   phone: string;
   nickname: string;
+  roleNames: string[];
 }

@@ -111,6 +111,8 @@ func (r Controller) AdminUpdateUser(c *app.Context) result.Result {
 		TeachingAge string `json:"teachingAge"`
 		// 任教经历
 		TeachingExperiences []string `json:"teachingExperiences"`
+		// 设置角色
+		RoleNames []string `json:"roleNames"`
 	}{}
 	if err := c.Bind(&req); err != nil {
 		return result.Err(nil)
@@ -129,6 +131,7 @@ func (r Controller) AdminUpdateUser(c *app.Context) result.Result {
 		return result.Err(err)
 	}
 
+	// 更新 coach 资料
 	coach, err := r.Store.GetCoach(context.TODO(), uint(userID))
 	if err != nil {
 		return result.Err(err)
@@ -150,5 +153,19 @@ func (r Controller) AdminUpdateUser(c *app.Context) result.Result {
 	if err := r.Store.InsertOrUpdateCoach(context.TODO(), coach); err != nil {
 		return result.Err(err)
 	}
+	// 更新角色
+	if err := r.Store.SyncUserRoles(context.TODO(), uint(userID), req.RoleNames); err != nil {
+		return result.Err(err)
+	}
 	return result.Ok(nil)
+}
+
+// AdminGetRoleNames 查询所有的角色名称
+func (r Controller) AdminGetRoleNames(c *app.Context) result.Result {
+	var err error
+	var roleNames = []string{}
+	if roleNames, err = r.Store.GetRoleNames(context.TODO()); err != nil {
+		return result.Err(err)
+	}
+	return result.Ok(roleNames)
 }

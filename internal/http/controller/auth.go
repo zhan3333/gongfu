@@ -57,6 +57,7 @@ func (r Controller) WeChatLogin(c *app.Context) result.Result {
 			if err := r.Store.CreateUser(context.TODO(), user); err != nil {
 				return result.Err(fmt.Errorf("create user: %w", err))
 			}
+			// 给用户默认的 user 角色
 		}
 		jwtToken, err := r.Token.GetAccessToken(user.ID)
 		if err != nil {
