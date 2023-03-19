@@ -68,13 +68,6 @@
           <div matLine routerLink="/setting">设置</div>
         </mat-list-option>
         <mat-divider></mat-divider>
-        <mat-list-option *ngIf="user?.hasRole('admin')">
-          <mat-icon matListIcon>
-            <fa-icon icon="users"></fa-icon>
-          </mat-icon>
-          <div matLine routerLink="/admin/users">管理用户</div>
-        </mat-list-option>
-        <mat-divider></mat-divider>
       </mat-selection-list>
     </mat-card-content>
   </mat-card>

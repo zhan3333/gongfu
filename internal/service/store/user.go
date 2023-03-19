@@ -2,6 +2,7 @@ package store
 
 import (
 	"context"
+	"fmt"
 	"gongfu/internal/model"
 )
 
@@ -16,6 +17,9 @@ type User interface {
 	UpdateUser(ctx context.Context, user *model.User) error
 	GetUsersMap(ctx context.Context, userIDs []uint) (UsersMap, error)
 	GetUserPage(ctx context.Context, query UserPageQuery) (*UserPage, error)
+	// GetCoachUserIds 获取教练 userIds
+	GetCoachUserIds(ctx context.Context) ([]uint, error)
+	GetCoaches(ctx context.Context) ([]model.User, error)
 }
 
 type UserPageQuery struct {
@@ -142,4 +146,23 @@ func (s DBStore) GetUsersMap(ctx context.Context, userIDs []uint) (UsersMap, err
 		ret[user.ID] = user
 	}
 	return ret, nil
+}
+
+func (s DBStore) GetCoachUserIds(ctx context.Context) ([]uint, error) {
+	var userIds = []uint{}
+	err := s.DB.WithContext(ctx).Model(&model.UserHasRole{}).Where("role_name = ?", "coach").Pluck("user_id", &userIds).Error
+	return userIds, err
+}
+
+func (s DBStore) GetCoaches(ctx context.Context) ([]model.User, error) {
+	coaches := []model.User{}
+	userIds, err := s.GetCoachUserIds(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("get coach user ids: %w", err)
+	}
+	err = s.DB.WithContext(ctx).Where("id in (?)", userIds).Find(&coaches).Error
+	if err != nil {
+		return nil, err
+	}
+	return coaches, nil
 }

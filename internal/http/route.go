@@ -5,6 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/silenceper/wechat/v2/officialaccount"
 	"gongfu/internal/config"
+	"gongfu/internal/http/action"
+	"gongfu/internal/http/admin"
 	"gongfu/internal/http/controller"
 	"gongfu/internal/http/middlewares"
 	"gongfu/internal/model"
@@ -17,6 +19,7 @@ type Route struct {
 	Config          *config.Config
 	OfficialAccount *officialaccount.OfficialAccount
 	Controller      *controller.Controller
+	AdminUseCase    admin.UseCase
 	Middleware      middlewares.Middlewares
 }
 
@@ -24,9 +27,16 @@ func NewRoute(
 	config *config.Config,
 	officialAccount *officialaccount.OfficialAccount,
 	controller *controller.Controller,
+	adminUseCase admin.UseCase,
 	middleware middlewares.Middlewares,
 ) *Route {
-	return &Route{Config: config, OfficialAccount: officialAccount, Controller: controller, Middleware: middleware}
+	return &Route{
+		Config:          config,
+		OfficialAccount: officialAccount,
+		Controller:      controller,
+		AdminUseCase:    adminUseCase,
+		Middleware:      middleware,
+	}
 }
 
 func (r Route) Route(app *gin.Engine) {
@@ -38,40 +48,44 @@ func (r Route) Route(app *gin.Engine) {
 		MaxAge:           12 * time.Hour,
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
 	}))
-	app.GET("wechat-login", controller.Wrap(r.Controller.WeChatLogin))
+	app.GET("wechat-login", action.Wrap(r.Controller.WeChatLogin))
 	api := app.Group("/api")
 	{
-		api.POST("/auth/login", controller.Wrap(r.Controller.Login))
+		api.POST("/auth/login", action.Wrap(r.Controller.Login))
 		authedApi := api.Group("", r.Middleware.Auth())
 		{
-			authedApi.POST("me", controller.Wrap(r.Controller.EditMe))
-			authedApi.GET("me", controller.Wrap(r.Controller.Me))
-			authedApi.POST("bind/phone", controller.Wrap(r.Controller.GetBindCode))
-			authedApi.POST("bind/phone/valid", controller.Wrap(r.Controller.ValidBindCode))
-			authedApi.GET("check-in/today", controller.Wrap(r.Controller.GetTodayCheckIn))
-			authedApi.POST("check-in", controller.Wrap(r.Controller.PostCheckIn))
+			authedApi.POST("me", action.Wrap(r.Controller.EditMe))
+			authedApi.GET("me", action.Wrap(r.Controller.Me))
+			authedApi.POST("bind/phone", action.Wrap(r.Controller.GetBindCode))
+			authedApi.POST("bind/phone/valid", action.Wrap(r.Controller.ValidBindCode))
+			authedApi.GET("check-in/today", action.Wrap(r.Controller.GetTodayCheckIn))
+			authedApi.POST("check-in", action.Wrap(r.Controller.PostCheckIn))
 			// 获取上传文件的 token
-			authedApi.GET("storage/upload-token", controller.Wrap(r.Controller.GetUploadToken))
-			authedApi.GET("coach", controller.Wrap(r.Controller.GetCoach))
+			authedApi.GET("storage/upload-token", action.Wrap(r.Controller.GetUploadToken))
+			authedApi.GET("coach", action.Wrap(r.Controller.GetCoach))
 
 			adminApi := authedApi.Group("admin", r.Middleware.Role(model.ROLE_ADMIN))
 			{
-				adminApi.GET("users", controller.Wrap(r.Controller.AdminGetUsers))
-				adminApi.GET("user/:id", controller.Wrap(r.Controller.AdminGetUser))
-				adminApi.PUT("user/:id", controller.Wrap(r.Controller.AdminUpdateUser))
-				adminApi.GET("coach/:id", controller.Wrap(r.Controller.AdminGetCoach))
-				adminApi.GET("role-names", controller.Wrap(r.Controller.AdminGetRoleNames))
+				adminApi.GET("users", action.Wrap(r.AdminUseCase.AdminGetUsers))
+				adminApi.GET("user/:id", action.Wrap(r.AdminUseCase.AdminGetUser))
+				adminApi.PUT("user/:id", action.Wrap(r.AdminUseCase.AdminUpdateUser))
+				adminApi.GET("coach/:id", action.Wrap(r.AdminUseCase.AdminGetCoach))
+				adminApi.GET("coaches", action.Wrap(r.AdminUseCase.GetCoaches))
+				adminApi.POST("course", action.Wrap(r.AdminUseCase.CreateCourse))
+				adminApi.GET("courses", action.Wrap(r.AdminUseCase.GetCoursePage))
+				adminApi.GET("courses/:id", action.Wrap(r.AdminUseCase.GetCourse))
+				adminApi.GET("role-names", action.Wrap(r.AdminUseCase.AdminGetRoleNames))
 			}
 		}
-		api.GET("wechat/js-config", controller.Wrap(r.Controller.JSConfig))
-		api.GET("check-in/top", controller.Wrap(r.Controller.GetCheckInTop))
-		api.GET("check-in/top/count", controller.Wrap(r.Controller.GetCheckInCountTop))
-		api.GET("check-in/top/continuous", controller.Wrap(r.Controller.GetCheckInContinuousTop))
-		api.GET("check-in/histories", controller.Wrap(r.Controller.GetCheckInHistories))
-		api.GET("check-in/:key", controller.Wrap(r.Controller.GetCheckIn))
+		api.GET("wechat/js-config", action.Wrap(r.Controller.JSConfig))
+		api.GET("check-in/top", action.Wrap(r.Controller.GetCheckInTop))
+		api.GET("check-in/top/count", action.Wrap(r.Controller.GetCheckInCountTop))
+		api.GET("check-in/top/continuous", action.Wrap(r.Controller.GetCheckInContinuousTop))
+		api.GET("check-in/histories", action.Wrap(r.Controller.GetCheckInHistories))
+		api.GET("check-in/:key", action.Wrap(r.Controller.GetCheckIn))
 
 		// 用户详情页
-		api.GET("profile/:uuid", controller.Wrap(r.Controller.Profile))
+		api.GET("profile/:uuid", action.Wrap(r.Controller.Profile))
 	}
 
 	app.GET("/", func(c *gin.Context) {

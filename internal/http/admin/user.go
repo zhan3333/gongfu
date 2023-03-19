@@ -1,4 +1,4 @@
-package controller
+package admin
 
 import (
 	"context"
@@ -29,7 +29,7 @@ type GetUsersResponse struct {
 }
 
 // AdminGetUsers 获取 users 分页
-func (r Controller) AdminGetUsers(c *app.Context) result.Result {
+func (r UseCase) AdminGetUsers(c *app.Context) result.Result {
 	req := struct {
 		Page    int    `json:"page" form:"page"`
 		Limit   int    `json:"limit" form:"limit"`
@@ -60,7 +60,7 @@ func (r Controller) AdminGetUsers(c *app.Context) result.Result {
 			OpenID:     user.OpenID,
 			Phone:      user.Phone,
 			Nickname:   user.Nickname,
-			HeadImgURL: r.getUserHeadImgUrl(user),
+			HeadImgURL: r.Storage.GetHeadImageVisitURL(user.HeadImgURL),
 			RoleNames:  user.GetRoleNames(),
 			UUID:       user.UUID,
 		})
@@ -68,7 +68,17 @@ func (r Controller) AdminGetUsers(c *app.Context) result.Result {
 	return result.Ok(ret)
 }
 
-func (r Controller) AdminGetUser(c *app.Context) result.Result {
+type MeResponse struct {
+	ID         uint     `json:"id"`
+	OpenID     *string  `json:"openid"`
+	Phone      *string  `json:"phone"`
+	Nickname   string   `json:"nickname"`
+	HeadImgURL string   `json:"headimgurl"`
+	RoleNames  []string `json:"roleNames"`
+	UUID       string   `json:"uuid"`
+}
+
+func (r UseCase) AdminGetUser(c *app.Context) result.Result {
 	userIDStr := c.Param("id")
 	userID, err := strconv.Atoi(userIDStr)
 	if err != nil {
@@ -87,13 +97,13 @@ func (r Controller) AdminGetUser(c *app.Context) result.Result {
 		OpenID:     user.OpenID,
 		Phone:      user.Phone,
 		Nickname:   user.Nickname,
-		HeadImgURL: r.getUserHeadImgUrl(user),
+		HeadImgURL: r.Storage.GetHeadImageVisitURL(user.HeadImgURL),
 		RoleNames:  user.GetRoleNames(),
 		UUID:       user.UUID,
 	})
 }
 
-func (r Controller) AdminUpdateUser(c *app.Context) result.Result {
+func (r UseCase) AdminUpdateUser(c *app.Context) result.Result {
 	userIDStr := c.Param("id")
 	userID, err := strconv.Atoi(userIDStr)
 	if err != nil {
@@ -161,7 +171,7 @@ func (r Controller) AdminUpdateUser(c *app.Context) result.Result {
 }
 
 // AdminGetRoleNames 查询所有的角色名称
-func (r Controller) AdminGetRoleNames(c *app.Context) result.Result {
+func (r UseCase) AdminGetRoleNames(c *app.Context) result.Result {
 	var err error
 	var roleNames = []string{}
 	if roleNames, err = r.Store.GetRoleNames(context.TODO()); err != nil {

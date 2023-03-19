@@ -19,6 +19,7 @@ import (
 	"github.com/tencentyun/cos-go-sdk-v5"
 	"gongfu/internal/config"
 	http2 "gongfu/internal/http"
+	admin2 "gongfu/internal/http/admin"
 	"gongfu/internal/http/controller"
 	"gongfu/internal/http/middlewares"
 	"gongfu/internal/model"
@@ -60,9 +61,10 @@ func main() {
 		panic(err)
 	}
 	control := controller.NewController(&conf, oa, authCode, token, store, storageService)
+	admin := admin2.NewUseCase(store, storageService)
 	middleware := middlewares.NewMiddlewares(token, store)
 
-	http2.NewRoute(&conf, oa, control, middleware).Route(r)
+	http2.NewRoute(&conf, oa, control, admin, middleware).Route(r)
 	if err := r.Run("0.0.0.0:9003"); err != nil {
 		fmt.Println(err)
 	}
@@ -113,6 +115,7 @@ func getStore(conf *config.DB) (store.Store, error) {
 		&model.Migrate{},
 		&model.Role{},
 		&model.UserHasRole{},
+		&model.Course{},
 	); err != nil {
 		return nil, fmt.Errorf("auto migrate: %w", err)
 	}

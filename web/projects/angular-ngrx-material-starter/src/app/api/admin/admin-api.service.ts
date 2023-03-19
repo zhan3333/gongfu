@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Coach, User, UsersPage } from '../models/user';
+import { ICoach, User, UsersPage } from '../models/user';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { CoursesPage, Course } from '../models/Course';
 
 
 const getUsers = '/admin/users'
@@ -44,21 +45,65 @@ export class AdminApiService {
   }
 
   getCoach(userID: number) {
-    return this.http.get<Coach>(getCoach + '/' + userID)
+    return this.http.get<ICoach>(getCoach + '/' + userID)
   }
 
   // 获取角色名列表
   getRoleNames() {
     return this.http.get<string[]>('/admin/role-names')
   }
+
+  // 获取所有教练
+  getCoaches() {
+    return this.http.get<ISampleCoach[]>('/admin/coaches')
+  }
+
+  createCourse(data: CreateCourseInput) {
+    return this.http.post('/admin/course', data)
+  }
+
+  // 获取课程列表
+  getCoursesPage(input: GetCoursesPageInput) {
+    return this.http.get('/admin/courses', {params: {...input}}).pipe(
+      map(v => new CoursesPage(v))
+    )
+  }
+
+  // 获取课程详情
+  getCourse(id: number) {
+    return this.http.get<Course>('/admin/courses/' + id)
+  }
 }
 
+export interface CreateCourseInput {
+  name: string,
+  address: string,
+  // 时间戳
+  schoolStartAt: number,
+  coachId: number,
+  assistantCoachIds: number[],
+}
+
+// 简易的教练信息
+export interface ISampleCoach {
+  id: number
+  name: string
+}
 
 export interface GetUsersParams {
   page: number,
   limit: number,
   keyword: string,
   desc: boolean
+}
+
+
+export interface GetCoursesPageInput {
+  page: number,
+  limit: number,
+  keyword: string,
+  desc: boolean,
+  coachId?: number,
 }
 
 export interface UpdateUserParams {

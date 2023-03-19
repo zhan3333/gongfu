@@ -21,6 +21,7 @@ import {
 import { AuthService } from '../core/auth/auth.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CHECK_IN_TOP_PATH } from '../core/router/route-path';
+import { User } from '../api/models/user';
 
 @Component({
   selector: 'anms-root',
@@ -45,6 +46,8 @@ export class AppComponent implements OnInit {
     {link: 'me', label: '我的'},
     {link: 'check-in', label: '打卡'},
     {link: CHECK_IN_TOP_PATH, label: '打卡排行'},
+    {link: 'admin/courses', label: '课程管理', roles: ['admin']},
+    {link: 'admin/users', label: '用户管理', roles: ['admin']},
   ];
   navigationSideMenu = [
     ...this.navigation,
@@ -55,6 +58,7 @@ export class AppComponent implements OnInit {
   stickyHeader$: Observable<boolean> | undefined;
   language$: Observable<string> | undefined;
   theme$: Observable<string> | undefined;
+  public user: User | undefined
 
   constructor(
     private store: Store<AppState>,
@@ -86,10 +90,10 @@ export class AppComponent implements OnInit {
       );
     }
     this.isAuthenticated$ = this.authService.isAuthenticated$;
-
     this.stickyHeader$ = this.store.pipe(select(selectSettingsStickyHeader));
     this.language$ = this.store.pipe(select(selectSettingsLanguage));
     this.theme$ = this.store.pipe(select(selectEffectiveTheme));
+    this.authService.user$.subscribe(user => this.user = user)
   }
 
   onLoginClick() {

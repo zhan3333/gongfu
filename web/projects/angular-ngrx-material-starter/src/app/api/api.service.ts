@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEventType, HttpRequest } from '@angular/common/http';
-import { Coach, User, UsersPage } from './models/user';
+import { ICoach, User, UsersPage } from './models/user';
 import { CheckIn, CheckInCountList, CheckInExist, CheckInList } from './models/check-in';
 import { last, map, switchMap, tap } from 'rxjs/operators';
 import { Profile } from './models/profile';
@@ -137,7 +137,7 @@ export class ApiService {
 
   // 获取教练信息
   getCoach() {
-    return this.http.get<Coach>(getCoach)
+    return this.http.get<ICoach>(getCoach)
   }
 
   getProfile(uuid: string) {

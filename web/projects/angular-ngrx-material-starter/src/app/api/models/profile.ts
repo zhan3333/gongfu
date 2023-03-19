@@ -1,4 +1,4 @@
-import { Coach, displayRoles } from './user';
+import { ICoach, displayRoles } from './user';
 
 export class Profile {
   id = 0;
@@ -7,7 +7,7 @@ export class Profile {
   role?: string;
   roleNames: string[] = [];
   uuid = '';
-  coach = new Coach();
+  coach?: ICoach;
 
   constructor(payload: Partial<Profile>) {
     this.id = payload.id || 0
@@ -15,7 +15,7 @@ export class Profile {
     this.headimgurl =payload.headimgurl || ''
     this.roleNames = payload.roleNames || []
     this.uuid = payload.uuid || ''
-    this.coach = payload.coach || new Coach()
+    this.coach = payload.coach
   }
 
 

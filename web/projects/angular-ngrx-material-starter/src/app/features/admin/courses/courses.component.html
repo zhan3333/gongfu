@@ -1,0 +1,45 @@
+<div>
+  <button mat-raised-button [routerLink]="'/admin/courses/create'" color="primary" class="m-1">创建课程</button>
+  <table mat-table [dataSource]="dataSource" class="w-100">
+    <!-- actions -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>操作</th>
+      <td mat-cell *matCellDef="let user">
+        <button mat-icon-button color="primary" [routerLink]="'/admin/courses/' + user?.id">
+          <mat-icon>
+            <fa-icon icon="edit"></fa-icon>
+          </mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- id -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let element"> {{element?.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>名称</th>
+      <td mat-cell *matCellDef="let element"> {{element?.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="coach">
+      <th mat-header-cell *matHeaderCellDef> 教练</th>
+      <td mat-cell *matCellDef="let element"> {{element?.coach?.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="schoolStartAt">
+      <th mat-header-cell *matHeaderCellDef> 上课时间</th>
+      <td mat-cell *matCellDef="let element"> {{element.startSchoolAt}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+  </mat-paginator>
+</div>

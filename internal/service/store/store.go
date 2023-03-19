@@ -14,6 +14,8 @@ type Store interface {
 	Role
 	// Coach 教练信息相关查询
 	Coach
+	// Course 课程
+	Course
 }
 
 var _ Store = (*DBStore)(nil)

@@ -31,6 +31,23 @@ export class User {
     return false
   }
 
+  hasAnyRole(roles: string[]): boolean {
+    if (roles.length === 0) {
+      return true
+    }
+    if (this.roleNames === undefined) {
+      return false
+    }
+    for (const userRole of this.roleNames) {
+      for (const checkRole of roles) {
+        if (userRole === checkRole) {
+          return true
+        }
+      }
+    }
+    return false
+  }
+
   displayRoles(): string {
     if (this.roleNames === undefined) {
       return ''
@@ -74,7 +91,7 @@ export const ROLE_USER = 'user'
 export const ROLE_COACH = 'coach'
 
 // 教练信息
-export class Coach {
+export interface ICoach {
   id?: number;
   userID?: number;
   level?: string; // 等级

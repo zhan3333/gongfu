@@ -87,7 +87,7 @@ func (r Controller) Me(c *app.Context) result.Result {
 		OpenID:     c.User.OpenID,
 		Phone:      c.User.Phone,
 		Nickname:   c.User.Nickname,
-		HeadImgURL: r.getUserHeadImgUrl(&c.User),
+		HeadImgURL: r.Storage.GetHeadImageVisitURL(c.User.HeadImgURL),
 		RoleNames:  c.User.GetRoleNames(),
 		UUID:       c.User.UUID,
 	})
