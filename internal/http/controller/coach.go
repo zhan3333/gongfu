@@ -8,7 +8,7 @@ import (
 	"gorm.io/datatypes"
 )
 
-func (r Controller) GetCoach(c *app.Context) result.Result {
+func (r UseCase) GetCoach(c *app.Context) result.Result {
 	coach, err := r.Store.GetCoach(context.Background(), c.UserID)
 	if err != nil {
 		return result.Err(err)

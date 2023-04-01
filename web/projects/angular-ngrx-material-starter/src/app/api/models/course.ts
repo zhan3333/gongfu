@@ -1,18 +1,21 @@
 import { ICoach } from './user';
+import { School } from './school';
+import { ISampleCoach } from '../admin/admin-api.service';
 
 export interface Course {
   id: number,
   createdAt: number,
-  schoolStartAt: number,
-  address: string,
-  name: string,
-  coach?: ICoach
-  assistantCoaches: ICoach[]
-  checkInBy?: ICoach
-  checkOutBy?: ICoach
+  school: School,
+  startDate: string,
+  startTime: string,
+  manager: ISampleCoach,
+  coach?: ISampleCoach
+  assistantCoaches: ISampleCoach[]
+  checkInByUser?: ISampleCoach
+  checkOutByUser?: ISampleCoach
   checkInAt: number,
   checkOutAt: number,
-  images: string[],
+  images?: string[],
   summary: string,
 }
 

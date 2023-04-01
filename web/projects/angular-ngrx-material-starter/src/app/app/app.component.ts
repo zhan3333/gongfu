@@ -46,6 +46,7 @@ export class AppComponent implements OnInit {
     {link: 'me', label: '我的'},
     {link: 'check-in', label: '打卡'},
     {link: CHECK_IN_TOP_PATH, label: '打卡排行'},
+    {link: 'courses', label: '我的课程', roles: ['admin', 'coach']},
     {link: 'admin/courses', label: '课程管理', roles: ['admin']},
     {link: 'admin/users', label: '用户管理', roles: ['admin']},
   ];

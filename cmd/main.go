@@ -115,6 +115,7 @@ func getStore(conf *config.DB) (store.Store, error) {
 		&model.Migrate{},
 		&model.Role{},
 		&model.UserHasRole{},
+		&model.School{},
 		&model.Course{},
 	); err != nil {
 		return nil, fmt.Errorf("auto migrate: %w", err)
@@ -122,6 +123,7 @@ func getStore(conf *config.DB) (store.Store, error) {
 	migrates := map[string]func(db2 *gorm.DB) error{
 		"init_users_uuid": initUsersUUID,
 		"init_roles":      initRoles,
+		"init_schools":    initSchools,
 	}
 	for action, migrate := range migrates {
 		var version = model.Migrate{}
@@ -145,6 +147,43 @@ func getStore(conf *config.DB) (store.Store, error) {
 	}
 
 	return store.NewDBStore(db), nil
+}
+
+func initSchools(db *gorm.DB) error {
+	schools := []*model.School{
+		{
+			Name:    "丁字桥小学",
+			Address: "",
+		},
+		{
+			Name:    "水果湖一小",
+			Address: "",
+		},
+		{
+			Name:    "洪山区第一小学 书城路分校",
+			Address: "",
+		},
+		{
+			Name:    "陆家街中学",
+			Address: "",
+		},
+		{
+			Name:    "粮道街中学 三角路校区",
+			Address: "",
+		},
+		{
+			Name:    "粮道街中学 积玉桥",
+			Address: "",
+		},
+		{
+			Name:    "粮道街中学 本部",
+			Address: "",
+		},
+	}
+	if err := db.Create(&schools).Error; err != nil {
+		return fmt.Errorf("create schools failed: %w", err)
+	}
+	return nil
 }
 
 func initRoles(db *gorm.DB) error {

@@ -2,13 +2,11 @@ package store
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	"gongfu/internal/model"
 	"gongfu/pkg/util"
 	"gorm.io/datatypes"
 	"strconv"
-	"time"
 )
 
 var _ Course = (*DBStore)(nil)
@@ -18,31 +16,51 @@ type Course interface {
 	CreateCourse(ctx context.Context, input CreateCourseInput) error
 	// GetCoursePage 获取课程分页
 	GetCoursePage(ctx context.Context, input GetCoursePageInput) (*GetCoursePageOutput, error)
+	// GetCoursesByUser 获取所有课程
+	GetCoursesByUser(ctx context.Context, userId uint) ([]*model.Course, error)
 	// GetCourse 查询课程
 	GetCourse(ctx context.Context, courseId uint) (*model.Course, error)
 	// UpdateCourse 更新课程信息
 	UpdateCourse(ctx context.Context, course *model.Course) error
+	// DeleteCourse 删除课程
+	DeleteCourse(ctx context.Context, id uint) error
+}
+
+func (s DBStore) GetCoursesByUser(ctx context.Context, userId uint) ([]*model.Course, error) {
+	var courses = []*model.Course{}
+	var err = s.DB.WithContext(ctx).Model(&model.Course{}).
+		Where("coach_id = ?", userId).
+		Or("manager_id = ?", userId).
+		Or(datatypes.JSONQuery("assistant_coach_ids").HasKey(strconv.Itoa(int(userId)))).
+		Order("id desc").
+		Find(&courses).Error
+	if err != nil {
+		return nil, err
+	}
+	return courses, nil
 }
 
 func (s DBStore) CreateCourse(ctx context.Context, input CreateCourseInput) error {
 	course := model.Course{
-		SchoolStartAt:     sql.NullTime{input.SchoolStartAt, true},
-		Address:           input.Address,
-		Name:              input.Name,
-		CoachId:           &input.CoachId,
+		StartTime:         input.StartTime,
+		StartDate:         input.StartDate,
+		SchoolId:          input.SchoolId,
+		CoachId:           input.CoachId,
 		AssistantCoachIds: util.JSON(input.AssistantCoachIds),
 		Images:            datatypes.JSON{},
 		Summary:           "",
+		ManagerId:         input.ManagerId,
 	}
 	return s.DB.Model(&model.Course{}).Create(&course).Error
 }
 
 type CreateCourseInput struct {
-	SchoolStartAt     time.Time `json:"school_start_at"`     // 上课时间
-	Address           string    `json:"address"`             // 上课地点
-	Name              string    `json:"name"`                // 课程名称
-	CoachId           uint      `json:"coach_id"`            // 教练
-	AssistantCoachIds []uint    `json:"assistant_coach_ids"` // 助理教练列表
+	StartDate         string `json:"start_date"`          // 上课日期
+	StartTime         string `json:"start_time"`          // 上课时间
+	CoachId           *uint  `json:"coach_id"`            // 教练
+	SchoolId          uint   `json:"school_id"`           // 学校
+	AssistantCoachIds []uint `json:"assistant_coach_ids"` // 助理教练列表
+	ManagerId         uint   `json:"manager_id"`          // 负责人
 }
 
 type GetCoursePageInput struct {
@@ -50,7 +68,13 @@ type GetCoursePageInput struct {
 	Limit   int
 	Keyword *string
 	Desc    bool
-	CoachId *uint
+	UserId  *uint
+}
+
+type GetCoursesInput struct {
+	CoachId           *uint
+	ManagerId         *uint
+	AssistantCoachIds []uint
 }
 
 type GetCoursePageOutput struct {
@@ -65,14 +89,11 @@ func (s DBStore) GetCoursePage(ctx context.Context, query GetCoursePageInput) (*
 	if query.Desc {
 		q = q.Order("id desc")
 	}
-	if query.Keyword != nil {
-		q = q.Where("name like ?", "%"+*query.Keyword+"%").
-			Or("address like ?", "%"+*query.Keyword+"%").
-			Or("summary like ?", "%"+*query.Keyword+"%")
-	}
-	if query.CoachId != nil {
-		q = q.Where("coach_id = ?", *query.CoachId).
-			Or(datatypes.JSONQuery("assistant_coach_ids").HasKey(strconv.Itoa(int(*query.CoachId))))
+	if query.UserId != nil {
+		q = q.
+			Where("manager_id = ?", *query.UserId).
+			Where("coach_id = ?", *query.UserId).
+			Or(datatypes.JSONQuery("assistant_coach_ids").HasKey(strconv.Itoa(int(*query.UserId))))
 	}
 	count := int64(0)
 	if err := q.Count(&count).Error; err != nil {
@@ -111,4 +132,8 @@ func (s DBStore) UpdateCourse(ctx context.Context, course *model.Course) error {
 		return fmt.Errorf("update course: %w", err)
 	}
 	return nil
+}
+
+func (s DBStore) DeleteCourse(ctx context.Context, id uint) error {
+	return s.DB.WithContext(ctx).Delete(&model.Course{}, id).Error
 }

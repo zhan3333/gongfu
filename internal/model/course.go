@@ -13,9 +13,10 @@ type Course struct {
 	CreatedAt         time.Time      `json:"created_at"`
 	UpdatedAt         time.Time      `json:"updated_at"`
 	DeletedAt         gorm.DeletedAt `json:"deleted_at" gorm:"index"`
-	SchoolStartAt     sql.NullTime   `json:"school_start_at"`       // 上课时间
-	Address           string         `json:"address"`               // 上课地点
-	Name              string         `json:"name"`                  // 课程名称
+	StartDate         string         `json:"start_date"`            // 上课日期
+	StartTime         string         `json:"start_time"`            // 上课时间
+	SchoolId          uint           `json:"school_id"`             // 学校 id
+	ManagerId         uint           `json:"manager_id"`            // 负责人
 	CoachId           *uint          `json:"coach_id" gorm:"index"` // 教练
 	AssistantCoachIds datatypes.JSON `json:"assistant_coach_ids"`   // 助理教练列表
 	CheckInBy         *uint          `json:"check_in_by"`           // 签到者
@@ -35,13 +36,13 @@ func (c Course) GetImages() []string {
 
 func (c Course) GetAssistantCoachIds() []uint {
 	var ids = []uint{}
-	bs, _ := c.Images.MarshalJSON()
+	bs, _ := c.AssistantCoachIds.MarshalJSON()
 	_ = json.Unmarshal(bs, &ids)
 	return ids
 }
 
 func (c Course) GetRelatedUserIds() []uint {
-	var userIds = []uint{}
+	var userIds = []uint{c.ManagerId}
 	if c.CoachId != nil {
 		userIds = append(userIds, *c.CoachId)
 	}

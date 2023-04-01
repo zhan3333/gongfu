@@ -1,13 +1,16 @@
 package controller
 
 import (
+	"context"
+	"fmt"
 	"github.com/silenceper/wechat/v2/officialaccount"
 	"gongfu/internal/config"
+	"gongfu/internal/http/common"
 	"gongfu/internal/service"
 	"gongfu/internal/service/store"
 )
 
-type Controller struct {
+type UseCase struct {
 	Config          *config.Config
 	OfficialAccount *officialaccount.OfficialAccount
 	AuthCode        service.AuthCode
@@ -23,6 +26,14 @@ func NewController(
 	token service.Token,
 	store store.Store,
 	storage service.Storage,
-) *Controller {
-	return &Controller{Config: config, OfficialAccount: officialAccount, AuthCode: authCode, Token: token, Store: store, Storage: storage}
+) *UseCase {
+	return &UseCase{Config: config, OfficialAccount: officialAccount, AuthCode: authCode, Token: token, Store: store, Storage: storage}
+}
+
+func (r UseCase) NewUsersQuery(userIds ...uint) (*common.UsersQuery, error) {
+	usersMap, err := r.Store.GetUsersMap(context.TODO(), userIds)
+	if err != nil {
+		return nil, fmt.Errorf("get users map: %w", err)
+	}
+	return &common.UsersQuery{UsersMap: usersMap, Storage: r.Storage}, nil
 }

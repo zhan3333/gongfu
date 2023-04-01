@@ -30,7 +30,7 @@ type ProfileCoach struct {
 	TeachingExperiences []string `json:"teachingExperiences" json:"teaching_experiences,omitempty"`
 }
 
-func (r Controller) Profile(c *app.Context) result.Result {
+func (r UseCase) Profile(c *app.Context) result.Result {
 	uuid := c.Param("uuid")
 	user, err := r.Store.GetUserByUUID(context.Background(), uuid)
 	if err != nil {

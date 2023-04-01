@@ -7,7 +7,7 @@ import (
 	"gongfu/internal/result"
 )
 
-func (r Controller) JSConfig(c *app.Context) result.Result {
+func (r UseCase) JSConfig(c *app.Context) result.Result {
 	req := struct {
 		Uri string `form:"uri" binding:"required"`
 	}{}

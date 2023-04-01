@@ -16,6 +16,8 @@ type Store interface {
 	Coach
 	// Course 课程
 	Course
+	// School 学校
+	School
 }
 
 var _ Store = (*DBStore)(nil)

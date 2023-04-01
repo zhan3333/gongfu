@@ -10,7 +10,7 @@ import (
 )
 
 // GetBindCode 获取绑定验证码
-func (r Controller) GetBindCode(c *app.Context) result.Result {
+func (r UseCase) GetBindCode(c *app.Context) result.Result {
 	var req = struct {
 		Phone string `binding:"required"`
 	}{}
@@ -31,7 +31,7 @@ func (r Controller) GetBindCode(c *app.Context) result.Result {
 }
 
 // ValidBindCode 验证绑定验证码
-func (r Controller) ValidBindCode(c *app.Context) result.Result {
+func (r UseCase) ValidBindCode(c *app.Context) result.Result {
 	var req = struct {
 		Phone string `binding:"required"`
 		Code  string `binding:"required"`

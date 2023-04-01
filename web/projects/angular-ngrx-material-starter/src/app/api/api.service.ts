@@ -4,6 +4,7 @@ import { ICoach, User, UsersPage } from './models/user';
 import { CheckIn, CheckInCountList, CheckInExist, CheckInList } from './models/check-in';
 import { last, map, switchMap, tap } from 'rxjs/operators';
 import { Profile } from './models/profile';
+import { Course, CoursesPage } from './models/course';
 
 const meUrl = '/me'
 const sendValidCodeUrl = '/bind/phone'
@@ -164,6 +165,20 @@ export class ApiService {
     return this.http.get<User>(getUser + '/' + id).pipe(
       map(v => new User(v))
     )
+  }
+
+  // 获取课程列表
+  getCourses() {
+    return this.http.get<Course[]>('/courses',)
+  }
+
+  // 获取课程详情
+  getCourse(id: number) {
+    return this.http.get<Course>('/courses/' + id)
+  }
+
+  updateCourse(id: number, course: any) {
+    return this.http.put('/courses/' + id, course)
   }
 }
 

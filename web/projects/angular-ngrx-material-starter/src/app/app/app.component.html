@@ -7,10 +7,16 @@
         <img [src]="logo" [alt]="logo"/>
         <span>{{ 'anms.title.short' | translate}}</span></div>
       <mat-nav-list>
-        <a mat-list-item *ngFor="let item of navigationSideMenu" (click)="sidenav.close()" [routerLink]="[item.link]"
-           routerLinkActive="active">
-          {{item.label | translate}}
-        </a>
+        <ng-container *ngFor="let item of navigationSideMenu">
+          <a mat-list-item
+             *ngIf="user?.hasAnyRole(item?.roles || [])"
+             (click)="sidenav.close()"
+             [routerLink]="[item.link]"
+             routerLinkActive="active">
+            {{item.label | translate}}
+          </a>
+        </ng-container>
+
       </mat-nav-list>
     </mat-sidenav>
 
@@ -37,13 +43,13 @@
             {{ 'anms.title.short' | translate}}
           </span>
           <span class="d-none d-md-inline">
-            <ng-template *ngFor="let item of navigation">
+            <ng-container *ngFor="let item of navigation">
               <button mat-button class="nav-button" [routerLink]="[item.link]"
-                      *ngIf="user?.hasAnyRole(item?.roles  || [])"
+                      *ngIf="user?.hasAnyRole(item?.roles || [])"
                       routerLinkActive="active">
               {{item.label | translate}}
             </button>
-            </ng-template>
+            </ng-container>
 
           </span>
 

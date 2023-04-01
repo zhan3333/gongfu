@@ -3,6 +3,7 @@ package admin
 import (
 	"context"
 	"fmt"
+	"gongfu/internal/http/common"
 	"gongfu/internal/service"
 	"gongfu/internal/service/store"
 )
@@ -19,45 +20,10 @@ func NewUseCase(store store.Store, storage service.Storage) UseCase {
 	}
 }
 
-type UsersQuery struct {
-	usersMap store.UsersMap
-	storage  service.Storage
-}
-
-type Coach struct {
-	ID     uint   `json:"id"`
-	Name   string `json:"name"`
-	Avatar string `json:"avatar"`
-}
-
-func (q UsersQuery) GetCoach(id *uint) *Coach {
-	if id == nil {
-		return nil
-	}
-	if user := q.usersMap[*id]; user != nil {
-		return &Coach{
-			ID:     user.ID,
-			Name:   user.Nickname,
-			Avatar: q.storage.GetHeadImageVisitURL(user.HeadImgURL),
-		}
-	}
-	return nil
-}
-
-func (q UsersQuery) GetCoaches(ids ...uint) []Coach {
-	var items = []Coach{}
-	for _, id := range ids {
-		if coach := q.GetCoach(&id); coach != nil {
-			items = append(items, *coach)
-		}
-	}
-	return items
-}
-
-func (r UseCase) NewUsersQuery(userIds ...uint) (*UsersQuery, error) {
+func (r UseCase) NewUsersQuery(userIds ...uint) (*common.UsersQuery, error) {
 	usersMap, err := r.Store.GetUsersMap(context.TODO(), userIds)
 	if err != nil {
 		return nil, fmt.Errorf("get users map: %w", err)
 	}
-	return &UsersQuery{usersMap: usersMap, storage: r.Storage}, nil
+	return &common.UsersQuery{UsersMap: usersMap, Storage: r.Storage}, nil
 }

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { ICoach, User, UsersPage } from '../models/user';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { CoursesPage, Course } from '../models/Course';
+import { Course, CoursesPage } from '../models/course';
+import { School } from '../models/school';
 
 
 const getUsers = '/admin/users'
@@ -58,6 +59,11 @@ export class AdminApiService {
     return this.http.get<ISampleCoach[]>('/admin/coaches')
   }
 
+  // 获取学校列表
+  getSchools() {
+    return this.http.get<School[]>('/admin/schools')
+  }
+
   createCourse(data: CreateCourseInput) {
     return this.http.post('/admin/course', data)
   }
@@ -73,15 +79,23 @@ export class AdminApiService {
   getCourse(id: number) {
     return this.http.get<Course>('/admin/courses/' + id)
   }
+
+  updateCourse(id: number, course: any) {
+    return this.http.put('/admin/courses/' + id, course)
+  }
+
+  deleteCourse(id: number) {
+    return this.http.delete('/admin/courses/' + id)
+  }
 }
 
 export interface CreateCourseInput {
-  name: string,
-  address: string,
-  // 时间戳
-  schoolStartAt: number,
   coachId: number,
   assistantCoachIds: number[],
+  schoolId: number,
+  startDate: string,
+  startTime: string,
+  managerId: number,
 }
 
 // 简易的教练信息

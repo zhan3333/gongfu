@@ -11,7 +11,7 @@ import (
 )
 
 // GetUploadToken 获取上传文件的 token
-func (r Controller) GetUploadToken(c *app.Context) result.Result {
+func (r UseCase) GetUploadToken(c *app.Context) result.Result {
 	req := struct {
 		FileName string `form:"fileName" binding:"required"`
 		Dir      string `form:"dir"`

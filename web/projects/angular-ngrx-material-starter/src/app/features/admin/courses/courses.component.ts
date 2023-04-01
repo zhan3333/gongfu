@@ -4,7 +4,7 @@ import { NotificationService } from '../../../core/notifications/notification.se
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { User } from '../../../api/models/user';
-import { Course } from '../../../api/models/Course';
+import { Course } from '../../../api/models/course';
 
 @Component({
   selector: 'anms-courses',
@@ -15,7 +15,7 @@ import { Course } from '../../../api/models/Course';
 export class CoursesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
 
-  public displayedColumns: string[] = ['actions', 'id', 'name', 'coach', 'schoolStartAt'];
+  public displayedColumns: string[] = ['actions', 'id', 'school', 'coach', 'startDateTime'];
   public dataSource = new MatTableDataSource<Course>([]);
   constructor(
     private adminApi: AdminApiService,
@@ -62,4 +62,11 @@ export class CoursesComponent implements OnInit, AfterViewInit {
     this.refreshTable()
   }
 
+  // 删除课程
+  onClickDeleteCourse(id: number) {
+    this.adminApi.deleteCourse(id).subscribe(() => {
+      this.refreshTable()
+      this.notification.success('删除成功')
+    })
+  }
 }

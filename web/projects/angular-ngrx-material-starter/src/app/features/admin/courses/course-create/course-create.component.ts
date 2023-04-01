@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AdminApiService, ISampleCoach } from '../../../../api/admin/admin-api.service';
 import { NotificationService } from '../../../../core/notifications/notification.service';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { School } from '../../../../api/models/school';
+import * as moment from 'moment';
 
 @Component({
   selector: 'anms-course-create',
@@ -12,9 +14,10 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 })
 export class CourseCreateComponent implements OnInit {
   public form = new FormGroup({
-    name: new FormControl(''),
-    address: new FormControl(''),
-    schoolStartAt: new FormControl(''),
+    schoolId: new FormControl(null, [Validators.required]),
+    startDate: new FormControl(null, [Validators.required]),
+    startTime: new FormControl(null, [Validators.required]),
+    managerId: new FormControl(null, [Validators.required]),
     coachId: new FormControl(null),
     assistantCoachIds: new FormControl([]),
   })
@@ -22,6 +25,7 @@ export class CourseCreateComponent implements OnInit {
   // 教练数组
   public coaches: ISampleCoach[] = []
   public loading = false
+  public schools: School[] = []
 
   constructor(
     private adminApi: AdminApiService,
@@ -32,18 +36,19 @@ export class CourseCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.adminApi.getCoaches().subscribe(data => this.coaches = data)
+    this.adminApi.getSchools().subscribe(data => this.schools = data)
   }
 
   onSave() {
-    console.log('save', this.form.value)
     const data = this.form.value
     this.loading = true
     this.adminApi.createCourse({
-      address: data['address'],
       assistantCoachIds: data['assistantCoachIds'],
       coachId: data['coachId'],
-      name: data['name'],
-      schoolStartAt: new Date(data['schoolStartAt']).getTime() / 1000
+      managerId: data['managerId'],
+      startDate: moment(data['startDate']).format('YYYY/MM/DD'),
+      startTime: data['startTime'],
+      schoolId: data['schoolId'],
     }).subscribe(
       () => {
         this.notification.success('创建成功')

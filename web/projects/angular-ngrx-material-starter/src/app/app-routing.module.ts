@@ -49,6 +49,14 @@ const routes: Routes = [
     canActivate: [AuthService]
   },
   {
+    path: 'courses',
+    loadChildren: () =>
+      import('./features/courses/courses.module').then(
+        (m) => m.CoursesModule
+      ),
+    canActivate: [AuthService]
+  },
+  {
     path: 'profile/:uuid',
     loadChildren: () =>
       import('./features/profile/profile.module').then(

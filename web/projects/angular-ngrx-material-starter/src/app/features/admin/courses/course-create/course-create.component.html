@@ -4,22 +4,36 @@
     <form [formGroup]="form" class="container">
       <div class="row w-100">
         <mat-form-field appearance="fill">
-          <mat-label>课程名称</mat-label>
-          <input matInput placeholder="课程名称" formControlName="name" required>
+          <mat-label>学校</mat-label>
+          <mat-select formControlName="schoolId">
+            <mat-option *ngFor="let school of schools" [value]="school.id">
+              {{school.name}} {{school.address}}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
       <div class="row w-100">
         <mat-form-field appearance="fill">
-          <mat-label>课程地址</mat-label>
-          <textarea matInput placeholder="课程地址" formControlName="address" required></textarea>
+          <mat-label>上课日期</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="startDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </div>
       <div class="row w-100">
         <mat-form-field appearance="fill">
           <mat-label>上课时间</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="schoolStartAt">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <input matInput placeholder="上课时间" formControlName="startTime" required>
+        </mat-form-field>
+      </div>
+      <div class="row w-100">
+        <mat-form-field appearance="fill">
+          <mat-label>负责人</mat-label>
+          <mat-select formControlName="managerId" required>
+            <mat-option *ngFor="let coach of coaches" [value]="coach.id">
+              {{coach.name}}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
       <div class="row w-100">

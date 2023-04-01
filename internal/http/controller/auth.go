@@ -20,7 +20,7 @@ var wechatLoginURL = "/web/login"
 // 生成 JWT token 后 302 到 /me?accessToken={} 完成登录
 //
 // 如果用户已登录，则直接重定向到 /me
-func (r Controller) WeChatLogin(c *app.Context) result.Result {
+func (r UseCase) WeChatLogin(c *app.Context) result.Result {
 	if c.Query("code") == "" {
 		authPage, err := r.OfficialAccount.GetOauth().GetRedirectURL("http://gongfu.grianchan.com/wechat-login", "snsapi_userinfo", "login")
 		if err != nil {
@@ -81,7 +81,7 @@ type MeResponse struct {
 	UUID       string   `json:"uuid"`
 }
 
-func (r Controller) Me(c *app.Context) result.Result {
+func (r UseCase) Me(c *app.Context) result.Result {
 	return result.Ok(MeResponse{
 		ID:         c.User.ID,
 		OpenID:     c.User.OpenID,
@@ -94,7 +94,7 @@ func (r Controller) Me(c *app.Context) result.Result {
 }
 
 // EditMe 编辑用户信息
-func (r Controller) EditMe(c *app.Context) result.Result {
+func (r UseCase) EditMe(c *app.Context) result.Result {
 	req := struct {
 		AvatarKey string `json:"avatarKey" binding:"omitempty"`
 		Nickname  string `json:"nickname" binding:"omitempty,max=20"`
@@ -123,7 +123,7 @@ func (r Controller) EditMe(c *app.Context) result.Result {
 	return result.Ok(nil)
 }
 
-func (r Controller) Login(c *app.Context) result.Result {
+func (r UseCase) Login(c *app.Context) result.Result {
 	req := struct {
 		Phone string `binding:"required"` // 手机号
 		Code  string `binding:"required"` // 验证码

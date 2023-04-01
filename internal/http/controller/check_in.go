@@ -14,7 +14,7 @@ import (
 )
 
 // PostCheckIn 打卡
-func (r Controller) PostCheckIn(c *app.Context) result.Result {
+func (r UseCase) PostCheckIn(c *app.Context) result.Result {
 	req := struct {
 		Key      string `json:"key" binding:"required"`
 		FileName string `json:"fileName" binding:"required"`
@@ -55,7 +55,7 @@ type CheckInResp struct {
 }
 
 // GetTodayCheckIn 获取当前用户的今日打卡记录
-func (r Controller) GetTodayCheckIn(c *app.Context) result.Result {
+func (r UseCase) GetTodayCheckIn(c *app.Context) result.Result {
 	checkIn, err := r.Store.GetCheckIn(context.TODO(), store.GetCheckInOption{UserID: c.UserID, Date: date.GetTodayDate()})
 	if err != nil {
 		return result.Err(err)
@@ -101,7 +101,7 @@ func (r Controller) GetTodayCheckIn(c *app.Context) result.Result {
 }
 
 // GetCheckIn 根据 key 获取打卡详情
-func (r Controller) GetCheckIn(c *app.Context) result.Result {
+func (r UseCase) GetCheckIn(c *app.Context) result.Result {
 	checkInKey := c.Param("key")
 	if checkInKey == "" {
 		c.Message(http.StatusBadRequest, "invalid check in key: "+checkInKey)
@@ -146,7 +146,7 @@ func (r Controller) GetCheckIn(c *app.Context) result.Result {
 }
 
 // GetCheckInTop 获取打卡排行
-func (r Controller) GetCheckInTop(c *app.Context) result.Result {
+func (r UseCase) GetCheckInTop(c *app.Context) result.Result {
 	req := struct {
 		Date string `json:"date" form:"date"`
 	}{}
@@ -167,9 +167,6 @@ func (r Controller) GetCheckInTop(c *app.Context) result.Result {
 	if checkInList, err := r.Store.GetCheckInTop(context.TODO(), req.Date); err != nil {
 		return result.Err(err)
 	} else {
-		for _, checkIn := range checkInList {
-			fmt.Println(checkIn)
-		}
 		var userIds []uint
 		for _, checkIn := range checkInList {
 			userIds = append(userIds, checkIn.UserID)
@@ -211,7 +208,7 @@ type CheckInCountItem struct {
 }
 
 // GetCheckInCountTop 获取总打卡次数排行榜
-func (r Controller) GetCheckInCountTop(_ *app.Context) result.Result {
+func (r UseCase) GetCheckInCountTop(_ *app.Context) result.Result {
 	checkInList, err := r.Store.GetCheckInCountTop(context.TODO(), 10)
 	if err != nil {
 		return result.Err(fmt.Errorf("get check in count top: %w", err))
@@ -250,7 +247,7 @@ type CheckInContinuousItem struct {
 }
 
 // GetCheckInContinuousTop 获取连续打卡排行榜
-func (r Controller) GetCheckInContinuousTop(_ *app.Context) result.Result {
+func (r UseCase) GetCheckInContinuousTop(_ *app.Context) result.Result {
 	checkInList, err := r.Store.GetCheckInContinuousTop(context.TODO(), 10)
 	if err != nil {
 		return result.Err(fmt.Errorf("get check in count top: %w", err))
@@ -279,7 +276,7 @@ func (r Controller) GetCheckInContinuousTop(_ *app.Context) result.Result {
 }
 
 // GetCheckInHistories 获取打卡历史
-func (r Controller) GetCheckInHistories(c *app.Context) result.Result {
+func (r UseCase) GetCheckInHistories(c *app.Context) result.Result {
 	req := struct {
 		StartDate string `json:"startDate" form:"startDate" binding:"required"`
 		EndDate   string `json:"endDate" form:"endDate" binding:"required"`

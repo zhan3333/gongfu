@@ -24,6 +24,7 @@ export class AuthService implements CanActivate {
     console.log('auth init', this.isAuthenticated(), this.getAccessToken())
     this.isAuthenticated$.next(this.isAuthenticated())
     this.accessToken$.next(this.getAccessToken())
+    console.log('user', this.getUser())
     this.user$.next(this.getUser())
   }
 
@@ -36,7 +37,7 @@ export class AuthService implements CanActivate {
   }
 
   getUser(): User {
-    return this.store.getItem(KEY_USER)
+    return new User(this.store.getItem(KEY_USER))
   }
 
   setUser(user: User) {
