@@ -21,10 +21,8 @@ export class AuthService implements CanActivate {
 
   constructor(store: LocalStorageService, private router: Router) {
     this.store = store
-    console.log('auth init', this.isAuthenticated(), this.getAccessToken())
     this.isAuthenticated$.next(this.isAuthenticated())
     this.accessToken$.next(this.getAccessToken())
-    console.log('user', this.getUser())
     this.user$.next(this.getUser())
   }
 
@@ -59,7 +57,6 @@ export class AuthService implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log('check auth', this.isAuthenticated())
     if (this.isAuthenticated()) {
       return true
     } else {

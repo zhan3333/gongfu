@@ -78,6 +78,7 @@ func (r UseCase) GetCourse(c *app.Context) result.Result {
 		"schoolId":         course.SchoolId,
 		"school":           school,
 		"manager":          userQuery.GetCoach(&course.ManagerId),
+		"content":          course.Content,
 		"summary":          course.Summary,
 		"images":           course.GetImages(),
 		"assistantCoaches": userQuery.GetCoaches(course.GetAssistantCoachIds()...),

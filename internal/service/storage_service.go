@@ -16,6 +16,7 @@ type Storage interface {
 	GetPublicVisitURL(ctx context.Context, key string) string
 	// GetHeadImageVisitURL 对头像链接进行处理
 	GetHeadImageVisitURL(url string) string
+	GetFileVisitURL(url string) string
 }
 
 type storage struct {
@@ -54,6 +55,13 @@ func (s storage) GetHeadImageVisitURL(headImgURL string) string {
 		headImgURL = s.GetPublicVisitURL(context.Background(), headImgURL) + "!avatar"
 	}
 	return headImgURL
+}
+
+func (s storage) GetFileVisitURL(imgURL string) string {
+	if !strings.HasPrefix(imgURL, "http") {
+		imgURL = s.GetPublicVisitURL(context.Background(), imgURL)
+	}
+	return imgURL
 }
 
 func NewStorage(cos *cos.Client, secretID string, secreteKey string) Storage {

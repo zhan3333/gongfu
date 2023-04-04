@@ -38,7 +38,6 @@ export class User {
     if (this.roleNames === undefined) {
       return false
     }
-    console.log(roles, this.roleNames)
     for (const userRole of this.roleNames) {
       for (const checkRole of roles) {
         if (userRole === checkRole) {

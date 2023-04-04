@@ -8,6 +8,7 @@ import (
 	"gongfu/pkg/util"
 	"path"
 	"path/filepath"
+	"strings"
 )
 
 // GetUploadToken 获取上传文件的 token
@@ -31,4 +32,15 @@ func (r UseCase) GetUploadToken(c *app.Context) result.Result {
 		"uploadUrl": uploadUrl,
 		"key":       key,
 	})
+}
+
+func (r UseCase) VisitFile(c *app.Context) result.Result {
+	key := strings.TrimPrefix(c.Param("key"), "/")
+	c.Redirect(302, r.Storage.GetFileVisitURL(key))
+	return result.Ok(nil)
+}
+
+func (r UseCase) GetFileUrl(c *app.Context) result.Result {
+	key := strings.TrimPrefix(c.Param("key"), "/")
+	return result.Ok(gin.H{"url": r.Storage.GetFileVisitURL(key), "key": key})
 }

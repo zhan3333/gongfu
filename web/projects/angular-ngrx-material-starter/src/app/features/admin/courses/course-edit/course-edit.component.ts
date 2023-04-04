@@ -15,7 +15,7 @@ import { Course } from '../../../../api/models/course';
 })
 export class CourseEditComponent implements OnInit {
   public course: Course | undefined;
-  public id: number = 0
+  public id = 0
 
   // 教练数组
   public coaches: ISampleCoach[] = []

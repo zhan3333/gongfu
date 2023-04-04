@@ -52,6 +52,7 @@ func (r Route) Route(app *gin.Engine) {
 	api := app.Group("/api")
 	{
 		api.POST("/auth/login", action.Wrap(r.UserUseCase.Login))
+		api.GET("storage/visit/*key", action.Wrap(r.UserUseCase.VisitFile))
 		authedApi := api.Group("", r.Middleware.Auth())
 		{
 			authedApi.POST("me", action.Wrap(r.UserUseCase.EditMe))

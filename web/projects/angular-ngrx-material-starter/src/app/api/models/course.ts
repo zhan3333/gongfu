@@ -1,4 +1,3 @@
-import { ICoach } from './user';
 import { School } from './school';
 import { ISampleCoach } from '../admin/admin-api.service';
 
@@ -17,6 +16,7 @@ export interface Course {
   checkOutAt: number,
   images?: string[],
   summary: string,
+  content: string,
 }
 
 export class CoursesPage {

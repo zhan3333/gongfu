@@ -4,7 +4,8 @@ import { ICoach, User, UsersPage } from './models/user';
 import { CheckIn, CheckInCountList, CheckInExist, CheckInList } from './models/check-in';
 import { last, map, switchMap, tap } from 'rxjs/operators';
 import { Profile } from './models/profile';
-import { Course, CoursesPage } from './models/course';
+import { Course } from './models/course';
+import { environment } from '../../environments/environment';
 
 const meUrl = '/me'
 const sendValidCodeUrl = '/bind/phone'
@@ -179,6 +180,16 @@ export class ApiService {
 
   updateCourse(id: number, course: any) {
     return this.http.put('/courses/' + id, course)
+  }
+
+  getFilePerSignedUrl(key: string) {
+    return this.http.get<{ url: string }>('/storage/per-sign/' + key).pipe(
+      map(v => v.url)
+    )
+  }
+
+  visitFile(key: string) {
+    return environment.api + '/storage/visit/' + key
   }
 }
 
