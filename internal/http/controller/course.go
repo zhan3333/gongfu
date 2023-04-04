@@ -94,17 +94,6 @@ func (r UseCase) UpdateCourse(c *app.Context) result.Result {
 	if err != nil {
 		return result.Err(err)
 	}
-	req := struct {
-		StartDate         string `form:"startDate"`         // 上课日期
-		StartTime         string `form:"startTime"`         // 上课时间
-		SchoolId          uint   `form:"schoolId"`          // 学校
-		ManagerId         uint   `form:"managerId"`         // 学校
-		CoachId           *uint  `form:"coachId"`           // 教练
-		AssistantCoachIds []uint `form:"assistantCoachIds"` // 助理教练列表
-	}{}
-	if err := c.Bind(&req); err != nil {
-		return result.Err(nil)
-	}
 	course, err := r.Store.GetCourse(context.TODO(), uint(id))
 	if err != nil {
 		return result.Err(err)
@@ -113,9 +102,21 @@ func (r UseCase) UpdateCourse(c *app.Context) result.Result {
 		c.String(http.StatusNotFound, "course not found")
 		return result.Err(nil)
 	}
-	course.StartDate = req.StartDate
-	course.StartTime = req.StartTime
-	course.SchoolId = req.SchoolId
+	req := struct {
+		Content           string
+		Summary           string
+		Images            []string `form:"images"`            // 图片 key 列表
+		ManagerId         uint     `form:"managerId"`         // 学校
+		CoachId           *uint    `form:"coachId"`           // 教练
+		AssistantCoachIds []uint   `form:"assistantCoachIds"` // 助理教练列表
+	}{}
+	if err := c.Bind(&req); err != nil {
+		return result.Err(nil)
+	}
+
+	course.Images = util2.JSON(req.Images)
+	course.Content = req.Content
+	course.Summary = req.Summary
 	course.ManagerId = req.ManagerId
 	course.CoachId = req.CoachId
 	course.AssistantCoachIds = util2.JSON(req.AssistantCoachIds)

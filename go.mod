@@ -15,9 +15,10 @@ require (
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.496
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sms v1.0.496
 	github.com/tencentyun/cos-go-sdk-v5 v0.7.38
-	gorm.io/datatypes v1.1.0
-	gorm.io/driver/mysql v1.4.4
-	gorm.io/gorm v1.24.2
+	github.com/zhan3333/goutil v0.0.0-20230306080432-eace0d7e1363
+	gorm.io/datatypes v1.1.1
+	gorm.io/driver/mysql v1.4.7
+	gorm.io/gorm v1.24.6
 )
 
 require (
@@ -58,7 +59,6 @@ require (
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
-	github.com/zhan3333/goutil v0.0.0-20230306080432-eace0d7e1363 // indirect
 	golang.org/x/crypto v0.0.0-20221005025214-4161e89ecf1b // indirect
 	golang.org/x/exp v0.0.0-20220428152302-39d4317da171 // indirect
 	golang.org/x/net v0.0.0-20220520000938-2e3eb7b945c2 // indirect

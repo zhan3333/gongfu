@@ -6,7 +6,6 @@ import (
 	"gongfu/internal/model"
 	"gongfu/pkg/util"
 	"gorm.io/datatypes"
-	"strconv"
 )
 
 var _ Course = (*DBStore)(nil)
@@ -31,7 +30,7 @@ func (s DBStore) GetCoursesByUser(ctx context.Context, userId uint) ([]*model.Co
 	var err = s.DB.WithContext(ctx).Model(&model.Course{}).
 		Where("coach_id = ?", userId).
 		Or("manager_id = ?", userId).
-		Or(datatypes.JSONQuery("assistant_coach_ids").HasKey(strconv.Itoa(int(userId)))).
+		Or(datatypes.JSONArrayQuery("assistant_coach_ids").Contains(userId)).
 		Order("id desc").
 		Find(&courses).Error
 	if err != nil {
@@ -93,7 +92,7 @@ func (s DBStore) GetCoursePage(ctx context.Context, query GetCoursePageInput) (*
 		q = q.
 			Where("manager_id = ?", *query.UserId).
 			Where("coach_id = ?", *query.UserId).
-			Or(datatypes.JSONQuery("assistant_coach_ids").HasKey(strconv.Itoa(int(*query.UserId))))
+			Or(datatypes.JSONArrayQuery("assistant_coach_ids").Contains(*query.UserId))
 	}
 	count := int64(0)
 	if err := q.Count(&count).Error; err != nil {

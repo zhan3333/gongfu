@@ -25,6 +25,7 @@ type Course struct {
 	CheckOutAt        sql.NullTime   `json:"check_out_at"`          // 签出时间
 	Images            datatypes.JSON `json:"images"`                // 图片列表
 	Summary           string         `json:"summary"`               // 总结
+	Content           string         `json:"content"`               // 内容
 }
 
 func (c Course) GetImages() []string {
