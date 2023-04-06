@@ -129,20 +129,22 @@ func (r UseCase) GetCourse(c *app.Context) result.Result {
 		return result.Err(err)
 	}
 	return result.Ok(gin.H{
-		"id":               course.ID,
-		"startDate":        course.StartDate,
-		"startTime":        course.StartTime,
-		"coach":            userQuery.GetCoach(course.CoachId),
-		"schoolId":         course.SchoolId,
-		"school":           school,
-		"manager":          userQuery.GetCoach(&course.ManagerId),
-		"summary":          course.Summary,
-		"images":           course.GetImages(),
-		"assistantCoaches": userQuery.GetCoaches(course.GetAssistantCoachIds()...),
-		"checkInAt":        util2.DBTimeToTimestamp(course.CheckInAt),
-		"checkOutAt":       util2.DBTimeToTimestamp(course.CheckOutAt),
-		"checkInBy":        userQuery.GetCoach(course.CheckInBy),
-		"checkOutBy":       userQuery.GetCoach(course.CheckOutBy),
+		"id":                course.ID,
+		"startDate":         course.StartDate,
+		"startTime":         course.StartTime,
+		"coach":             userQuery.GetCoach(course.CoachId),
+		"schoolId":          course.SchoolId,
+		"school":            school,
+		"manager":           userQuery.GetCoach(&course.ManagerId),
+		"summary":           course.Summary,
+		"content":           course.Content,
+		"images":            course.GetImages(),
+		"assistantCoaches":  userQuery.GetCoaches(course.GetAssistantCoachIds()...),
+		"assistantCoachIds": course.GetAssistantCoachIds(),
+		"checkInAt":         util2.DBTimeToTimestamp(course.CheckInAt),
+		"checkOutAt":        util2.DBTimeToTimestamp(course.CheckOutAt),
+		"checkInBy":         userQuery.GetCoach(course.CheckInBy),
+		"checkOutBy":        userQuery.GetCoach(course.CheckOutBy),
 	})
 }
 
@@ -167,12 +169,15 @@ func (r UseCase) UpdateCourse(c *app.Context) result.Result {
 		return result.Err(err)
 	}
 	req := struct {
-		StartDate         string `form:"startDate"`         // 上课日期
-		StartTime         string `form:"startTime"`         // 上课时间
-		SchoolId          uint   `form:"schoolId"`          // 学校
-		ManagerId         uint   `form:"managerId"`         // 学校
-		CoachId           *uint  `form:"coachId"`           // 教练
-		AssistantCoachIds []uint `form:"assistantCoachIds"` // 助理教练列表
+		StartDate         string   `form:"startDate"`         // 上课日期
+		StartTime         string   `form:"startTime"`         // 上课时间
+		SchoolId          uint     `form:"schoolId"`          // 学校
+		ManagerId         uint     `form:"managerId"`         // 学校
+		CoachId           *uint    `form:"coachId"`           // 教练
+		AssistantCoachIds []uint   `form:"assistantCoachIds"` // 助理教练列表
+		Images            []string `form:"images"`
+		Content           string   `form:"content"`
+		Summary           string   `form:"summary"`
 	}{}
 	if err := c.Bind(&req); err != nil {
 		return result.Err(nil)
@@ -190,6 +195,9 @@ func (r UseCase) UpdateCourse(c *app.Context) result.Result {
 	course.SchoolId = req.SchoolId
 	course.ManagerId = req.ManagerId
 	course.CoachId = req.CoachId
+	course.Images = util2.JSON(req.Images)
+	course.Summary = req.Summary
+	course.Content = req.Content
 	course.AssistantCoachIds = util2.JSON(req.AssistantCoachIds)
 
 	if err := r.Store.UpdateCourse(context.TODO(), course); err != nil {

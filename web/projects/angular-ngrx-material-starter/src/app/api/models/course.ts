@@ -10,6 +10,7 @@ export interface Course {
   manager: ISampleCoach,
   coach?: ISampleCoach
   assistantCoaches: ISampleCoach[]
+  assistantCoachIds: number[]
   checkInByUser?: ISampleCoach
   checkOutByUser?: ISampleCoach
   checkInAt: number,
