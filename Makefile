@@ -3,7 +3,7 @@ remote_ssh = zhan@t
 build_api:
 	GOOS=linux GOARCH=amd64 go build -o build/gongfu cmd/main.go
 build_web:
-	cd web && npm run build:prod
+	cd web && yarn run build:prod
 	rm -rf build/web/*
 	cp -r web/dist/angular-ngrx-material-starter/* build/web/
 
@@ -29,4 +29,4 @@ run:
 
 .PHONY: web
 web:
-	cd web && npm run start
+	cd web && yarn run start
