@@ -20,7 +20,7 @@
                    [formControl]="selectDate" [disabled]="true">
             <mat-datepicker-toggle matSuffix [for]="picker">
               <mat-icon matDatepickerToggleIcon>
-                <fa-icon icon="calendar"></fa-icon>
+                <fa-icon [icon]="faCalendar"></fa-icon>
               </mat-icon>
             </mat-datepicker-toggle>
             <mat-datepicker #picker touchUi [disabled]="false"></mat-datepicker>

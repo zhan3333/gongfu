@@ -35,35 +35,35 @@
       <mat-selection-list [multiple]="false">
         <mat-list-option>
           <mat-icon matListIcon>
-            <fa-icon icon="check"></fa-icon>
+            <fa-icon [icon]="faCheck"></fa-icon>
           </mat-icon>
           <div matLine routerLink="/check-in">去打卡</div>
         </mat-list-option>
         <mat-divider></mat-divider>
         <mat-list-option>
           <mat-icon matListIcon>
-            <fa-icon icon="bolt"></fa-icon>
+            <fa-icon [icon]="faBolt"></fa-icon>
           </mat-icon>
           <div matLine routerLink="/check-in-histories" [queryParams]="{userID: user?.id}">我的历史打卡</div>
         </mat-list-option>
         <mat-divider></mat-divider>
         <mat-list-option>
           <mat-icon matListIcon>
-            <fa-icon icon="calendar"></fa-icon>
+            <fa-icon [icon]="faCalendar"></fa-icon>
           </mat-icon>
           <div matLine routerLink="/check-in-top">打卡榜单</div>
         </mat-list-option>
         <mat-divider></mat-divider>
         <mat-list-option>
           <mat-icon matListIcon>
-            <fa-icon icon="user"></fa-icon>
+            <fa-icon [icon]="faUser"></fa-icon>
           </mat-icon>
           <div matLine [routerLink]="'/profile/' + user?.uuid">更多信息</div>
         </mat-list-option>
         <mat-divider></mat-divider>
         <mat-list-option>
           <mat-icon matListIcon>
-            <fa-icon icon="wrench"></fa-icon>
+            <fa-icon [icon]="faWrench"></fa-icon>
           </mat-icon>
           <div matLine routerLink="/setting">设置</div>
         </mat-list-option>

@@ -7,12 +7,12 @@
       <td mat-cell *matCellDef="let course">
         <button mat-icon-button color="primary" [routerLink]="'/admin/courses/' + course?.id">
           <mat-icon>
-            <fa-icon icon="edit"></fa-icon>
+            <fa-icon [icon]="faEdit"></fa-icon>
           </mat-icon>
         </button>
         <button mat-icon-button color="warn" (click)="onClickDeleteCourse(course?.id)">
           <mat-icon>
-            <fa-icon icon="trash"></fa-icon>
+            <fa-icon [icon]="faTrash"></fa-icon>
           </mat-icon>
         </button>
       </td>

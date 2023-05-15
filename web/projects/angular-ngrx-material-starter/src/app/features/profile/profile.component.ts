@@ -2,10 +2,17 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { ApiService } from '../../api/api.service';
-import { displayLevel } from '../../api/models/user';
 import { Profile } from '../../api/models/profile';
 import { refreshSharedProfileToWechat } from '../../core/util';
 import { WechatService } from '../../services/wechat.service';
+import { displayLevel } from '../../services/coach-level';
+import {
+  faAddressBook,
+  faBuilding,
+  faList,
+  faUser,
+  faUsers
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'anms-profile',
@@ -14,29 +21,32 @@ import { WechatService } from '../../services/wechat.service';
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class ProfileComponent implements OnInit {
+  public faAddressBook = faAddressBook;
+  public faUser = faUser;
+  public faBuilding = faBuilding;
+  public faList = faList;
+  public faUsers = faUsers;
   public profile: Profile | undefined;
-  public displayLevel = displayLevel
+  public displayLevel = displayLevel;
 
   constructor(
     private activeRoute: ActivatedRoute,
     private notificationService: NotificationService,
     private api: ApiService,
-    private wechat: WechatService,
-  ) {
-  }
+    private wechat: WechatService
+  ) {}
 
   ngOnInit(): void {
-    this.activeRoute.paramMap.subscribe(data => {
-      const uuid = data.get('uuid')
+    this.activeRoute.paramMap.subscribe((data) => {
+      const uuid = data.get('uuid');
       if (uuid === '' || uuid === null) {
-        this.notificationService.error('invalid uuid')
-        return
+        this.notificationService.error('invalid uuid');
+        return;
       }
-      this.api.getProfile(uuid).subscribe(profile => {
-        this.profile = profile
-        refreshSharedProfileToWechat(this.wechat, this.profile)
-      })
-    })
-
+      this.api.getProfile(uuid).subscribe((profile) => {
+        this.profile = profile;
+        refreshSharedProfileToWechat(this.wechat, this.profile);
+      });
+    });
   }
 }

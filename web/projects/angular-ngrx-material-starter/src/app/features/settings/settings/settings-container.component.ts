@@ -16,6 +16,14 @@ import {
 } from '../../../core/settings/settings.actions';
 import { SettingsState, State } from '../../../core/settings/settings.model';
 import { selectSettings } from '../../../core/settings/settings.selectors';
+import {
+  faBars,
+  faLanguage,
+  faLightbulb,
+  faPaintBrush,
+  faStream,
+  faWindowMaximize
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'anms-settings',
@@ -24,6 +32,12 @@ import { selectSettings } from '../../../core/settings/settings.selectors';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SettingsContainerComponent implements OnInit {
+  public faLanguage = faLanguage;
+  public faStream = faStream;
+  public faBars = faBars;
+  public faPaintBrush = faPaintBrush;
+  public faLightbulb = faLightbulb;
+  public faWindowMaximize = faWindowMaximize;
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
   settings$: Observable<SettingsState> | undefined;
 

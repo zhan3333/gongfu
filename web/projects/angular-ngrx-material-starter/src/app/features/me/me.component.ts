@@ -3,9 +3,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { ApiService } from '../../api/api.service';
-import { ICoach, displayLevel, User } from '../../api/models/user';
+import { ICoach, User } from '../../api/models/user';
 import { FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
+import {
+  faCalendar,
+  faCheck,
+  faUser,
+  faWrench
+} from '@fortawesome/free-solid-svg-icons';
+import { faBolt } from '@fortawesome/free-solid-svg-icons/faBolt';
 
 @Component({
   selector: 'anms-me',
@@ -14,21 +21,25 @@ import { HttpErrorResponse } from '@angular/common/http';
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class MeComponent implements OnInit {
-  public displayLevel = displayLevel
-  public accessToken = ''
+  public faUser = faUser;
+  public faWrench = faWrench;
+  public faCalendar = faCalendar;
+  public faBolt = faBolt;
+  public faCheck = faCheck;
+  public accessToken = '';
   public user: User | undefined;
   public coach: ICoach | undefined;
   public bindPhone = new FormControl('', [
     Validators.required,
     Validators.pattern('1(3|4|5|7|8)\\d{9}')
-  ])
+  ]);
   public validCode = new FormControl('', [
     Validators.required,
     Validators.maxLength(4),
     Validators.minLength(4)
-  ])
-  public sendValidCodeLimiting = 0
-  public loading = false
+  ]);
+  public sendValidCodeLimiting = 0;
+  public loading = false;
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -36,48 +47,46 @@ export class MeComponent implements OnInit {
     private readonly notificationService: NotificationService,
     private api: ApiService,
     private router: Router
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.displayUserInfo()
+    this.displayUserInfo();
     setInterval(() => {
       if (this.sendValidCodeLimiting > 0) {
-        this.sendValidCodeLimiting--
+        this.sendValidCodeLimiting--;
       }
-    }, 1000)
+    }, 1000);
   }
 
   public toBindPhonePage() {
-    this.router.navigate(['/login'], {queryParams: {type: 'bind_phone'}})
+    this.router.navigate(['/login'], { queryParams: { type: 'bind_phone' } });
   }
 
   public toLoginPage() {
-    this.router.navigate(['/login'], {queryParams: {type: 'login'}})
+    this.router.navigate(['/login'], { queryParams: { type: 'login' } });
   }
 
   public toWeChatLogin() {
-    window.location.href = '/login'
+    window.location.href = '/login';
   }
 
   private displayUserInfo() {
     this.api.me().subscribe(
-      user => {
-        this.user = user
-        this.authService.setUser(user)
+      (user) => {
+        this.user = user;
+        this.authService.setUser(user);
         if (user.hasRole('coach')) {
-          this.api.getCoach().subscribe(data => this.coach = data)
+          this.api.getCoach().subscribe((data) => (this.coach = data));
         }
       },
-      error => {
+      (error) => {
         if (error instanceof HttpErrorResponse) {
           if (error.status === 401 || error.status === 403) {
-            this.authService.logout()
-            return
+            this.authService.logout();
+            return;
           }
         }
-      })
+      }
+    );
   }
-
-
 }

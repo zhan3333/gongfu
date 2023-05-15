@@ -22,6 +22,16 @@ import { AuthService } from '../core/auth/auth.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CHECK_IN_TOP_PATH } from '../core/router/route-path';
 import { User } from '../api/models/user';
+import {
+  faBars,
+  faCog,
+  faPlayCircle,
+  faPowerOff,
+  faRocket,
+  faUser,
+  faUserCircle,
+  faWrench
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'anms-root',
@@ -31,6 +41,14 @@ import { User } from '../api/models/user';
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class AppComponent implements OnInit {
+  faBars = faBars;
+  faUserCircle = faUserCircle;
+  faPowerOff = faPowerOff;
+  faCog = faCog;
+  faWrench = faWrench;
+  faUser = faUser;
+  faPlayCircle = faPlayCircle;
+  faRocket = faRocket;
   authLayout = false;
   displayFooter = false;
   isProd = env.production;
@@ -43,15 +61,15 @@ export class AppComponent implements OnInit {
     // {link: 'about', label: 'anms.menu.about'},
     // {link: 'feature-list', label: 'anms.menu.features'},
     // {link: 'examples', label: 'anms.menu.examples'},
-    {link: 'me', label: '我的'},
-    {link: 'check-in', label: '打卡'},
-    {link: CHECK_IN_TOP_PATH, label: '打卡排行'},
-    {link: 'courses', label: '我的课程', roles: ['admin', 'coach']},
-    {link: 'admin/courses', label: '课程管理', roles: ['admin']},
-    {link: 'admin/users', label: '用户管理', roles: ['admin']},
+    { link: 'me', label: '我的' },
+    { link: 'check-in', label: '打卡' },
+    { link: CHECK_IN_TOP_PATH, label: '打卡排行' },
+    { link: 'courses', label: '我的课程', roles: ['admin', 'coach'] },
+    { link: 'admin/courses', label: '课程管理', roles: ['admin'] },
+    { link: 'admin/users', label: '用户管理', roles: ['admin'] }
   ];
   navigationSideMenu = [
-    ...this.navigation,
+    ...this.navigation
     // {link: 'settings', label: 'anms.menu.settings'}
   ];
 
@@ -59,22 +77,22 @@ export class AppComponent implements OnInit {
   stickyHeader$: Observable<boolean> | undefined;
   language$: Observable<string> | undefined;
   theme$: Observable<string> | undefined;
-  public user: User | undefined
+  public user: User | undefined;
 
   constructor(
     private store: Store<AppState>,
     private storageService: LocalStorageService,
     private authService: AuthService,
     private activeRoute: ActivatedRoute,
-    private router: Router,
+    private router: Router
   ) {
-    this.router.events.subscribe(event => {
+    this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        const sp = event.url.split('?')
-        console.log('route event', event, sp[0])
+        const sp = event.url.split('?');
+        console.log('route event', event, sp[0]);
         this.authLayout = sp[0].startsWith('/login');
       }
-    })
+    });
   }
 
   private static isIEorEdgeOrSafari() {
@@ -94,29 +112,29 @@ export class AppComponent implements OnInit {
     this.stickyHeader$ = this.store.pipe(select(selectSettingsStickyHeader));
     this.language$ = this.store.pipe(select(selectSettingsLanguage));
     this.theme$ = this.store.pipe(select(selectEffectiveTheme));
-    this.authService.user$.subscribe(user => this.user = user)
+    this.authService.user$.subscribe((user) => (this.user = user));
   }
 
   onLoginClick() {
-    this.router.navigate(['/login'], {queryParams: {'type': 'login'}})
+    this.router.navigate(['/login'], { queryParams: { type: 'login' } });
   }
 
   onLogoutClick() {
-    this.authService.logout()
-    location.reload()
+    this.authService.logout();
+    location.reload();
   }
 
   onLanguageSelect(event: MatSelectChange) {
     this.store.dispatch(
-      actionSettingsChangeLanguage({language: event.value})
+      actionSettingsChangeLanguage({ language: event.value })
     );
   }
 
   onProfileClick() {
-    this.router.navigate(['/profile', this.authService.getUser().uuid])
+    this.router.navigate(['/profile', this.authService.getUser().uuid]);
   }
 
   onSettingClick() {
-    this.router.navigate(['/setting'])
+    this.router.navigate(['/setting']);
   }
 }

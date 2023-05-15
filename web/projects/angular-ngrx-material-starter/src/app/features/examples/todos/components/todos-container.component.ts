@@ -15,6 +15,12 @@ import * as todoActions from '../todos.actions';
 import { Todo, TodosFilter } from '../todos.model';
 import { selectTodos, selectRemoveDoneTodosDisabled } from '../todos.selectors';
 import { State } from '../../examples.state';
+import {
+  faCheck,
+  faFilter,
+  faSquare,
+  faTasks
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'anms-todos',
@@ -23,6 +29,10 @@ import { State } from '../../examples.state';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodosContainerComponent implements OnInit {
+  public faCheck = faCheck;
+  public faSquare = faSquare;
+  public faTasks = faTasks;
+  public faFilter = faFilter;
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
   todos$: Observable<Todo[]> | undefined;
   filter$: Observable<TodosFilter> | undefined;

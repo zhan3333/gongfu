@@ -11,7 +11,7 @@
       <p *ngIf="(books$ | async)?.length === 0">{{'anms.examples.crud.empty' | translate}}</p>
       <button type="button" mat-fab color="primary" class="add" [ngClass]="routeAnimationsElements"
         *ngIf="!isEditing" (click)="addNew()">
-        <fa-icon icon="plus"></fa-icon>
+        <fa-icon [icon]="faPlus"></fa-icon>
       </button>
     </div>
     <div class="col-md-6">
@@ -20,17 +20,17 @@
         <span class="d-flex justify-content-end">
           <span *ngIf="selectedBook$ | async as selectedBook">
             <button mat-icon-button color="accent" *ngIf="!isEditing">
-              <fa-icon icon="edit" (click)="edit(selectedBook)" [matTooltip]="'anms.examples.crud.tooltip.edit' | translate"
+              <fa-icon [icon]="faEdit" (click)="edit(selectedBook)" [matTooltip]="'anms.examples.crud.tooltip.edit' | translate"
                 matTooltipPosition="above">
               </fa-icon>
             </button>
             <button mat-icon-button color="warn" (click)="delete(selectedBook)">
-              <fa-icon icon="trash" [matTooltip]="'anms.examples.crud.tooltip.delete' | translate"
+              <fa-icon [icon]="faTrash" [matTooltip]="'anms.examples.crud.tooltip.delete' | translate"
                 matTooltipPosition="above">
               </fa-icon>
             </button>
             <button mat-icon-button (click)="deselect()">
-              <fa-icon icon="times" [matTooltip]="'anms.examples.crud.tooltip.deselect' | translate"
+              <fa-icon [icon]="faTimes" [matTooltip]="'anms.examples.crud.tooltip.deselect' | translate"
                 matTooltipPosition="above">
               </fa-icon>
             </button>

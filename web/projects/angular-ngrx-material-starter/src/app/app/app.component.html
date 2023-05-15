@@ -26,7 +26,7 @@
            [class.mat-elevation-z4]="(stickyHeader$ | async)">
         <mat-toolbar color="primary">
           <button mat-icon-button class="d-md-none" (click)="sidenav.open()">
-            <fa-icon icon="bars"></fa-icon>
+            <fa-icon [icon]="faBars"></fa-icon>
 
           </button>
 
@@ -61,31 +61,31 @@
           <button *ngIf="(isAuthenticated$ | async)"
                   mat-icon-button
                   [matMenuTriggerFor]="toolbarUserMenu">
-            <fa-icon icon="user-circle"></fa-icon>
+            <fa-icon [icon]="faUserCircle"></fa-icon>
           </button>
           <mat-menu #toolbarUserMenu="matMenu">
             <button mat-menu-item (click)="onProfileClick()">
               <mat-icon>
-                <fa-icon icon="user"></fa-icon>
+                <fa-icon [icon]="faUser"></fa-icon>
               </mat-icon>
               <span>{{ '个人' | translate }}</span>
             </button>
             <button mat-menu-item (click)="onSettingClick()">
               <mat-icon>
-                <fa-icon icon="wrench"></fa-icon>
+                <fa-icon [icon]="faWrench"></fa-icon>
               </mat-icon>
               <span>{{ '设置' | translate }}</span>
             </button>
             <button mat-menu-item (click)="onLogoutClick()">
               <mat-icon>
-                <fa-icon icon="power-off"></fa-icon>
+                <fa-icon [icon]="faPowerOff"></fa-icon>
               </mat-icon>
               <span>{{ 'anms.menu.logout' | translate }}</span>
             </button>
           </mat-menu>
 
           <button mat-icon-button routerLink="settings" class="d-none d-sm-inline">
-            <fa-icon icon="cog"></fa-icon>
+            <fa-icon [icon]="faCog"></fa-icon>
           </button>
 
           <a [matTooltip]="'anms.header.github' | translate"
@@ -136,7 +136,7 @@
               <span>Instagram</span>
             </a>
             <a href="https://www.slides.com/tomastrajan" target="_blank" rel="noopener noreferrer">
-              <fa-icon icon="play-circle"></fa-icon>
+              <fa-icon [icon]="faPlayCircle"></fa-icon>
               <span>Slides</span>
             </a>
           </div>
@@ -148,7 +148,7 @@
             <a [matTooltip]="'anms.footer.changelog' | translate"
                matTooltipPosition="before"
                href="https://github.com/tomastrajan/angular-ngrx-material-starter/blob/master/CHANGELOG.md">
-              <fa-icon icon="rocket"></fa-icon>
+              <fa-icon [icon]="faRocket"></fa-icon>
               {{version}} <span *ngIf="!isProd">[{{envName}}]</span>
             </a>
           </div>

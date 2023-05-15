@@ -11,6 +11,12 @@ import { State } from '../../examples.state';
 import { Book } from '../books.model';
 import { actionBooksDeleteOne, actionBooksUpsertOne } from '../books.actions';
 import { selectSelectedBook, selectAllBooks } from '../books.selectors';
+import {
+  faEdit,
+  faPlus,
+  faTimes,
+  faTrash
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'anms-crud',
@@ -19,6 +25,10 @@ import { selectSelectedBook, selectAllBooks } from '../books.selectors';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CrudComponent {
+  public faEdit = faEdit;
+  public faTrash = faTrash;
+  public faTimes = faTimes;
+  public faPlus = faPlus;
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
 
   bookFormGroup = this.fb.group(CrudComponent.createBook());

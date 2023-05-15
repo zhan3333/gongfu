@@ -18,7 +18,7 @@
             <fa-icon [icon]="['fab','github']"></fa-icon>
           </a>
           <a mat-button [href]="feature.documentation" rel="noopener noreferrer" target="_blank">
-            <fa-icon icon="book"></fa-icon>{{ 'anms.features.documentation' | translate }}
+            <fa-icon [icon]="faBook"></fa-icon>{{ 'anms.features.documentation' | translate }}
           </a>
           <a *ngIf="feature.medium" mat-button [href]="feature.medium" rel="noopener noreferrer" target="_blank">
             <fa-icon [icon]="['fab','medium-m']"></fa-icon>{{ 'anms.features.guide' | translate }}

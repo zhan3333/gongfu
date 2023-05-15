@@ -24,7 +24,7 @@
     <mat-form-field appearance="legacy" class="w-100 row">
       <mat-label>教练级别</mat-label>
       <mat-select formControlName="level">
-        <mat-option *ngFor="let lv of levels" [value]="lv.value">{{lv.key}}</mat-option>
+        <mat-option *ngFor="let lv of Levels" [value]="lv.value">{{lv.key}}</mat-option>
       </mat-select>
     </mat-form-field>
     <!--任教单位-->
@@ -47,7 +47,7 @@
             {{exp}}
             <button matChipRemove>
               <mat-icon>
-                <fa-icon icon="ban"></fa-icon>
+                <fa-icon [icon]="faBan"></fa-icon>
               </mat-icon>
             </button>
           </mat-chip>

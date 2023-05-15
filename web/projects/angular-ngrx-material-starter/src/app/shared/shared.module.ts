@@ -22,7 +22,10 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 
-import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  FaIconLibrary,
+  FontAwesomeModule
+} from '@fortawesome/angular-fontawesome';
 import {
   faAddressBook,
   faArrowLeft,
@@ -103,7 +106,7 @@ import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
     RtlSupportDirective,
     CalendarHeaderComponent,
     FormControlPipe,
-    BottomSheetComponent,
+    BottomSheetComponent
   ],
   exports: [
     CommonModule,
@@ -137,7 +140,7 @@ import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
     BigInputComponent,
     BigInputActionComponent,
     RtlSupportDirective,
-    FormControlPipe,
+    FormControlPipe
   ]
 })
 export class SharedModule {
@@ -178,7 +181,7 @@ export class SharedModule {
       faAddressBook,
       faUsers,
       faBars,
-      faBan,
+      faBan
     );
   }
 }

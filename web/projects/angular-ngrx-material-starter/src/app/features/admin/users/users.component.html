@@ -6,7 +6,7 @@
       <td mat-cell *matCellDef="let user">
         <button mat-icon-button color="primary" [routerLink]="'/admin/users/' + user?.id">
           <mat-icon>
-            <fa-icon icon="edit"></fa-icon>
+            <fa-icon [icon]="faEdit"></fa-icon>
           </mat-icon>
         </button>
       </td>

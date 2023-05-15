@@ -1,5 +1,5 @@
 import { CommonModule, registerLocaleData } from '@angular/common';
-import { NgModule, Optional, SkipSelf, ErrorHandler, LOCALE_ID } from '@angular/core';
+import { NgModule, Optional, SkipSelf, ErrorHandler } from '@angular/core';
 import {
   HttpClientModule,
   HttpClient,
@@ -65,7 +65,13 @@ import {
   faRocket,
   faPowerOff,
   faUserCircle,
-  faPlayCircle, faPhone, faArrowDown, faArrowLeft, faArrowRight, faCalendar, faWrench
+  faPlayCircle,
+  faPhone,
+  faArrowDown,
+  faArrowLeft,
+  faArrowRight,
+  faCalendar,
+  faWrench
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faGithub,
@@ -81,7 +87,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
 registerLocaleData(localeZh, 'zh-cn', localeZhExtra);
-
 
 export {
   TitleService,
@@ -100,7 +105,7 @@ export {
   selectEffectiveTheme,
   selectSettingsLanguage,
   selectSettingsStickyHeader,
-  AuthService,
+  AuthService
 };
 
 export function httpLoaderFactory(http: HttpClient) {
@@ -132,17 +137,14 @@ export function httpLoaderFactory(http: HttpClient) {
     MatDatepickerModule,
 
     // ngrx
-    StoreModule.forRoot(reducers, {metaReducers}),
+    StoreModule.forRoot(reducers, { metaReducers }),
     StoreRouterConnectingModule.forRoot(),
-    EffectsModule.forRoot([
-      AuthEffects,
-      SettingsEffects,
-    ]),
+    EffectsModule.forRoot([AuthEffects, SettingsEffects]),
     environment.production
       ? []
       : StoreDevtoolsModule.instrument({
-        name: 'Angular NgRx Material Starter'
-      }),
+          name: 'Angular NgRx Material Starter'
+        }),
 
     // 3rd party
     FontAwesomeModule,
@@ -156,10 +158,10 @@ export function httpLoaderFactory(http: HttpClient) {
   ],
   declarations: [],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: HttpAuthInterceptor, multi: true},
-    {provide: ErrorHandler, useClass: AppErrorHandler},
-    {provide: RouterStateSerializer, useClass: CustomSerializer},
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpAuthInterceptor, multi: true },
+    { provide: ErrorHandler, useClass: AppErrorHandler },
+    { provide: RouterStateSerializer, useClass: CustomSerializer }
   ],
   exports: [
     // angular
@@ -187,7 +189,7 @@ export class CoreModule {
   constructor(
     @Optional()
     @SkipSelf()
-      parentModule: CoreModule,
+    parentModule: CoreModule,
     faIconLibrary: FaIconLibrary
   ) {
     if (parentModule) {
@@ -210,7 +212,7 @@ export class CoreModule {
       faArrowLeft,
       faArrowRight,
       faCalendar,
-      faWrench,
+      faWrench
     );
   }
 }

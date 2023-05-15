@@ -9,86 +9,86 @@ export class User {
   uuid = '';
 
   constructor(payload: Partial<User>) {
-    this.id = payload.id || 0
-    this.openid = payload.openid || ''
-    this.nickname = payload.nickname || ''
-    this.sex = payload.sex || 0
-    this.headimgurl = payload.headimgurl || ''
-    this.phone = payload.phone || ''
-    this.roleNames = payload.roleNames || []
-    this.uuid = payload.uuid || ''
+    this.id = payload.id || 0;
+    this.openid = payload.openid || '';
+    this.nickname = payload.nickname || '';
+    this.sex = payload.sex || 0;
+    this.headimgurl = payload.headimgurl || '';
+    this.phone = payload.phone || '';
+    this.roleNames = payload.roleNames || [];
+    this.uuid = payload.uuid || '';
   }
 
   hasRole(role: string): boolean {
     if (this.roleNames === undefined) {
-      return false
+      return false;
     }
     for (const roleName of this.roleNames) {
       if (roleName === role) {
-        return true
+        return true;
       }
     }
-    return false
+    return false;
   }
 
   hasAnyRole(roles: string[]): boolean {
     if (roles.length === 0) {
-      return true
+      return true;
     }
     if (this.roleNames === undefined) {
-      return false
+      return false;
     }
     for (const userRole of this.roleNames) {
       for (const checkRole of roles) {
         if (userRole === checkRole) {
-          return true
+          return true;
         }
       }
     }
-    return false
+    return false;
   }
 
   displayRoles(): string {
     if (this.roleNames === undefined) {
-      return ''
+      return '';
     }
-    return displayRoles(this.roleNames)
+    return displayRoles(this.roleNames);
   }
 }
 
 export function displayRoles(roleNames: string[]): string {
-  let ret = ''
+  let ret = '';
   for (let i = 0; i < roleNames?.length; i++) {
     if (i === 0) {
-      ret += displayRoleName(roleNames[i])
+      ret += displayRoleName(roleNames[i]);
     } else {
-      ret += '|' + displayRoleName(roleNames[i])
+      ret += '|' + displayRoleName(roleNames[i]);
     }
   }
-  return ret
+  return ret;
 }
 
 export function displayRoleName(name: string): string {
   switch (name) {
     case ROLE_ADMIN:
-      return '管理员'
+      return '管理员';
     case ROLE_COACH:
-      return '教练'
+      return '教练';
     case ROLE_USER:
-      return '会员'
+      return '会员';
     default:
-      return name
+      return name;
   }
 }
 
 // 管理员
-export const ROLE_ADMIN = 'admin'
+export const ROLE_ADMIN = 'admin';
 
 // 用户
-export const ROLE_USER = 'user'
+export const ROLE_USER = 'user';
 
 // 教练
-export const ROLE_COACH = 'coach'
+export const ROLE_COACH = 'coach';
 
 // 教练信息
 export interface ICoach {
@@ -100,19 +100,6 @@ export interface ICoach {
   teachingExperiences?: string[]; // 任教经历
 }
 
-// 显示教练等级
-export function displayLevel(level: string | undefined) {
-  if (level === undefined) {
-    return '未知'
-  }
-  switch (level) {
-    case '1-1':
-      return '初级1'
-  }
-  return level;
-}
-
-
 export class UsersPage {
   users: User[] = [];
   page = 0;
@@ -120,13 +107,13 @@ export class UsersPage {
   limit = 0;
 
   constructor(payload: Partial<UsersPage>) {
-    const users = []
+    const users = [];
     for (const user of payload.users || []) {
-      users.push(new User(user))
+      users.push(new User(user));
     }
-    this.users = users
-    this.page = payload.page || 0
-    this.count = payload.count || 0
-    this.limit = payload.limit || 0
+    this.users = users;
+    this.page = payload.page || 0;
+    this.count = payload.count || 0;
+    this.limit = payload.limit || 0;
   }
 }

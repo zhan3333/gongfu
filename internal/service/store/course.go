@@ -31,6 +31,7 @@ func (s DBStore) GetCoursesByUser(ctx context.Context, userId uint) ([]*model.Co
 		Where("coach_id = ?", userId).
 		Or("manager_id = ?", userId).
 		Or(datatypes.JSONArrayQuery("assistant_coach_ids").Contains(userId)).
+		Order("start_date desc").
 		Order("id desc").
 		Find(&courses).Error
 	if err != nil {

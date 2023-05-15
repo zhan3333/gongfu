@@ -9,6 +9,11 @@ import { selectStockMarket } from '../stock-market.selectors';
 import { actionStockMarketRetrieve } from '../stock-market.actions';
 import { StockMarketState } from '../stock-market.model';
 import { State } from '../../examples.state';
+import {
+  faCaretDown,
+  faCaretUp,
+  faExclamationTriangle
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'anms-stock-market',
@@ -17,6 +22,9 @@ import { State } from '../../examples.state';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StockMarketContainerComponent implements OnInit {
+  public faCaretUp = faCaretUp;
+  public faCaretDown = faCaretDown;
+  public faExclamationTriangle = faExclamationTriangle;
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
   stocks$: Observable<StockMarketState> | undefined;
 
