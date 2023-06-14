@@ -17,7 +17,15 @@ import { faBolt } from '@fortawesome/free-solid-svg-icons/faBolt';
 @Component({
   selector: 'anms-me',
   templateUrl: './me.component.html',
-  styleUrls: ['./me.component.scss'],
+  styles: [
+    `
+      .user_header {
+        width: 90px;
+        height: 90px;
+        border-radius: 20%;
+      }
+    `
+  ],
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class MeComponent implements OnInit {
