@@ -5,7 +5,7 @@ import { NotificationService } from '../../../core/notifications/notification.se
 import { ActivatedRoute, Router } from '@angular/router';
 import { WechatService } from '../../../services/wechat.service';
 import * as moment from 'moment';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { isWechat } from '../../../core/util';
 import { SharedModule } from '../../../shared/shared.module';
 import { faCalendar } from '@fortawesome/free-solid-svg-icons';
@@ -22,7 +22,7 @@ export class CheckInTopComponent implements OnInit {
   public checkInContinuousList: CheckInCountList | undefined;
   public checkInCountList: CheckInCountList | undefined;
   public loading = false;
-  public selectDate = new FormControl('');
+  public selectDate = new UntypedFormControl('');
 
   constructor(
     private api: ApiService,

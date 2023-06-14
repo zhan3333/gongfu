@@ -5,7 +5,11 @@ import {
   ViewChild
 } from '@angular/core';
 import { MatProgressBar } from '@angular/material/progress-bar';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { AuthService } from '../../core/auth/auth.service';
@@ -28,10 +32,10 @@ export class LoginComponent implements OnInit {
   public inSubmit = false;
   public inLoading = false;
 
-  public signinForm: FormGroup = new FormGroup({
-    phone: new FormControl('', Validators.required),
-    code: new FormControl('', Validators.required),
-    rememberMe: new FormControl(false)
+  public signinForm: UntypedFormGroup = new UntypedFormGroup({
+    phone: new UntypedFormControl('', Validators.required),
+    code: new UntypedFormControl('', Validators.required),
+    rememberMe: new UntypedFormControl(false)
   });
 
   constructor(

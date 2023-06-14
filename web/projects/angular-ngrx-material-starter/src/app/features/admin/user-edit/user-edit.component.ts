@@ -1,5 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators
+} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { AdminApiService } from '../../../api/admin/admin-api.service';
@@ -18,14 +22,14 @@ import { faBan } from '@fortawesome/free-solid-svg-icons';
 export class UserEditComponent implements OnInit {
   public faBan = faBan;
   public id = 0;
-  public form = new FormGroup({
-    phone: new FormControl(''),
-    nickname: new FormControl('', [Validators.required]),
-    level: new FormControl(''),
-    teachingSpace: new FormControl(''),
-    teachingAge: new FormControl(''),
-    teachingExperiences: new FormControl([]),
-    roleNames: new FormControl([]) // 角色组
+  public form = new UntypedFormGroup({
+    phone: new UntypedFormControl(''),
+    nickname: new UntypedFormControl('', [Validators.required]),
+    level: new UntypedFormControl(''),
+    teachingSpace: new UntypedFormControl(''),
+    teachingAge: new UntypedFormControl(''),
+    teachingExperiences: new UntypedFormControl([]),
+    roleNames: new UntypedFormControl([]) // 角色组
   });
   public loading = false;
   // 角色名选项

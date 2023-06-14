@@ -4,7 +4,7 @@ import { AuthService } from '../../core/auth/auth.service';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { ApiService } from '../../api/api.service';
 import { ICoach, User } from '../../api/models/user';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   faCalendar,
@@ -37,11 +37,11 @@ export class MeComponent implements OnInit {
   public accessToken = '';
   public user: User | undefined;
   public coach: ICoach | undefined;
-  public bindPhone = new FormControl('', [
+  public bindPhone = new UntypedFormControl('', [
     Validators.required,
     Validators.pattern('1(3|4|5|7|8)\\d{9}')
   ]);
-  public validCode = new FormControl('', [
+  public validCode = new UntypedFormControl('', [
     Validators.required,
     Validators.maxLength(4),
     Validators.minLength(4)
