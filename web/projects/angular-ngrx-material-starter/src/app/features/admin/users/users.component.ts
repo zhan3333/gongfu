@@ -5,10 +5,10 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { User } from '../../../api/models/user';
 import { ApiService } from '../../../api/api.service';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { AdminApiService } from '../../../api/admin/admin-api.service';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 

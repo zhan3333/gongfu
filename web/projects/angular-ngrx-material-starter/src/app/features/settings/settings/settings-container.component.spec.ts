@@ -1,5 +1,5 @@
 import { By } from '@angular/platform-browser';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatLegacySlideToggle as MatSlideToggle } from '@angular/material/legacy-slide-toggle';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
@@ -36,31 +36,29 @@ describe('SettingsComponent', () => {
   const getSelectOptions = () =>
     fixture.debugElement.queryAll(By.css('mat-option'));
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          FontAwesomeModule,
-          SharedModule,
-          NoopAnimationsModule,
-          TranslateModule.forRoot()
-        ],
-        providers: [provideMockStore()],
-        declarations: [SettingsContainerComponent]
-      }).compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        FontAwesomeModule,
+        SharedModule,
+        NoopAnimationsModule,
+        TranslateModule.forRoot()
+      ],
+      providers: [provideMockStore()],
+      declarations: [SettingsContainerComponent]
+    }).compileComponents();
 
-      TestBed.inject(FaIconLibrary).addIcons(faBars);
+    TestBed.inject(FaIconLibrary).addIcons(faBars);
 
-      store = TestBed.inject(MockStore);
-      mockSelectSettings = store.overrideSelector(
-        selectSettings,
-        {} as SettingsState
-      );
-      fixture = TestBed.createComponent(SettingsContainerComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-    })
-  );
+    store = TestBed.inject(MockStore);
+    mockSelectSettings = store.overrideSelector(
+      selectSettings,
+      {} as SettingsState
+    );
+    fixture = TestBed.createComponent(SettingsContainerComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  }));
 
   it('should dispatch change sticky header on sticky header toggle', () => {
     dispatchSpy = spyOn(store, 'dispatch');

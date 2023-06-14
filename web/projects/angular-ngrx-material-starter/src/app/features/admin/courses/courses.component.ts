@@ -7,8 +7,8 @@ import {
 } from '@angular/core';
 import { AdminApiService } from '../../../api/admin/admin-api.service';
 import { NotificationService } from '../../../core/notifications/notification.service';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { User } from '../../../api/models/user';
 import { Course } from '../../../api/models/course';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';

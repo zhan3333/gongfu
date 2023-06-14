@@ -3,16 +3,10 @@ import { CommonModule } from '@angular/common';
 import { MeComponent } from './me.component';
 import { MeRoutingModule } from './me-routing.module';
 import { SharedModule } from '../../shared/shared.module';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-
+import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
 
 @NgModule({
-  declarations: [
-    MeComponent
-  ],
-  imports: [
-    CommonModule, SharedModule, MeRoutingModule, MatProgressBarModule
-  ]
+  declarations: [MeComponent],
+  imports: [CommonModule, SharedModule, MeRoutingModule, MatProgressBarModule]
 })
-export class MeModule {
-}
+export class MeModule {}

@@ -3,15 +3,16 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthService } from './core/auth/auth.service';
 import { CheckInTopComponent } from './features/check-in/check-in-top/check-in-top.component';
 import { CheckInHistoriesComponent } from './features/check-in/check-in-histories/check-in-histories.component';
-import { CHECK_IN_HISTORIES_PATH, CHECK_IN_TOP_PATH } from './core/router/route-path';
+import {
+  CHECK_IN_HISTORIES_PATH,
+  CHECK_IN_TOP_PATH
+} from './core/router/route-path';
 
 const routes: Routes = [
   {
     path: 'login',
     loadChildren: () =>
-      import('./features/login/login.module').then(
-        (m) => m.LoginModule
-      ),
+      import('./features/login/login.module').then((m) => m.LoginModule),
     data: {
       authLayout: true
     }
@@ -43,32 +44,24 @@ const routes: Routes = [
   {
     path: 'me',
     loadChildren: () =>
-      import('./features/me/me.module').then(
-        (m) => m.MeModule
-      ),
+      import('./features/me/me.module').then((m) => m.MeModule),
     canActivate: [AuthService]
   },
   {
     path: 'courses',
     loadChildren: () =>
-      import('./features/courses/courses.module').then(
-        (m) => m.CoursesModule
-      ),
+      import('./features/courses/courses.module').then((m) => m.CoursesModule),
     canActivate: [AuthService]
   },
   {
     path: 'profile/:uuid',
     loadChildren: () =>
-      import('./features/profile/profile.module').then(
-        (m) => m.ProfileModule
-      ),
+      import('./features/profile/profile.module').then((m) => m.ProfileModule)
   },
   {
     path: 'check-in',
     loadChildren: () =>
-      import('./features/check-in/check-in.module').then(
-        (m) => m.CheckInModule
-      ),
+      import('./features/check-in/check-in.module').then((m) => m.CheckInModule)
   },
   {
     path: CHECK_IN_TOP_PATH,
@@ -83,17 +76,13 @@ const routes: Routes = [
   {
     path: 'setting',
     loadChildren: () =>
-      import('./features/setting/setting.module').then(
-        (m) => m.SettingModule
-      ),
+      import('./features/setting/setting.module').then((m) => m.SettingModule),
     canActivate: [AuthService]
   },
   {
     path: 'admin',
     loadChildren: () =>
-      import('./features/admin/admin.module').then(
-        (m) => m.AdminModule
-      ),
+      import('./features/admin/admin.module').then((m) => m.AdminModule),
     canActivate: [AuthService]
   },
   {
@@ -113,11 +102,9 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes, {
       scrollPositionRestoration: 'enabled',
-      preloadingStrategy: PreloadAllModules,
-      relativeLinkResolution: 'legacy'
+      preloadingStrategy: PreloadAllModules
     })
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

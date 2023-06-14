@@ -7,7 +7,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { AdminApiService } from '../../../api/admin/admin-api.service';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { MatLegacyChipInputEvent as MatChipInputEvent } from '@angular/material/legacy-chips';
 import { displayRoleName } from '../../../api/models/user';
 import { Levels } from '../../../services/coach-level';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
