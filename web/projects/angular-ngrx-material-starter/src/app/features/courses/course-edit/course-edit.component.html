@@ -35,13 +35,13 @@
       <div class="row w-100 mt-1">
         <mat-form-field appearance="fill">
           <mat-label>上课内容</mat-label>
-          <textarea formControlName="content" matInput [rows]="4" [mat-autosize]="true"></textarea>
+          <textarea formControlName="content" matInput [rows]="4" cdkTextareaAutosize></textarea>
         </mat-form-field>
       </div>
       <div class="row w-100">
         <mat-form-field appearance="fill">
           <mat-label>总结</mat-label>
-          <textarea formControlName="summary" matInput [rows]="4" [mat-autosize]="true"></textarea>
+          <textarea formControlName="summary" cdkTextareaAutosize matInput [rows]="4"></textarea>
         </mat-form-field>
       </div>
       <div class="row w-100">

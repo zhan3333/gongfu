@@ -10,7 +10,7 @@ export const environment = {
   envName: 'DEV',
   production: false,
   test: false,
-  i18nPrefix: '',
+  i18nPrefix: '/web',
   versions: {
     app: packageJson.version,
     angular: packageJson.dependencies['@angular/core'],
@@ -25,5 +25,5 @@ export const environment = {
     cypress: packageJson.devDependencies['cypress'],
     eslint: packageJson.devDependencies['eslint']
   },
-  api: 'http://127.0.0.1:9003/api',
+  api: 'http://127.0.0.1:9003/api'
 };

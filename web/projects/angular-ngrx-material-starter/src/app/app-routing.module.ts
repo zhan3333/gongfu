@@ -86,13 +86,6 @@ const routes: Routes = [
     canActivate: [AuthService]
   },
   {
-    path: 'examples',
-    loadChildren: () =>
-      import('./features/examples/examples.module').then(
-        (m) => m.ExamplesModule
-      )
-  },
-  {
     path: '**',
     redirectTo: 'me'
   }

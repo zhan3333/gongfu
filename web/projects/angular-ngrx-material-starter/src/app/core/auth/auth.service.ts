@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { Observable, ReplaySubject } from 'rxjs';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { User } from '../../api/models/user';
 
 const KEY_IS_AUTHENTICATED = 'isAuthenticated'
@@ -12,7 +12,7 @@ const KEY_AUTH = 'auth'
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService implements CanActivate {
+export class AuthService  {
   public isAuthenticated$ = new ReplaySubject<boolean>();
   public accessToken$ = new ReplaySubject<string>();
   public user$ = new ReplaySubject<User>();
