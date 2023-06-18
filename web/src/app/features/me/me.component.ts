@@ -82,22 +82,22 @@ export class MeComponent implements OnInit {
   }[] {
     return [
       {
-        img: 'https://lanhu.oss-cn-beijing.aliyuncs.com/pspcvyjzpfl68le8lxb1vmx8a0q8q3tlht8965c932-bc41-4dcc-a256-f1eefd950ced',
+        img: 'assets/icon1.png',
         name: '去打卡',
         link: '/check-in'
       },
       {
-        img: 'https://lanhu.oss-cn-beijing.aliyuncs.com/pse062snx0cmqaf53pe9abguf9wzv373lse743c141-d793-4024-9e58-57702bd4a8d6',
+        img: 'assets/icon2.png',
         name: '打卡排行',
         link: '/check-in-top'
       },
       {
-        img: 'https://lanhu.oss-cn-beijing.aliyuncs.com/ps1ve9zudnkd8t0f63uxinsolqq479qy5j8e06716b-4dd0-491d-bfe6-bce982c080f8',
+        img: 'assets/icon3.png',
         name: '历史打卡',
         link: '/check-in-histories'
       },
       {
-        img: 'https://lanhu.oss-cn-beijing.aliyuncs.com/psqrytvmyg29m8x1bajsr5zkl1jxycqkzun7f81ffc5-78bb-4b26-ab59-0ff4f8228cd8',
+        img: 'assets/icon4.png',
         name: '更多信息',
         link: `/profile/${user.uuid}`
       }
@@ -162,7 +162,7 @@ export class MeComponent implements OnInit {
   }
 
   public toWeChatLogin() {
-    window.location.href = '/login';
+    window.location.href = '/wechat-login';
   }
 
   private displayUserInfo() {

@@ -9,7 +9,7 @@ build_api:
 build_web:
 	cd web && yarn run build:prod
 	rm -rf build/web/*
-	cp -r web/dist/angular-ngrx-material-starter/* build/web/
+	cp -r web/dist/gongfu/* build/web/
 
 # 更新 api 服务
 upload_api: build_api

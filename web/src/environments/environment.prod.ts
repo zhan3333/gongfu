@@ -1,4 +1,4 @@
-const packageJson = require('../../../../package.json');
+const packageJson = require('../../package.json');
 
 export const environment = {
   appName: '常武功夫',
@@ -21,5 +21,5 @@ export const environment = {
     cypress: packageJson.devDependencies['cypress'],
     eslint: packageJson.devDependencies['eslint']
   },
-  api: '/api',
+  api: '/api'
 };
