@@ -1,0 +1,77 @@
+<mat-card appearance="outlined" class="m-1">
+  <mat-card-title>今日打卡</mat-card-title>
+  <mat-card-subtitle *ngIf="!todayCheckIn">今日还未打卡，点击按钮上传打卡文件</mat-card-subtitle>
+  <mat-card-subtitle *ngIf="todayCheckIn">已打卡</mat-card-subtitle>
+  <mat-card-content>
+    <ng-container>
+      <!--从相册中选择-->
+      <div class="container my-5">
+        <div class="row justify-content-center">
+          <div class="col-auto">
+            <!--未打卡时-->
+            <ng-container *ngIf="!todayCheckIn">
+              <input type="file" [style.display]="'none'"
+                     (change)="onFileSelected($event)" #fileUpload accept="video/*">
+              <button mat-fab color="primary" aria-label="选择打卡视频" (click)="fileUpload.click()" class="ms-1"
+                      [disabled]="loading">
+                <mat-icon>
+                  <fa-icon [icon]="faFile"></fa-icon>
+                </mat-icon>
+              </button>
+            </ng-container>
+            <!--已打卡时-->
+            <ng-container *ngIf="todayCheckIn">
+              <button mat-fab style="background-color: green" aria-label="重新选择打卡视频" class="ms-1">
+                <mat-icon>
+                  <fa-icon [icon]="faCheck"></fa-icon>
+                </mat-icon>
+              </button>
+            </ng-container>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-auto">
+            <p *ngIf="file">已选择: {{file.name}}</p>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" class="w-100" (click)="confirmCheckIn()" *ngIf="!todayCheckIn"
+            [disabled]="!file || loading">
+      {{'确认打卡'}}
+    </button>
+    <ng-container *ngIf="todayCheckIn">
+      <div class="container">
+        <div class="row">
+          <div class="col-6">
+            <button mat-raised-button color="accent" class="w-100" (click)="toShowCheckIn(todayCheckIn.key)">
+              {{'查看视频'}}
+            </button>
+          </div>
+          <div class="col-6">
+            <button mat-button color="warn" class="w-100" (click)="resetCheckIn()">
+              {{'重新打卡'}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+  </mat-card-actions>
+  <mat-card-footer>
+    <mat-progress-bar mode="determinate" *ngIf="uploadProgressValue != 0"
+                      [value]="uploadProgressValue"></mat-progress-bar>
+  </mat-card-footer>
+</mat-card>
+<mat-card appearance="outlined" class="m-1" *ngIf="userID !== 0">
+  <mat-calendar [dateClass]="dateClass()"
+                (monthSelected)="onMonthSelected($event)"
+                [headerComponent]="calendarHeader">
+  </mat-calendar>
+  <mat-card-footer>
+    <mat-progress-bar mode="query" *ngIf="calendarLoading"></mat-progress-bar>
+  </mat-card-footer>
+</mat-card>
+

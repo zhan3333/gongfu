@@ -4,7 +4,9 @@
     "es6": true,
     "node": true
   },
-  "extends": ["prettier", "prettier/@typescript-eslint"],
+  "extends": [
+    "prettier"
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "tsconfig.json",
@@ -19,11 +21,19 @@
   "rules": {
     "@angular-eslint/directive-selector": [
       "error",
-      { "type": "attribute", "prefix": "anms", "style": "camelCase" }
+      {
+        "type": "attribute",
+        "prefix": "anms",
+        "style": "camelCase"
+      }
     ],
     "@angular-eslint/component-selector": [
       "error",
-      { "type": "element", "prefix": "anms", "style": "kebab-case" }
+      {
+        "type": "element",
+        "prefix": "anms",
+        "style": "kebab-case"
+      }
     ],
     "@angular-eslint/component-class-suffix": "error",
     "@angular-eslint/directive-class-suffix": "error",
@@ -53,7 +63,10 @@
     "@typescript-eslint/no-non-null-assertion": "error",
     "@typescript-eslint/no-unused-expressions": "error",
     "@typescript-eslint/prefer-function-type": "error",
-    "@typescript-eslint/quotes": ["error", "single"],
+    "@typescript-eslint/quotes": [
+      "error",
+      "single"
+    ],
     "@typescript-eslint/tslint/config": [
       "error",
       {
@@ -65,7 +78,10 @@
     "@typescript-eslint/unified-signatures": "error",
     "arrow-body-style": "error",
     "constructor-super": "error",
-    "eqeqeq": ["error", "smart"],
+    "eqeqeq": [
+      "error",
+      "smart"
+    ],
     "guard-for-in": "error",
     "id-blacklist": "off",
     "id-match": "off",
@@ -109,8 +125,12 @@
     "no-restricted-imports": [
       "error",
       {
-        "paths": ["rxjs/Rx"],
-        "patterns": ["rxjs/(?!operators|testing)"]
+        "paths": [
+          "rxjs/Rx"
+        ],
+        "patterns": [
+          "rxjs/(?!operators|testing)"
+        ]
       }
     ],
     "no-shadow": [
@@ -130,7 +150,9 @@
       "error",
       "always",
       {
-        "markers": ["/"]
+        "markers": [
+          "/"
+        ]
       }
     ],
     "indent": "off"

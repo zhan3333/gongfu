@@ -1,0 +1,68 @@
+<mat-card appearance="outlined">
+  <mat-card-header>Course detail</mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="form" class="container">
+      <div class="row w-100">
+        <mat-form-field appearance="fill">
+          <mat-label>学校</mat-label>
+          <input matInput [value]="course?.school?.name" disabled>
+        </mat-form-field>
+      </div>
+      <div class="row w-100">
+        <mat-form-field appearance="fill">
+          <mat-label>上课时间</mat-label>
+          <input matInput [value]="course?.startDate + ' ' + course?.startTime" disabled>
+        </mat-form-field>
+      </div>
+      <div class="row w-100">
+        <mat-form-field appearance="fill">
+          <mat-label>负责人</mat-label>
+          <input matInput [value]="course?.manager?.name" disabled>
+        </mat-form-field>
+      </div>
+      <div class="row w-100">
+        <mat-form-field appearance="fill">
+          <mat-label>教练</mat-label>
+          <input matInput [value]="course?.coach?.name" disabled>
+        </mat-form-field>
+      </div>
+      <div class="row w-100">
+        <mat-label>助教</mat-label>
+        <mat-chip-listbox class="mt-1">
+          <mat-chip-option *ngFor="let coach of course?.assistantCoaches">{{coach.name}}</mat-chip-option>
+        </mat-chip-listbox>
+      </div>
+      <div class="row w-100 mt-1">
+        <mat-form-field appearance="fill">
+          <mat-label>上课内容</mat-label>
+          <textarea formControlName="content" matInput [rows]="4" cdkTextareaAutosize></textarea>
+        </mat-form-field>
+      </div>
+      <div class="row w-100">
+        <mat-form-field appearance="fill">
+          <mat-label>总结</mat-label>
+          <textarea formControlName="summary" cdkTextareaAutosize matInput [rows]="4"></textarea>
+        </mat-form-field>
+      </div>
+      <div class="row w-100">
+        <mat-card appearance="outlined">
+          <mat-card-header>图片</mat-card-header>
+          <ng-container *ngFor="let image of form.value['images']">
+            <img mat-card-image [src]="api.visitFile(image)" alt="Image" (click)="removeImage(image)">
+          </ng-container>
+          <mat-card-actions>
+            <button mat-raised-button (click)="fileUpload.click()">上传</button>
+            <input [hidden]="true" type="file" (change)="onImageSelected($event)" #fileUpload accept="image/*">
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <div class="container">
+      <div class="row">
+        <button class="col" mat-raised-button color="primary" (click)="onSave()">保存</button>
+      </div>
+    </div>
+  </mat-card-actions>
+</mat-card>

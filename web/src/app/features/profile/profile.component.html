@@ -1,0 +1,48 @@
+<div *ngIf="profile">
+  <mat-card appearance="outlined" class="m-2">
+    <div class="text-center">
+      <img [ngSrc]="profile.headimgurl || ''" alt="head_img" class="head_img" fill="">
+      <div class="mt-1">@{{profile.nickname}}</div>
+    </div>
+  </mat-card>
+  <mat-card appearance="outlined" class="m-2">
+    <mat-list>
+      <mat-list-item>
+        <mat-icon matListItemIcon class="icon">
+          <fa-icon [icon]="faUsers"></fa-icon>
+        </mat-icon>
+        <div mat-line>
+          {{'角色: ' + profile.displayRoles()}}
+        </div>
+      </mat-list-item>
+      <mat-list-item *ngIf="profile.coach?.level">
+        <mat-icon matListItemIcon class="icon">
+          <fa-icon [icon]="faUser"></fa-icon>
+        </mat-icon>
+        <div mat-line>{{'教练级别: ' + displayLevel(profile.coach?.level)}}</div>
+      </mat-list-item>
+      <mat-list-item *ngIf="profile.coach?.teachingSpace">
+        <mat-icon matListItemIcon class="icon">
+          <fa-icon [icon]="faBuilding"></fa-icon>
+        </mat-icon>
+        <div mat-line>{{'任教单位: ' + profile.coach?.teachingSpace || ''}}</div>
+      </mat-list-item>
+      <mat-list-item *ngIf="profile.coach?.teachingAge">
+        <mat-icon matListItemIcon class="icon">
+          <fa-icon [icon]="faAddressBook"></fa-icon>
+        </mat-icon>
+        <div mat-line>{{'任教年限: ' + profile.coach?.teachingAge || ''}}</div>
+      </mat-list-item>
+      <mat-list-item *ngIf="(profile.coach?.teachingExperiences || []).length > 0">
+        <mat-icon matListItemIcon class="icon">
+          <fa-icon [icon]="faList"></fa-icon>
+        </mat-icon>
+        <div mat-line>{{'任教经历: '}}</div>
+        <div mat-line *ngFor="let e of profile.coach?.teachingExperiences">
+          <div class="ms-3">{{'- ' + e}}</div>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+</div>
+

@@ -1,0 +1,31 @@
+<mat-card appearance="outlined" class="m-1">
+  <div class="text-center" matRipple>
+    <img  [src]="user?.headimgurl" alt="head_img" class="head_img" (click)="selectHeadImage()">
+    <div class="mt-1">@{{user?.nickname}}</div>
+  </div>
+</mat-card>
+<input type="file" [style.display]="'none'"
+       (change)="onFileSelected($event)" #fileUpload accept="image/*">
+
+<div class=" my-2 px-1">
+  <button mat-raised-button color="primary" class="w-100" (click)="selectHeadImage()">{{'更改头像'}}</button>
+</div>
+
+<mat-card appearance="outlined" class="m-1">
+  <mat-card-header>
+    <mat-card-title>{{'编辑个人信息'}}</mat-card-title>
+  </mat-card-header>
+  <form [formGroup]="userForm" class="container">
+    <mat-form-field class="w-100 row">
+      <mat-label>{{'输入新的昵称'}}</mat-label>
+      <input matInput formControlName="nickname">
+    </mat-form-field>
+    <div class="row justify-content-end">
+      <div class="col-auto">
+        <button mat-raised-button color="accent" (click)="saveUserForm()"
+                [disabled]="userForm.invalid || loading">{{'保存'}}</button>
+      </div>
+    </div>
+
+  </form>
+</mat-card>
