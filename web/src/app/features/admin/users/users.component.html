@@ -1,10 +1,10 @@
 <div>
-  <table mat-table [dataSource]="dataSource" class="w-100">
+  <table [dataSource]="dataSource" class="w-100" mat-table>
     <!-- actions -->
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef> 操作</th>
-      <td mat-cell *matCellDef="let user">
-        <button mat-icon-button color="primary" [routerLink]="'/admin/users/' + user?.id">
+      <th *matHeaderCellDef mat-header-cell> 操作</th>
+      <td *matCellDef="let user" mat-cell>
+        <button [routerLink]="'/admin/users/' + user?.id" color="primary" mat-icon-button>
           <mat-icon>
             <fa-icon [icon]="faEdit"></fa-icon>
           </mat-icon>
@@ -12,44 +12,38 @@
       </td>
     </ng-container>
 
-    <!-- id -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> ID</th>
-      <td mat-cell *matCellDef="let element"> {{element?.id}} </td>
-    </ng-container>
-
     <!-- Avatar -->
     <ng-container matColumnDef="avatar">
-      <th mat-header-cell *matHeaderCellDef> 头像</th>
-      <td mat-cell *matCellDef="let element">
+      <th *matHeaderCellDef mat-header-cell> 头像</th>
+      <td *matCellDef="let element" mat-cell>
         <img [src]="element?.headimgurl" alt="head_img" class="head_img" style="height: 60px; width: 60px">
       </td>
     </ng-container>
 
     <!-- Nickname -->
     <ng-container matColumnDef="nickname">
-      <th mat-header-cell *matHeaderCellDef> 昵称</th>
-      <td mat-cell *matCellDef="let element"> {{element?.nickname}} </td>
+      <th *matHeaderCellDef mat-header-cell> 昵称</th>
+      <td *matCellDef="let element" mat-cell> {{element?.nickname}} </td>
     </ng-container>
 
     <!-- Phone -->
     <ng-container matColumnDef="phone">
-      <th mat-header-cell *matHeaderCellDef> 电话</th>
-      <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+      <th *matHeaderCellDef mat-header-cell> 电话</th>
+      <td *matCellDef="let element" mat-cell> {{element.phone}} </td>
     </ng-container>
 
     <!-- roles -->
     <ng-container matColumnDef="roles">
-      <th mat-header-cell *matHeaderCellDef> 角色</th>
-      <td mat-cell *matCellDef="let element"> {{element.displayRoles()}} </td>
+      <th *matHeaderCellDef mat-header-cell> 角色</th>
+      <td *matCellDef="let element" mat-cell> {{element.displayRoles()}} </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
   </table>
 
   <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                 showFirstLastButtons
-                 aria-label="Select page of periodic elements">
+                 aria-label="Select page of periodic elements"
+                 showFirstLastButtons>
   </mat-paginator>
 </div>

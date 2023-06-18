@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { User } from '../../../api/models/user';
-import { ApiService } from '../../../api/api.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { AdminApiService } from '../../../api/admin/admin-api.service';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -15,8 +14,7 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'anms-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class UsersComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
@@ -24,7 +22,6 @@ export class UsersComponent implements OnInit, AfterViewInit {
 
   public displayedColumns: string[] = [
     'actions',
-    'id',
     'avatar',
     'nickname',
     'phone',

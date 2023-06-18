@@ -1,5 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit
+} from '@angular/core';
+import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { ApiService } from '../../api/api.service';
@@ -7,18 +12,22 @@ import { ICoach, User } from '../../api/models/user';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
+  faAngleRight,
   faCalendar,
   faCheck,
   faUser,
-  faWrench
+  faWrench,
+  IconDefinition
 } from '@fortawesome/free-solid-svg-icons';
 import { faBolt } from '@fortawesome/free-solid-svg-icons/faBolt';
-import { NgIf, NgOptimizedImage, NgStyle } from '@angular/common';
+import { NgForOf, NgIf, NgOptimizedImage, NgStyle } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatRippleModule } from '@angular/material/core';
 
 @Component({
   standalone: true,
@@ -33,13 +42,16 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FontAwesomeModule,
     MatIconModule,
     NgIf,
-    NgStyle
+    NgStyle,
+    MatChipsModule,
+    MatRippleModule,
+    NgForOf
   ],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MeComponent implements OnInit {
   public accessToken = '';
-  public user: User | undefined;
+  public user: User | undefined = undefined;
   public coach: ICoach | undefined;
   public bindPhone = new UntypedFormControl('', [
     Validators.required,
@@ -52,19 +64,85 @@ export class MeComponent implements OnInit {
   ]);
   public sendValidCodeLimiting = 0;
   public loading = false;
-  protected readonly faWrench = faWrench;
-  protected readonly faCalendar = faCalendar;
-  protected readonly faUser = faUser;
-  protected readonly faBolt = faBolt;
-  protected readonly faCheck = faCheck;
+  protected readonly faAngleRight = faAngleRight;
 
   constructor(
     private activeRoute: ActivatedRoute,
     private authService: AuthService,
     private readonly notificationService: NotificationService,
     private api: ApiService,
-    private router: Router
+    private router: Router,
+    private changeRef: ChangeDetectorRef
   ) {}
+
+  public blockMenus(user: User): {
+    img: string;
+    name: string;
+    link: string;
+  }[] {
+    return [
+      {
+        img: 'https://lanhu.oss-cn-beijing.aliyuncs.com/pspcvyjzpfl68le8lxb1vmx8a0q8q3tlht8965c932-bc41-4dcc-a256-f1eefd950ced',
+        name: '去打卡',
+        link: '/check-in'
+      },
+      {
+        img: 'https://lanhu.oss-cn-beijing.aliyuncs.com/pse062snx0cmqaf53pe9abguf9wzv373lse743c141-d793-4024-9e58-57702bd4a8d6',
+        name: '打卡排行',
+        link: '/check-in-top'
+      },
+      {
+        img: 'https://lanhu.oss-cn-beijing.aliyuncs.com/ps1ve9zudnkd8t0f63uxinsolqq479qy5j8e06716b-4dd0-491d-bfe6-bce982c080f8',
+        name: '历史打卡',
+        link: '/check-in-histories'
+      },
+      {
+        img: 'https://lanhu.oss-cn-beijing.aliyuncs.com/psqrytvmyg29m8x1bajsr5zkl1jxycqkzun7f81ffc5-78bb-4b26-ab59-0ff4f8228cd8',
+        name: '更多信息',
+        link: `/profile/${user.uuid}`
+      }
+    ];
+  }
+
+  public listMenus(user: User): {
+    icon: IconDefinition;
+    name: string;
+    link: string;
+    queryParams: Params | null;
+  }[] {
+    return [
+      {
+        icon: faCheck,
+        name: '去打卡',
+        link: '/check-in',
+        queryParams: null
+      },
+      {
+        icon: faBolt,
+        name: '我的历史打卡',
+        link: '/check-in-histories',
+        queryParams: { userID: user.id }
+      },
+      {
+        icon: faCalendar,
+        name: '打卡榜单',
+        link: '/check-in-top',
+        queryParams: null
+      },
+      {
+        icon: faUser,
+        name: '更多信息',
+        link: `/profile/${user.uuid}`,
+        queryParams: null
+      },
+      {
+        icon: faWrench,
+        name: '设置',
+        link: '/setting',
+        queryParams: null
+      }
+    ];
+  }
 
   ngOnInit(): void {
     this.displayUserInfo();
@@ -90,11 +168,13 @@ export class MeComponent implements OnInit {
   private displayUserInfo() {
     this.api.me().subscribe(
       (user) => {
+        console.log('user', user);
         this.user = user;
         this.authService.setUser(user);
         if (user.hasRole('coach')) {
           this.api.getCoach().subscribe((data) => (this.coach = data));
         }
+        this.changeRef.markForCheck();
       },
       (error) => {
         if (error instanceof HttpErrorResponse) {

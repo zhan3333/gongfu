@@ -1,14 +1,10 @@
-<mat-card appearance="outlined">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-auto">
-        <img *ngIf="checkIn?.headImgUrl"
-             class="head_img"
-             [src]="checkIn?.headImgUrl"
-             [routerLink]="'/profile/' + checkIn?.userUUID"
-        />
-      </div>
-    </div>
+<mat-card appearance="outlined" class="h-full">
+  <div class="flex flex-nowrap flex-col items-center mt-4">
+    <img *ngIf="checkIn?.headImgUrl"
+         [routerLink]="'/profile/' + checkIn?.userUUID"
+         [src]="checkIn?.headImgUrl"
+         alt=""
+         class="head_img"/>
     <div class="row">
       <h2 class="text-center">{{checkIn?.userName}}</h2>
     </div>
@@ -21,7 +17,7 @@
   </mat-card-subtitle>
   <mat-card-content>
     <ng-container *ngIf="checkIn">
-      <video controls [style.width]="'100%'">
+      <video [style.width]="'100%'" controls>
         <source [src]="checkIn.url">
         Your browser does not support the video tag.
       </video>

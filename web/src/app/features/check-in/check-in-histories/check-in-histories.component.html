@@ -1,6 +1,9 @@
 <mat-card appearance="outlined" class="m-1">
-  <mat-calendar [dateClass]="dateClass()"
-                (monthSelected)="onMonthSelected($event)"
+  <mat-card-header>
+    <mat-card-title>打卡历史</mat-card-title>
+  </mat-card-header>
+  <mat-calendar (monthSelected)="onMonthSelected($event)"
+                [dateClass]="dateClass()"
                 [headerComponent]="calendarHeader">
   </mat-calendar>
 </mat-card>

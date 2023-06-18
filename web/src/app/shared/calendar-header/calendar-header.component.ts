@@ -13,65 +13,49 @@ import {
   MatDateFormats
 } from '@angular/material/core';
 import { takeUntil } from 'rxjs/operators';
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAngleLeft,
+  faAngleRight,
+  faAnglesLeft,
+  faAnglesRight,
+  faArrowLeft,
+  faArrowRight
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'anms-calendar-header',
   styles: [
     `
-          .example-header {
-            display: flex;
-            align-items: center;
-            padding: 0.5em;
-          }
-    
-          .example-header-label {
-            flex: 1;
-            height: 1em;
-            font-weight: 500;
-            text-align: center;
-          }
-    
-          .example-double-arrow .mat-icon {
-            margin: -22%;
-          }
-        `
+      .example-header {
+        display: flex;
+        align-items: center;
+        padding: 0.5em;
+      }
+    `
   ],
   template: `
     <div class="example-header">
-      <button
-        mat-icon-button
-        class="example-double-arrow"
-        (click)="previousClicked('year')"
-      >
+      <button mat-icon-button (click)="previousClicked('year')">
         <mat-icon>
-          <fa-icon [icon]="faArrowLeft"></fa-icon>
-        </mat-icon>
-        <mat-icon>
-          <fa-icon [icon]="faArrowLeft"></fa-icon>
+          <fa-icon [icon]="faAnglesLeft"></fa-icon>
         </mat-icon>
       </button>
       <button mat-icon-button (click)="previousClicked('month')">
         <mat-icon>
-          <fa-icon [icon]="faArrowLeft"></fa-icon>
+          <fa-icon [icon]="faAngleLeft"></fa-icon>
         </mat-icon>
       </button>
-      <span class="example-header-label">{{ periodLabel }}</span>
+      <span style="flex: 1;height: 1em;font-weight: 500;text-align: center;">{{
+        periodLabel
+      }}</span>
       <button mat-icon-button (click)="nextClicked('month')">
         <mat-icon>
-          <fa-icon [icon]="faArrowRight"></fa-icon>
+          <fa-icon [icon]="faAngleRight"></fa-icon>
         </mat-icon>
       </button>
-      <button
-        mat-icon-button
-        class="example-double-arrow"
-        (click)="nextClicked('year')"
-      >
+      <button mat-icon-button (click)="nextClicked('year')">
         <mat-icon>
-          <fa-icon [icon]="faArrowRight"></fa-icon>
-        </mat-icon>
-        <mat-icon>
-          <fa-icon [icon]="faArrowRight"></fa-icon>
+          <fa-icon [icon]="faAnglesRight"></fa-icon>
         </mat-icon>
       </button>
     </div>
@@ -81,6 +65,10 @@ import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 export class CalendarHeaderComponent<D> implements OnDestroy {
   public faArrowLeft = faArrowLeft;
   public faArrowRight = faArrowRight;
+  protected readonly faAnglesRight = faAnglesRight;
+  protected readonly faAnglesLeft = faAnglesLeft;
+  protected readonly faAngleLeft = faAngleLeft;
+  protected readonly faAngleRight = faAngleRight;
   private _destroyed = new Subject<void>();
 
   constructor(
@@ -94,11 +82,6 @@ export class CalendarHeaderComponent<D> implements OnDestroy {
       .subscribe(() => cdr.markForCheck());
   }
 
-  ngOnDestroy() {
-    this._destroyed.next();
-    this._destroyed.complete();
-  }
-
   get periodLabel() {
     return this._dateAdapter
       .format(
@@ -106,6 +89,11 @@ export class CalendarHeaderComponent<D> implements OnDestroy {
         this._dateFormats.display.monthYearLabel
       )
       .toLocaleUpperCase();
+  }
+
+  ngOnDestroy() {
+    this._destroyed.next();
+    this._destroyed.complete();
   }
 
   previousClicked(mode: 'month' | 'year') {
