@@ -1,5 +1,4 @@
 import {
-  AfterViewChecked,
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
@@ -17,7 +16,7 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './users.component.html',
   changeDetection: ChangeDetectionStrategy.Default
 })
-export class UsersComponent implements OnInit, AfterViewInit, AfterViewChecked {
+export class UsersComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   public faEdit = faEdit;
 
@@ -56,16 +55,15 @@ export class UsersComponent implements OnInit, AfterViewInit, AfterViewChecked {
       });
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    console.log('after view init', this.paginator);
+    this.refreshTable();
 
-  ngAfterViewChecked(): void {
     if (this.paginator === undefined) {
       return;
     }
-    this.paginator.page.subscribe((v) => {
+    this.paginator.page.subscribe(() => {
       this.refreshTable();
     });
-    // this.dataSource.paginator = this.paginator
-    this.refreshTable();
   }
 }

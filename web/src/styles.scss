@@ -26,31 +26,31 @@
 @import './app/app/app.component.scss-theme';
 @import './app/shared/big-input/big-input/big-input.component.scss-theme';
 @import './app/features/about/about/about.component.scss-theme';
-@mixin custom-components-theme($theme) {
+/*@mixin custom-components-theme($theme) {
   @include anms-styles-reset-theme($theme);
   @include anms-app-component-theme($theme);
   @include anms-about-component-theme($theme);
   @include anms-big-input-component-theme($theme);
-}
+}*/
 
 .default-theme {
-  @include mat.all-component-themes($anms-theme);
-  @include custom-components-theme($anms-theme);
+  @include mat.all-component-colors($anms-theme);
+  /*@include custom-components-theme($anms-theme);*/
 }
 
 .light-theme {
-  @include mat.all-component-themes($anms-light-theme);
-  @include custom-components-theme($anms-light-theme);
+  @include mat.all-component-colors($anms-light-theme);
+  /*@include custom-components-theme($anms-light-theme);*/
 }
 
 .black-theme {
-  @include mat.all-component-themes($anms-black-theme);
-  @include custom-components-theme($anms-black-theme);
+  @include mat.all-component-colors($anms-black-theme);
+  /*@include custom-components-theme($anms-black-theme);*/
 }
 
 .nature-theme {
-  @include mat.all-component-themes($anms-nature-theme);
-  @include custom-components-theme($anms-nature-theme);
+  @include mat.all-component-colors($anms-nature-theme);
+  /*@include custom-components-theme($anms-nature-theme);*/
 }
 
 .head_img {

@@ -13,13 +13,13 @@ import { UntypedFormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   faAngleRight,
+  faBolt,
   faCalendar,
   faCheck,
   faUser,
   faWrench,
   IconDefinition
 } from '@fortawesome/free-solid-svg-icons';
-import { faBolt } from '@fortawesome/free-solid-svg-icons/faBolt';
 import { NgForOf, NgIf, NgOptimizedImage, NgStyle } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
