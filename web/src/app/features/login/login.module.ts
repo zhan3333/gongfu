@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { LoginComponent } from './login.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -11,7 +11,8 @@ import { LoginRoutingModule } from './login-routing.module';
     CommonModule,
     SharedModule,
     MatProgressBarModule,
-    LoginRoutingModule
+    LoginRoutingModule,
+    NgOptimizedImage
   ]
 })
 export class LoginModule {}

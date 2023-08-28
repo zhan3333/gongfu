@@ -4,10 +4,6 @@
 
 @import 'styles-variables';
 
-//@import 'bootstrap/scss/bootstrap-reboot';
-//@import 'bootstrap/scss/bootstrap-grid';
-//@import 'bootstrap/scss/bootstrap';
-//@import 'bootstrap/scss/bootstrap-utilities';
 @import 'styles-reset';
 
 // TODO(v15): As of v15 mat.legacy-core no longer includes default typography styles.
@@ -30,7 +26,6 @@
 @import './app/app/app.component.scss-theme';
 @import './app/shared/big-input/big-input/big-input.component.scss-theme';
 @import './app/features/about/about/about.component.scss-theme';
-
 @mixin custom-components-theme($theme) {
   @include anms-styles-reset-theme($theme);
   @include anms-app-component-theme($theme);
@@ -70,3 +65,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field .mdc-notched-outline__notch {
+  border-right-style: hidden;
+}

@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"errors"
+	"flag"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
@@ -34,7 +35,12 @@ import (
 )
 
 func main() {
-	viper.SetConfigFile("config/production.toml")
+	var configFile string
+	flag.StringVar(&configFile, "config", "config/production.toml", "use config file")
+	flag.Parse()
+
+	fmt.Printf("use config file: %s\n", configFile)
+	viper.SetConfigFile(configFile)
 	if err := viper.ReadInConfig(); err != nil {
 		panic("read config failed: " + err.Error())
 	}
@@ -46,7 +52,8 @@ func main() {
 	if err := initLogger(&conf.Logger); err != nil {
 		panic(err)
 	}
-	r := gin.Default()
+	r := gin.New()
+	r.Use(middlewares.JSONLogMiddleware(), gin.Recovery())
 	oa := getOfficialAccount(&conf)
 	redis2, err := getRedis(&conf.Redis)
 	if err != nil {

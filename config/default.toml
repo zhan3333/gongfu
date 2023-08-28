@@ -1,4 +1,5 @@
 webPath = 'build/web'
+# local、production
 env = 'dev'
 
 [wechat]

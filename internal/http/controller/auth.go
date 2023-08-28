@@ -13,6 +13,10 @@ import (
 
 var wechatLoginURL = "/web/login"
 
+var wechatAuthRedirectURL = "https://gongfu.grianchan.com/wechat-login"
+
+//var wechatAuthRedirectURL = "http://127.0.0.1:9003/wechat-login"
+
 // WeChatLogin 公众号登录
 // /login 时会 302 到微信授权登录页面, 用户确认授权后返回到 /login?code={} 地址
 // /login?code={} 时处理 code 为 accessToken 获取微信用户信息
@@ -22,7 +26,7 @@ var wechatLoginURL = "/web/login"
 // 如果用户已登录，则直接重定向到 /me
 func (r UseCase) WeChatLogin(c *app.Context) result.Result {
 	if c.Query("code") == "" {
-		authPage, err := r.OfficialAccount.GetOauth().GetRedirectURL("http://gongfu.grianchan.com/wechat-login", "snsapi_userinfo", "login")
+		authPage, err := r.OfficialAccount.GetOauth().GetRedirectURL(wechatAuthRedirectURL, "snsapi_userinfo", "login")
 		if err != nil {
 			return result.Err(fmt.Errorf("get redirect url: %w", err))
 		}

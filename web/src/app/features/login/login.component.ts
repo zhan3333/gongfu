@@ -19,7 +19,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'anms-login',
-  templateUrl: './login1.component.html',
+  templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default
 })
@@ -27,8 +27,6 @@ export class LoginComponent implements OnInit {
   @ViewChild(MatProgressBar) public progressBar: MatProgressBar | undefined;
   public faTrash = faTrash;
   public sendCodeTime = 0;
-  public isBindPhone = false;
-  public isLogin = false;
   public inSubmit = false;
   public inLoading = false;
 
@@ -49,32 +47,23 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     console.log('snapshot', this.activeRoute.snapshot);
-    // 默认是登录页
-    if (this.activeRoute.snapshot.queryParamMap.get('type') === 'bind_phone') {
-      this.isBindPhone = true;
-    } else {
-      this.isLogin = true;
-    }
-
-    if (this.isLogin) {
-      if (!this.authService.isAuthenticated()) {
-        const accessToken =
-          this.activeRoute.snapshot.queryParamMap.get('accessToken') ?? '';
-        if (accessToken !== '') {
-          this.authService.login(accessToken);
-          this.api.me().subscribe(
-            (user) => {
-              this.authService.setUser(user);
-            },
-            () => {},
-            () => this.router.navigate(['/me']).then(() => location.reload())
-          );
-          return;
-        }
-      } else {
-        // 已登录且在登录页，跳转到 /me
-        this.toMe();
+    if (!this.authService.isAuthenticated()) {
+      const accessToken =
+        this.activeRoute.snapshot.queryParamMap.get('accessToken') ?? '';
+      if (accessToken !== '') {
+        this.authService.login(accessToken);
+        this.api.me().subscribe(
+          (user) => {
+            this.authService.setUser(user);
+          },
+          () => {},
+          () => this.router.navigate(['/me']).then(() => location.reload())
+        );
+        return;
       }
+    } else {
+      // 已登录且在登录页，跳转到 /me
+      this.toMe();
     }
 
     setInterval(() => {
@@ -84,83 +73,33 @@ export class LoginComponent implements OnInit {
     }, 1000);
   }
 
-  public sendValidCode() {
-    const phone = this.signinForm.get('phone')?.value;
-    if (this.isBindPhone) {
-      this.api.sendValidCode(phone).subscribe(
-        () => {
-          this.notify.success('发送验证码成功');
-        },
-        (error) => {
-          this.notify.error('发送验证码失败: ' + error);
-        }
-      );
-      this.sendCodeTime = 60;
-    } else {
-      this.notify.warn('暂不支持手机号登录');
-    }
-  }
-
   submit() {
     const signinData = this.signinForm.value;
+    console.log('submit');
     if (this.progressBar === undefined) {
       return;
     }
 
-    if (this.isBindPhone) {
-      // 绑定
-      this.progressBar.mode = 'indeterminate';
-      this.inLoading = true;
-      const phone = signinData['phone'];
-      const code = signinData['code'];
-      this.api
-        .validCode(phone, code)
-        .subscribe(
-          () => {
-            this.notify.success('绑定成功');
-            this.router.navigate(['/me']);
-          },
-          (error) => {
-            this.notify.error('绑定失败: ' + error);
-          }
-        )
-        .add(() => {
-          if (this.progressBar !== undefined) {
-            this.progressBar.mode = 'determinate';
-          }
-          this.inSubmit = false;
-          this.inLoading = false;
-        });
-    } else {
-      // 登录
-      this.progressBar.mode = 'indeterminate';
-      this.inLoading = true;
-      this.api
-        .login(signinData['phone'], signinData['code'] + '')
-        .subscribe((data: Login) => {
-          if (data.accessToken === undefined) {
-            this.notify.error('invalid login response');
-            return;
-          }
-          this.auth.login(data.accessToken);
-          this.notify.success('Login success');
-          this.toMe();
-        })
-        .add(() => {
-          if (this.progressBar !== undefined) {
-            this.progressBar.mode = 'determinate';
-          }
-          this.inSubmit = false;
-          this.inLoading = false;
-        });
-    }
-  }
-
-  canSendCode(): boolean {
-    if (this.sendCodeTime > 0) {
-      return false;
-    }
-    return !!this.signinForm.get('phone')?.valid;
+    this.progressBar.mode = 'indeterminate';
+    this.inLoading = true;
+    this.api
+      .login(signinData['phone'], signinData['code'] + '')
+      .subscribe((data: Login) => {
+        if (data.accessToken === undefined) {
+          this.notify.error('invalid login response');
+          return;
+        }
+        this.auth.login(data.accessToken);
+        this.notify.success('Login success');
+        this.toMe();
+      })
+      .add(() => {
+        if (this.progressBar !== undefined) {
+          this.progressBar.mode = 'determinate';
+        }
+        this.inSubmit = false;
+        this.inLoading = false;
+      });
   }
 
   // 清空手机号
@@ -170,6 +109,7 @@ export class LoginComponent implements OnInit {
 
   toWechatLogin() {
     window.location.href = '/wechat-login';
+    return false;
   }
 
   toMe() {

@@ -1,72 +1,126 @@
-<div class="d-flex px-3 bg align-items-center h-100">
-  <div class="w-100 m-0" style="max-width: 400px">
-    <mat-progress-bar mode="determinate" class="session-progress"></mat-progress-bar>
-    <mat-card>
-      <mat-card-content>
-        <div class="pb-1" style="text-align: center">
-          <img src="assets/logo-mini.png" alt="" class="mb-05">
-          <p class="text-muted m-0" *ngIf="isBindPhone">{{'您正在绑定手机号'}}</p>
-          <p class="text-muted m-0" *ngIf="isLogin">{{'登录'}}</p>
-        </div>
-        <form [formGroup]="signinForm" class="container">
-          <div class="row">
-            <mat-form-field class="col">
-              <mat-label>手机号</mat-label>
-              <input
-                matInput
-                type="tel"
-                name="phone"
-                [formControl]="signinForm.controls['phone'] | formControl"
-                placeholder="13888888888"
-                value="">
-              <mat-icon matSuffix (click)="cleanPhone()">
-                <fa-icon [icon]="faTrash"></fa-icon>
-              </mat-icon>
-            </mat-form-field>
-          </div>
+<div class="min-h-full">
+  <mat-progress-bar class="session-progress" mode="determinate"></mat-progress-bar>
+  <div class="flex flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+      <img
+        alt="Your Company"
+        class="mx-auto h-14 w-auto"
+        height="400"
+        ngSrc="assets/logo.png" width="400"
+      />
+      <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        时常学、时常想、时常练
+      </h2>
+    </div>
 
-          <div class="row">
-            <mat-form-field class="w-100 col">
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+      <div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+        <form (ngSubmit)="submit()" [formGroup]="signinForm" class="space-y-6">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>
+              手机
+            </mat-label>
+            <div class="mt-2">
               <input
-                type="number"
-                name="code"
+                autoComplete="phone"
+                formControlName="phone"
+                id="phone"
                 matInput
-                [formControl]="signinForm.controls['code'] | formControl"
-                placeholder="验证码"
-                value="">
-            </mat-form-field>
-            <div class="col">
-              <button mat-raised-button class="w-100" color="primary" (click)="sendValidCode()"
-                      [disabled]="!canSendCode()">
-                <ng-template [ngIf]="sendCodeTime > 0">{{sendCodeTime}}s</ng-template>
-                <ng-template [ngIf]="sendCodeTime == 0">{{'发送'}}</ng-template>
-              </button>
+                name="phone"
+                required
+              />
+            </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>
+              验证码
+            </mat-label>
+            <div class="mt-2">
+              <input
+                formControlName="code"
+                id="code"
+                matInput
+                name="code"
+                required
+                type="number"
+              />
+            </div>
+          </mat-form-field>
+
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <input
+                class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                id="remember-me"
+                name="remember-me"
+                type="checkbox"
+              />
+              <label class="ml-3 block text-sm leading-6 text-gray-900" htmlFor="remember-me">
+                Remember me
+              </label>
+            </div>
+
+            <div class="text-sm leading-6">
+              <a class="font-semibold text-indigo-600 hover:text-indigo-500">
+                Forgot password?
+              </a>
             </div>
           </div>
 
-          <div class="pb-1">
-            <mat-checkbox
-              name="rememberMe"
-              [formControl]="signinForm.controls['rememberMe'] | formControl"
-              class="pb-1">{{'记住我'}}
-            </mat-checkbox>
+          <div>
+            <button
+              [disabled]="signinForm.invalid"
+              class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm
+            hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              type="submit"
+            >
+              {{'登录'}}
+            </button>
+          </div>
+        </form>
+
+        <div>
+          <div class="relative mt-10">
+            <div aria-hidden="true" class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-gray-200"></div>
+            </div>
+            <div class="relative flex justify-center text-sm font-medium leading-6">
+              <span class="bg-white px-6 text-gray-900">Or continue with</span>
+            </div>
           </div>
 
-          <button mat-raised-button color="primary" class="w-100 mb-1" [disabled]="signinForm.invalid"
-                  (click)="submit()">
-            <ng-template [ngIf]="isLogin">
-              {{'登录'}}
-            </ng-template>
-            <ng-template [ngIf]="isBindPhone">
-              {{'绑定'}}
-            </ng-template>
-          </button>
-          <button mat-raised-button color="primary" class="w-100 mb-1" (click)="toWechatLogin()" *ngIf="isLogin">
-            {{'微信登录'}}
-          </button>
-        </form>
-      </mat-card-content>
-    </mat-card>
-  </div>
-</div>
+          <div class="mt-6 flex justify-center">
+            <a
+              (click)="toWechatLogin()"
+              class="flex w-full items-center justify-center gap-3 rounded-md bg-[#1D9BF0] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0]"
+              href="#"
+            >
+              <svg class="h-6" id="wechat" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M16 10c0-2.209-2.239-4-5-4s-5 1.791-5 4 2.239 4 5 4c.454 0 .886-.064 1.305-.155L15 15l-.932-1.863C15.236 12.405 16 11.279 16 10z"
+                  fill="#8BC34A"></path>
+                <path
+                  d="M6 1C2.686 1 0 3.239 0 6c0 1.592.898 3.004 2.291 3.918L1.5 11.5l2.155-.923c.462.164.942.299 1.455.362A4.187 4.187 0 0 1 5 10c0-2.757 2.691-5 6-5 .303 0 .599.025.891.061C11.363 2.749 8.928 1 6 1z"
+                  fill="#8BC34A"></path>
+                <circle cx="4" cy="4" fill="#FAFAFA" r=".75"></circle>
+                <circle cx="8" cy="4" fill="#FAFAFA" r=".75"></circle>
+                <circle cx="9.5" cy="9" fill="#FAFAFA" r=".75"></circle>
+                <circle cx="12.5" cy="9" fill="#FAFAFA" r=".75"></circle>
+              </svg>
+              <span class="text-sm font-semibold leading-6 text-white">WeChat</span>
+            </a>
+          </div>
+        </div>
+      </div>
 
+      <!--    <p class="mt-10 text-center text-sm text-gray-500">
+            Not a member?
+            <a href="#" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+              Start a 14 day free trial
+            </a>
+          </p>-->
+    </div>
+  </div>
+
+</div>

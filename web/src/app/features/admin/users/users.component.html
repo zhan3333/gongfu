@@ -16,7 +16,7 @@
     <ng-container matColumnDef="avatar">
       <th *matHeaderCellDef mat-header-cell> 头像</th>
       <td *matCellDef="let element" mat-cell>
-        <img [src]="element?.headimgurl" alt="head_img" class="head_img" style="height: 60px; width: 60px">
+        <img [src]="element?.headimgurl" alt="head_img" class="rounded-full">
       </td>
     </ng-container>
 
@@ -44,6 +44,7 @@
 
   <mat-paginator [pageSizeOptions]="[5, 10, 20]"
                  aria-label="Select page of periodic elements"
-                 showFirstLastButtons>
+                 pageSize="10" showFirstLastButtons>
   </mat-paginator>
+  
 </div>

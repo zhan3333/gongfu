@@ -10,7 +10,10 @@ import (
 	"gongfu/internal/http/controller"
 	"gongfu/internal/http/middlewares"
 	"gongfu/internal/model"
+	"log"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"strings"
 	"time"
 )
@@ -102,13 +105,27 @@ func (r Route) Route(app *gin.Engine) {
 	})
 	// 本地文件存储
 	app.Static("/storage", "storage")
-	// web 文件
-	app.Static("/web", r.Config.WebPath)
-	app.NoRoute(func(c *gin.Context) {
-		if strings.HasPrefix(c.Request.URL.Path, "/web") {
-			c.File(r.Config.WebPath + "/index.html")
-		} else {
-			c.String(http.StatusNotFound, "not found route")
-		}
-	})
+
+	if r.Config.IsProd() {
+		// prod 代理到静态文件
+		app.Static("/web", r.Config.WebPath)
+		app.NoRoute(func(c *gin.Context) {
+			if strings.HasPrefix(c.Request.URL.Path, "/web") {
+				c.File(r.Config.WebPath + "/index.html")
+			} else {
+				c.String(http.StatusNotFound, "not found route")
+			}
+		})
+	} else {
+		// local 代理到 :4200
+		app.GET("/web/*webPath", func(c *gin.Context) {
+			uri := "http://127.0.0.1:4200"
+			remote, err := url.Parse(uri) // backend server
+			if err != nil {
+				log.Fatal(err)
+			}
+			proxy := httputil.NewSingleHostReverseProxy(remote)
+			proxy.ServeHTTP(c.Writer, c.Request)
+		})
+	}
 }
