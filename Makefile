@@ -3,7 +3,7 @@ remote_ssh = zhan@t
 
 # 编译 api 服务
 build_api:
-	GOOS=linux GOARCH=amd64 go build -o build/gongfu cmd/main.go
+	cd server && GOOS=linux GOARCH=amd64 go build -o ../build/gongfu cmd/main.go
 
 # 编译 web 服务
 build_web:
@@ -15,7 +15,6 @@ build_web:
 upload_api: build_api
 	scp build/gongfu ${remote_ssh}:${remote_dir}/
 	scp -r build/config ${remote_ssh}:${remote_dir}/
-	scp -r build/storage ${remote_ssh}:${remote_dir}/
 	scp build/Dockerfile ${remote_ssh}:${remote_dir}/
 	ssh ${remote_ssh} "cd ~/Application && docker-compose up -d --no-deps --build gongfu"
 

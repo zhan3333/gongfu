@@ -103,8 +103,6 @@ func (r Route) Route(app *gin.Engine) {
 	app.GET("/", func(c *gin.Context) {
 		c.Redirect(http.StatusFound, "/web/me")
 	})
-	// 本地文件存储
-	app.Static("/storage", "storage")
 
 	if r.Config.IsProd() {
 		// prod 代理到静态文件
