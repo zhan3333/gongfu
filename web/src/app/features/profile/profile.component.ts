@@ -6,13 +6,6 @@ import { Profile } from '../../api/models/profile';
 import { refreshSharedProfileToWechat } from '../../core/util';
 import { WechatService } from '../../services/wechat.service';
 import { displayLevel } from '../../services/coach-level';
-import {
-  faAddressBook,
-  faBuilding,
-  faList,
-  faUser,
-  faUsers
-} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'anms-profile',
@@ -21,11 +14,6 @@ import {
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class ProfileComponent implements OnInit {
-  public faAddressBook = faAddressBook;
-  public faUser = faUser;
-  public faBuilding = faBuilding;
-  public faList = faList;
-  public faUsers = faUsers;
   public profile: Profile | undefined;
   public displayLevel = displayLevel;
 

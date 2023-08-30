@@ -1,6 +1,8 @@
 package store
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 import _ "gorm.io/driver/mysql"
 
 type Store interface {

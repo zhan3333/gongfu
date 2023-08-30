@@ -20,6 +20,10 @@ type User interface {
 	// GetCoachUserIds 获取教练 userIds
 	GetCoachUserIds(ctx context.Context) ([]uint, error)
 	GetCoaches(ctx context.Context) ([]model.User, error)
+	// GetTeachingRecords 获取授课记录
+	GetTeachingRecords(ctx context.Context, userId uint) ([]model.TeachingRecord, error)
+	// GetStudyRecords 获取学习记录
+	GetStudyRecords(ctx context.Context, userId uint) ([]model.StudyRecord, error)
 }
 
 type UserPageQuery struct {
@@ -165,4 +169,22 @@ func (s DBStore) GetCoaches(ctx context.Context) ([]model.User, error) {
 		return nil, err
 	}
 	return coaches, nil
+}
+
+func (s DBStore) GetTeachingRecords(ctx context.Context, userId uint) ([]model.TeachingRecord, error) {
+	records := []model.TeachingRecord{}
+	err := s.DB.WithContext(ctx).Where("user_id = ?", userId).Order("id desc").Find(&records).Error
+	if err != nil {
+		return nil, err
+	}
+	return records, nil
+}
+
+func (s DBStore) GetStudyRecords(ctx context.Context, userId uint) ([]model.StudyRecord, error) {
+	records := []model.StudyRecord{}
+	err := s.DB.WithContext(ctx).Where("user_id = ?", userId).Order("id desc").Find(&records).Error
+	if err != nil {
+		return nil, err
+	}
+	return records, nil
 }

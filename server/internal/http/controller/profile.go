@@ -2,6 +2,7 @@ package controller
 
 import (
 	"context"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"gongfu/internal/app"
 	"gongfu/internal/model"
@@ -11,12 +12,14 @@ import (
 )
 
 type ProfileResponse struct {
-	ID         uint         `json:"id"`
-	Nickname   string       `json:"nickname"`
-	HeadImgURL string       `json:"headimgurl"`
-	RoleNames  []string     `json:"roleNames"`
-	UUID       string       `json:"uuid"`
-	Coach      ProfileCoach `json:"coach"`
+	ID              uint                   `json:"id"`
+	Nickname        string                 `json:"nickname"`
+	HeadImgURL      string                 `json:"headimgurl"`
+	RoleNames       []string               `json:"roleNames"`
+	UUID            string                 `json:"uuid"`
+	Coach           ProfileCoach           `json:"coach"`
+	TeachingRecords []model.TeachingRecord `json:"teachingRecords"` // 授课记录
+	StudyRecords    []model.StudyRecord    `json:"studyRecords"`    // 学习记录
 }
 
 type ProfileCoach struct {
@@ -55,6 +58,14 @@ func (r UseCase) Profile(c *app.Context) result.Result {
 	if coach.TeachingExperiences == nil {
 		coach.TeachingExperiences = datatypes.JSON{}
 	}
+	teachingRecords, err := r.Store.GetTeachingRecords(c.Context.Request.Context(), user.ID)
+	if err != nil {
+		return result.Err(fmt.Errorf("get user teaching records failed: %w", err))
+	}
+	studyRecords, err := r.Store.GetStudyRecords(c.Context.Request.Context(), user.ID)
+	if err != nil {
+		return result.Err(fmt.Errorf("get user study records failed: %w", err))
+	}
 	return result.Ok(ProfileResponse{
 		ID:         user.ID,
 		Nickname:   user.Nickname,
@@ -67,5 +78,7 @@ func (r UseCase) Profile(c *app.Context) result.Result {
 			TeachingAge:         coach.TeachingAge,
 			TeachingExperiences: coach.GetTeachingExperiences(),
 		},
+		TeachingRecords: teachingRecords,
+		StudyRecords:    studyRecords,
 	})
 }

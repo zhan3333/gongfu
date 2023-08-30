@@ -1,48 +1,89 @@
 <div *ngIf="profile">
-  <mat-card appearance="outlined" class="m-2">
-    <div class="flex flex-col items-center">
-      <img [ngSrc]="profile.headimgurl || ''" alt="head_img" class="head_img" height=140 width=140>
-      <div class="mt-1">@{{profile.nickname}}</div>
+  <div class="flex flex-col items-center">
+    <img [ngSrc]="profile.headimgurl || ''" alt="head_img" class="head_img" height=140 width=140>
+    <div class="mt-1">@{{profile.nickname}}</div>
+  </div>
+  <div>
+    <div class="px-4 sm:px-0">
+      <h3 class="text-base font-semibold leading-7 text-gray-900">会员信息</h3>
+      <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">{{profile.displayRoles()}}</p>
     </div>
-  </mat-card>
-  <mat-card appearance="outlined" class="m-2">
-    <mat-list>
-      <mat-list-item>
-        <mat-icon class="icon" matListItemIcon>
-          <fa-icon [icon]="faUsers"></fa-icon>
-        </mat-icon>
-        <div mat-line>
-          {{'角色: ' + profile.displayRoles()}}
+    <div class="mt-6 border-t border-gray-100">
+      <dl class="divide-y divide-gray-100">
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">教练级别</dt>
+          <dd
+            class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{displayLevel(profile.coach?.level)}}</dd>
         </div>
-      </mat-list-item>
-      <mat-list-item *ngIf="profile.coach?.level">
-        <mat-icon class="icon" matListItemIcon>
-          <fa-icon [icon]="faUser"></fa-icon>
-        </mat-icon>
-        <div mat-line>{{'教练级别: ' + displayLevel(profile.coach?.level)}}</div>
-      </mat-list-item>
-      <mat-list-item *ngIf="profile.coach?.teachingSpace">
-        <mat-icon class="icon" matListItemIcon>
-          <fa-icon [icon]="faBuilding"></fa-icon>
-        </mat-icon>
-        <div mat-line>{{'任教单位: ' + profile.coach?.teachingSpace || ''}}</div>
-      </mat-list-item>
-      <mat-list-item *ngIf="profile.coach?.teachingAge">
-        <mat-icon class="icon" matListItemIcon>
-          <fa-icon [icon]="faAddressBook"></fa-icon>
-        </mat-icon>
-        <div mat-line>{{'任教年限: ' + profile.coach?.teachingAge || ''}}</div>
-      </mat-list-item>
-      <mat-list-item *ngIf="(profile.coach?.teachingExperiences || []).length > 0">
-        <mat-icon class="icon" matListItemIcon>
-          <fa-icon [icon]="faList"></fa-icon>
-        </mat-icon>
-        <div mat-line>{{'任教经历: '}}</div>
-        <div *ngFor="let e of profile.coach?.teachingExperiences" mat-line>
-          <div class="ms-3">{{'- ' + e}}</div>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">任教单位</dt>
+          <dd
+            class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{profile.coach?.teachingSpace}}</dd>
         </div>
-      </mat-list-item>
-    </mat-list>
-  </mat-card>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">任教年限</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{profile.coach?.teachingAge}}</dd>
+        </div>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">任教经历</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <ng-template [ngIf]="(profile.coach?.teachingExperiences || []).length > 0">
+              <div *ngFor="let e of profile.coach?.teachingExperiences" mat-line>
+                <div class="ms-3">{{'- ' + e}}</div>
+              </div>
+            </ng-template>
+            <ng-template [ngIf]="(profile.coach?.teachingExperiences || []).length === 0">
+              N/A
+            </ng-template>
+
+          </dd>
+        </div>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">授课记录</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <ul class="space-y-6" role="list">
+              <li *ngFor="let teaching of profile.teachingRecords" class="relative flex gap-x-4">
+                <div
+                  class="absolute left-0 top-0 flex w-6 justify-center">
+                  <div class="w-px bg-gray-200"></div>
+                </div>
+                <div class="relative flex h-6 w-6 flex-none items-center justify-center bg-white">
+                  <div class="h-1.5 w-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300"></div>
+                </div>
+                <p class="flex-auto py-0.5 text-xs leading-5 text-gray-500">
+                  <span class="font-medium text-gray-900">{{teaching.address}}</span> 授课
+                </p>
+                <time class="flex-none py-0.5 text-xs leading-5 text-gray-500">
+                  {{teaching.date}}
+                </time>
+              </li>
+            </ul>
+          </dd>
+        </div>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">学习记录</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <ul class="space-y-6" role="list">
+              <li *ngFor="let study of profile.studyRecords" class="relative flex gap-x-4">
+                <div
+                  class="absolute left-0 top-0 flex w-6 justify-center">
+                  <div class="w-px bg-gray-200"></div>
+                </div>
+                <div class="relative flex h-6 w-6 flex-none items-center justify-center bg-white">
+                  <div class="h-1.5 w-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300"></div>
+                </div>
+                <p class="flex-auto py-0.5 text-xs leading-5 text-gray-500">
+                  <span class="font-medium text-gray-900">学习 {{study.content}}</span>
+                </p>
+                <time class="flex-none py-0.5 text-xs leading-5 text-gray-500">
+                  {{study.date}}
+                </time>
+              </li>
+            </ul>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
 </div>
 

@@ -124,6 +124,8 @@ func getStore(conf *config.DB) (store.Store, error) {
 		&model.UserHasRole{},
 		&model.School{},
 		&model.Course{},
+		&model.TeachingRecord{},
+		&model.StudyRecord{},
 	); err != nil {
 		return nil, fmt.Errorf("auto migrate: %w", err)
 	}
