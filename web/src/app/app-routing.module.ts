@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { NoPreloading, RouterModule, Routes } from '@angular/router';
 import { AuthService } from './core/auth/auth.service';
-import { CheckInTopComponent } from './features/check-in/check-in-top/check-in-top.component';
 import { CheckInHistoriesComponent } from './features/check-in/check-in-histories/check-in-histories.component';
 import {
   CHECK_IN_HISTORIES_PATH,
@@ -66,13 +65,14 @@ const routes: Routes = [
   },
   {
     path: CHECK_IN_TOP_PATH,
-    component: CheckInTopComponent,
-    canActivate: []
+    loadChildren: () =>
+      import('./features/check-in/check-in-top/check-in-top.component').then(
+        (m) => m.CheckInTopComponent
+      )
   },
   {
     path: CHECK_IN_HISTORIES_PATH,
-    component: CheckInHistoriesComponent,
-    canActivate: []
+    component: CheckInHistoriesComponent
   },
   {
     path: 'setting',
@@ -87,6 +87,15 @@ const routes: Routes = [
     canActivate: [AuthService]
   },
   {
+    path: 'admin/users',
+    loadComponent: () =>
+      import('./features/admin/users/users.component').then(
+        (m) => m.UsersComponent
+      ),
+    canActivate: [AuthService],
+    data: { title: 'admin users' }
+  },
+  {
     path: '**',
     redirectTo: 'me'
   }
@@ -96,7 +105,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes, {
       scrollPositionRestoration: 'enabled',
-      preloadingStrategy: PreloadAllModules
+      preloadingStrategy: NoPreloading
     })
   ],
   exports: [RouterModule]

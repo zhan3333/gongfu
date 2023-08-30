@@ -2,19 +2,40 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CheckIn, CheckInCountList } from '../../../api/models/check-in';
 import { ApiService } from '../../../api/api.service';
 import { NotificationService } from '../../../core/notifications/notification.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { WechatService } from '../../../services/wechat.service';
 import * as moment from 'moment';
-import { UntypedFormControl } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
 import { isWechat } from '../../../core/util';
-import { SharedModule } from '../../../shared/shared.module';
 import { faCalendar } from '@fortawesome/free-solid-svg-icons';
+import { MatInputModule } from '@angular/material/input';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatIconModule } from '@angular/material/icon';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { DatePipe, NgForOf, NgIf } from '@angular/common';
 
 @Component({
   selector: 'anms-check-in-top',
   templateUrl: './check-in-top.component.html',
-  styleUrls: ['./check-in-top.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.Default,
+  imports: [
+    MatInputModule,
+    ReactiveFormsModule,
+    MatTabsModule,
+    MatDatepickerModule,
+    MatIconModule,
+    FontAwesomeModule,
+    MatCardModule,
+    RouterLink,
+    MatButtonModule,
+    NgForOf,
+    NgIf,
+    DatePipe
+  ],
+  standalone: true
 })
 export class CheckInTopComponent implements OnInit {
   public faCalendar = faCalendar;
@@ -31,6 +52,10 @@ export class CheckInTopComponent implements OnInit {
     private wechatService: WechatService,
     private activeRouter: ActivatedRoute
   ) {}
+
+  public get date() {
+    return moment(this.selectDate.value as string).format('YYYYMMDD');
+  }
 
   ngOnInit(): void {
     const query = this.activeRouter.snapshot.queryParamMap;
@@ -52,10 +77,6 @@ export class CheckInTopComponent implements OnInit {
     this.api
       .getCheckInContinuousTop()
       .subscribe((data) => (this.checkInContinuousList = data));
-  }
-
-  public get date() {
-    return moment(this.selectDate.value as string).format('YYYYMMDD');
   }
 
   public clickToday() {

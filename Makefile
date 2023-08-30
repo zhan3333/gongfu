@@ -31,10 +31,6 @@ restart:
 	scp -r build/config ${remote_ssh}:${remote_dir}/
 	ssh ${remote_ssh} "cd ~/Application && docker-compose up -d --no-deps gongfu"
 
-# 启动本地 api
-run:
-	go run cmd/main.go --config=config/local.toml
-
 .PHONY: web
 web:
 	cd web && yarn run start

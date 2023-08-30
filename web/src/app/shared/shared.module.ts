@@ -32,6 +32,7 @@ import {
   faArrowRight,
   faBan,
   faBars,
+  faBolt,
   faBook,
   faBuilding,
   faCalendar,
@@ -67,7 +68,6 @@ import { BigInputActionComponent } from './big-input/big-input-action/big-input-
 import { RtlSupportDirective } from './rtl-support/rtl-support.directive';
 import { CalendarHeaderComponent } from './calendar-header/calendar-header.component';
 import { FormControlPipe } from './form-control.pipe';
-import { faBolt } from '@fortawesome/free-solid-svg-icons/faBolt';
 import { BottomSheetComponent } from './bottom-sheet.component';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 

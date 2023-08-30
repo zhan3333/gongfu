@@ -5,16 +5,31 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { User } from '../../../api/models/user';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { AdminApiService } from '../../../api/admin/admin-api.service';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { NgOptimizedImage } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'anms-users',
   templateUrl: './users.component.html',
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.Default,
+  imports: [
+    MatPaginatorModule,
+    MatTableModule,
+    RouterLink,
+    MatIconModule,
+    NgOptimizedImage,
+    FontAwesomeModule,
+    MatButtonModule
+  ],
+  standalone: true
 })
 export class UsersComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;

@@ -33,7 +33,10 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "baseHref": "/web/"
+            "baseHref": "/web/",
+            "allowedCommonJsDependencies": [
+              "moment"
+            ]
           },
           "configurations": {
             "production": {
@@ -47,7 +50,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "3mb"
+                  "maximumError": "1mb"
                 },
                 {
                   "type": "anyComponentStyle",

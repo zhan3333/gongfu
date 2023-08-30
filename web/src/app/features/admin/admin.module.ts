@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
-import { UsersComponent } from './users/users.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { AdminRoutingModule } from './admin-routing.module';
@@ -11,7 +10,6 @@ import { CourseEditComponent } from './courses/course-edit/course-edit.component
 
 @NgModule({
   declarations: [
-    UsersComponent,
     UserEditComponent,
     CoursesComponent,
     CourseCreateComponent,
