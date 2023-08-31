@@ -6,6 +6,8 @@ $anms-theme: mat.define-light-theme(
         primary: mat.define-palette(mat.$green-palette, 800, 300, 900),
         accent: mat.define-palette(mat.$light-green-palette),
         warn: mat.define-palette(mat.$pink-palette, 600)
-      )
+      ),
+      typography: mat.define-typography-config(),
+      density: 0,
     )
 );

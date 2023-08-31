@@ -2,55 +2,33 @@
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
 
-@import 'styles-variables';
-
-@import 'styles-reset';
-
-// TODO(v15): As of v15 mat.legacy-core no longer includes default typography styles.
-//  The following line adds:
-//    1. Default typography styles for all components
-//    2. Styles for typography hierarchy classes (e.g. .mat-headline-1)
-//  If you specify typography styles for the components you use elsewhere, you should delete this line.
-//  If you don't need the default component typographies but still want the hierarchy styles,
-//  you can delete this line and instead use:
-//    `@include mat.legacy-typography-hierarchy(mat.define-typography-config());`
-@include mat.all-component-typographies();
 @include mat.core();
 
 @import './themes/default-theme';
 @import './themes/light-theme';
 @import './themes/black-theme';
 @import './themes/nature-theme';
+@import './themes/blue-theme';
 
-@import 'styles-reset.scss-theme';
-@import './app/app/app.component.scss-theme';
-@import './app/shared/big-input/big-input/big-input.component.scss-theme';
-@import './app/features/about/about/about.component.scss-theme';
-/*@mixin custom-components-theme($theme) {
-  @include anms-styles-reset-theme($theme);
-  @include anms-app-component-theme($theme);
-  @include anms-about-component-theme($theme);
-  @include anms-big-input-component-theme($theme);
-}*/
+@include mat.all-component-themes($anms-theme);
 
 .default-theme {
-  @include mat.all-component-colors($anms-theme);
-  /*@include custom-components-theme($anms-theme);*/
 }
 
 .light-theme {
   @include mat.all-component-colors($anms-light-theme);
-  /*@include custom-components-theme($anms-light-theme);*/
 }
 
 .black-theme {
   @include mat.all-component-colors($anms-black-theme);
-  /*@include custom-components-theme($anms-black-theme);*/
 }
 
 .nature-theme {
   @include mat.all-component-colors($anms-nature-theme);
-  /*@include custom-components-theme($anms-nature-theme);*/
+}
+
+.blue-theme {
+  @include mat.all-component-colors($anms-blue-theme);
 }
 
 .head_img {

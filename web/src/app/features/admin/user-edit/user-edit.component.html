@@ -2,70 +2,64 @@
   <mat-card-header>
     <mat-card-title>{{'编辑个人信息'}}</mat-card-title>
   </mat-card-header>
-  <form [formGroup]="form" class="container">
+  <form [formGroup]="form" class="flex flex-col flex-nowrap">
     <!--昵称-->
-    <mat-form-field class="w-100 row">
+    <mat-form-field class="flex-1">
       <mat-label>{{'输入新的昵称'}}</mat-label>
-      <input matInput formControlName="nickname">
+      <input formControlName="nickname" matInput>
     </mat-form-field>
     <!--手机号-->
-    <mat-form-field class="w-100 row">
+    <mat-form-field class=" flex-1">
       <mat-label>{{'手机号'}}</mat-label>
-      <input matInput formControlName="phone">
+      <input formControlName="phone" matInput>
     </mat-form-field>
     <!--角色-->
-    <mat-form-field class="w-100 row">
+    <mat-form-field class=" flex-1">
       <mat-label>角色</mat-label>
-      <mat-select formControlName="roleNames" [multiple]="true">
+      <mat-select [multiple]="true" formControlName="roleNames">
         <mat-option *ngFor="let roleName of roleNames" [value]="roleName">{{displayRoleName(roleName)}}</mat-option>
       </mat-select>
     </mat-form-field>
     <!--教练级别-->
-    <mat-form-field class="w-100 row">
+    <mat-form-field class=" flex-1">
       <mat-label>教练级别</mat-label>
       <mat-select formControlName="level">
         <mat-option *ngFor="let lv of Levels" [value]="lv.value">{{lv.key}}</mat-option>
       </mat-select>
     </mat-form-field>
     <!--任教单位-->
-    <mat-form-field class="w-100 row">
+    <mat-form-field class=" flex-1">
       <mat-label>{{'任教单位'}}</mat-label>
-      <input matInput formControlName="teachingSpace">
+      <input formControlName="teachingSpace" matInput>
     </mat-form-field>
     <!--任教年限-->
-    <mat-form-field class="w-100 row">
+    <mat-form-field class=" flex-1">
       <mat-label>{{'任教年限'}}</mat-label>
-      <input matInput formControlName="teachingAge">
+      <input formControlName="teachingAge" matInput>
     </mat-form-field>
     <!--任教经历-->
-    <div class="w-100 row">
-      <mat-form-field appearance="fill">
-        <mat-label>任教经历</mat-label>
-        <mat-chip-grid #chipList aria-label="Fruit selection">
-          <mat-chip-row *ngFor="let exp of form.get('teachingExperiences')?.value"
-                    [removable]="true" (removed)="onRemoveExp(exp)">
-            {{exp}}
-            <button matChipRemove>
-              <mat-icon>
-                <fa-icon [icon]="faBan"></fa-icon>
-              </mat-icon>
-            </button>
-          </mat-chip-row>
-          <input placeholder="新的经历"
-                 [matChipInputFor]="chipList"
-                 [matChipInputAddOnBlur]="true"
-                 (matChipInputTokenEnd)="onAddExp($event)">
-        </mat-chip-grid>
-      </mat-form-field>
-    </div>
-
-    <!--保存按钮-->
-    <div class="row justify-content-end">
-      <div class="col-auto">
-        <button mat-raised-button color="accent" (click)="onClickSave()"
-                [disabled]="form.invalid || loading">{{'保存'}}</button>
-      </div>
-    </div>
-
+    <mat-form-field class=" flex-1">
+      <mat-label>任教经历</mat-label>
+      <mat-chip-grid #chipList aria-label="Fruit selection">
+        <mat-chip-row (removed)="onRemoveExp(exp)"
+                      *ngFor="let exp of form.get('teachingExperiences')?.value" [removable]="true">
+          {{exp}}
+          <button matChipRemove>
+            <mat-icon>
+              <fa-icon [icon]="faBan"></fa-icon>
+            </mat-icon>
+          </button>
+        </mat-chip-row>
+        <input (matChipInputTokenEnd)="onAddExp($event)"
+               [matChipInputAddOnBlur]="true"
+               [matChipInputFor]="chipList"
+               placeholder="新的经历">
+      </mat-chip-grid>
+    </mat-form-field>
   </form>
+  <mat-card-actions>
+    <!--保存按钮-->
+    <button (click)="onClickSave()" [disabled]="form.invalid || loading" color="accent"
+            mat-raised-button>{{'保存'}}</button>
+  </mat-card-actions>
 </mat-card>

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { FormsModule, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { AdminApiService } from '../../../api/admin/admin-api.service';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
@@ -19,12 +19,24 @@ import { MatCardModule } from '@angular/material/card';
 
 // 用户编辑页，可以设置用户角色，设置教练信息等
 @Component({
-    selector: 'anms-user-edit',
-    templateUrl: './user-edit.component.html',
-    styleUrls: ['./user-edit.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default,
-    standalone: true,
-    imports: [MatCardModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, NgFor, MatOptionModule, MatChipsModule, MatIconModule, FontAwesomeModule, MatButtonModule]
+  selector: 'anms-user-edit',
+  templateUrl: './user-edit.component.html',
+  changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [
+    MatCardModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    NgFor,
+    MatOptionModule,
+    MatChipsModule,
+    MatIconModule,
+    FontAwesomeModule,
+    MatButtonModule
+  ]
 })
 export class UserEditComponent implements OnInit {
   public faBan = faBan;
@@ -48,7 +60,8 @@ export class UserEditComponent implements OnInit {
   constructor(
     public adminApi: AdminApiService,
     public route: ActivatedRoute,
-    public notification: NotificationService
+    public notification: NotificationService,
+    public router: Router
   ) {}
 
   ngOnInit(): void {
