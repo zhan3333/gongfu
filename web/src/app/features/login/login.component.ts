@@ -4,24 +4,25 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
-import { MatProgressBar } from '@angular/material/progress-bar';
-import {
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators
-} from '@angular/forms';
+import { MatProgressBar, MatProgressBarModule } from '@angular/material/progress-bar';
+import { UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { AuthService } from '../../core/auth/auth.service';
 import { ApiService } from '../../api/api.service';
 import { Login } from '../../api/models/login';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
-  selector: 'anms-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
+    selector: 'anms-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: true,
+    imports: [MatProgressBarModule, NgOptimizedImage, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule]
 })
 export class LoginComponent implements OnInit {
   @ViewChild(MatProgressBar) public progressBar: MatProgressBar | undefined;

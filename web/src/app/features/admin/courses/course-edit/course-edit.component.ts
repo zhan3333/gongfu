@@ -5,19 +5,30 @@ import {
 } from '../../../../api/admin/admin-api.service';
 import { NotificationService } from '../../../../core/notifications/notification.service';
 import { ActivatedRoute } from '@angular/router';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { School } from '../../../../api/models/school';
 import * as moment from 'moment';
 import { Course } from '../../../../api/models/course';
 import { ApiService } from '../../../../api/api.service';
 import { BottomSheetComponent } from '../../../../shared/bottom-sheet.component';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatButtonModule } from '@angular/material/button';
+import { TextFieldModule } from '@angular/cdk/text-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatOptionModule } from '@angular/material/core';
+import { NgFor } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: 'anms-course-edit',
-  templateUrl: './course-edit.component.html',
-  styleUrls: ['./course-edit.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
+    selector: 'anms-course-edit',
+    templateUrl: './course-edit.component.html',
+    styleUrls: ['./course-edit.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: true,
+    imports: [MatCardModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, NgFor, MatOptionModule, MatInputModule, MatDatepickerModule, TextFieldModule, MatButtonModule]
 })
 export class CourseEditComponent implements OnInit {
   public course: Course | undefined;

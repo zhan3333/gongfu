@@ -8,16 +8,14 @@ import { CheckInHistoriesComponent } from './check-in-histories/check-in-histori
 import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
-  declarations: [
-    CheckInComponent,
-    CheckInShowComponent,
-    CheckInHistoriesComponent
-  ],
-  imports: [
-    SharedModule,
-    CheckInRoutingModule,
-    MatProgressBarModule,
-    MatExpansionModule
-  ]
+    imports: [
+        SharedModule,
+        CheckInRoutingModule,
+        MatProgressBarModule,
+        MatExpansionModule,
+        CheckInComponent,
+        CheckInShowComponent,
+        CheckInHistoriesComponent
+    ]
 })
 export class CheckInModule {}

@@ -19,7 +19,7 @@ import {
   actionSettingsChangeLanguage
 } from '../core/settings/settings.actions';
 import { AuthService } from '../core/auth/auth.service';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
 import { CHECK_IN_TOP_PATH } from '../core/router/route-path';
 import { User } from '../api/models/user';
 import {
@@ -32,13 +32,25 @@ import {
   faUserCircle,
   faWrench
 } from '@fortawesome/free-solid-svg-icons';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'anms-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  animations: [routeAnimations],
-  changeDetection: ChangeDetectionStrategy.Default
+    selector: 'anms-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    animations: [routeAnimations],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: true,
+    imports: [NgIf, MatSidenavModule, MatListModule, NgFor, RouterLinkActive, RouterLink, MatToolbarModule, MatButtonModule, FontAwesomeModule, MatMenuModule, MatIconModule, RouterOutlet, MatTooltipModule, AsyncPipe, TranslateModule]
 })
 export class AppComponent implements OnInit {
   faBars = faBars;

@@ -65,7 +65,7 @@ const routes: Routes = [
   },
   {
     path: CHECK_IN_TOP_PATH,
-    loadChildren: () =>
+    loadComponent: () =>
       import('./features/check-in/check-in-top/check-in-top.component').then(
         (m) => m.CheckInTopComponent
       )

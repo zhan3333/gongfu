@@ -7,17 +7,23 @@ import {
 } from '@angular/core';
 import { AdminApiService } from '../../../api/admin/admin-api.service';
 import { NotificationService } from '../../../core/notifications/notification.service';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { User } from '../../../api/models/user';
 import { Course } from '../../../api/models/course';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'anms-courses',
-  templateUrl: './courses.component.html',
-  styleUrls: ['./courses.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'anms-courses',
+    templateUrl: './courses.component.html',
+    styleUrls: ['./courses.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [MatButtonModule, RouterLink, MatTableModule, MatIconModule, FontAwesomeModule, MatPaginatorModule]
 })
 export class CoursesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;

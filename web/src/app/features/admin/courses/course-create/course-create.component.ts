@@ -1,9 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import {
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators
-} from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   AdminApiService,
   ISampleCoach
@@ -12,12 +8,22 @@ import { NotificationService } from '../../../../core/notifications/notification
 import { Router } from '@angular/router';
 import { School } from '../../../../api/models/school';
 import * as moment from 'moment';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatOptionModule } from '@angular/material/core';
+import { NgFor } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: 'anms-course-create',
-  templateUrl: './course-create.component.html',
-  styleUrls: ['./course-create.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'anms-course-create',
+    templateUrl: './course-create.component.html',
+    styleUrls: ['./course-create.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [MatCardModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, NgFor, MatOptionModule, MatInputModule, MatDatepickerModule, MatButtonModule]
 })
 export class CourseCreateComponent implements OnInit {
   public form = new UntypedFormGroup({

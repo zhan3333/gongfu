@@ -2,17 +2,20 @@ import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, ViewChil
 import { ApiService } from '../../../api/api.service';
 import { ActivatedRoute } from '@angular/router';
 import { NotificationService } from '../../../core/notifications/notification.service';
-import { MatCalendar, MatCalendarCellCssClasses } from '@angular/material/datepicker';
+import { MatCalendar, MatCalendarCellCssClasses, MatDatepickerModule } from '@angular/material/datepicker';
 import { CheckInList } from '../../../api/models/check-in';
 import * as moment from 'moment';
 import { CalendarHeaderComponent } from '../../../shared/calendar-header/calendar-header.component';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: 'anms-check-in-histories',
-  templateUrl: './check-in-histories.component.html',
-  styleUrls: ['./check-in-histories.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
-  encapsulation: ViewEncapsulation.None,
+    selector: 'anms-check-in-histories',
+    templateUrl: './check-in-histories.component.html',
+    styleUrls: ['./check-in-histories.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [MatCardModule, MatDatepickerModule],
 })
 export class CheckInHistoriesComponent implements OnInit {
   @ViewChild(MatCalendar) calendar: MatCalendar<Date> | undefined;

@@ -21,19 +21,22 @@ import {
   faArrowLeft,
   faArrowRight
 } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'anms-calendar-header',
-  styles: [
-    `
+    selector: 'anms-calendar-header',
+    styles: [
+        `
       .example-header {
         display: flex;
         align-items: center;
         padding: 0.5em;
       }
     `
-  ],
-  template: `
+    ],
+    template: `
     <div class="example-header">
       <button mat-icon-button (click)="previousClicked('year')">
         <mat-icon>
@@ -60,7 +63,9 @@ import {
       </button>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [MatButtonModule, MatIconModule, FontAwesomeModule]
 })
 export class CalendarHeaderComponent<D> implements OnDestroy {
   public faArrowLeft = faArrowLeft;

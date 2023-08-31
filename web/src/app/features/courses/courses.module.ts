@@ -7,13 +7,11 @@ import { CourseEditComponent } from './course-edit/course-edit.component';
 
 
 @NgModule({
-  declarations: [
-    CoursesComponent,
-    CourseEditComponent
-  ],
-  imports: [
-    CommonModule, SharedModule, CoursesRoutingModule
-  ]
+    imports: [
+        CommonModule, SharedModule, CoursesRoutingModule,
+        CoursesComponent,
+        CourseEditComponent
+    ]
 })
 export class CoursesModule {
 }

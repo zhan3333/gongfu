@@ -8,12 +8,13 @@ import { BehaviorSubject, of } from 'rxjs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
-  template: `
+    template: `
     <h2 rtl>Something Yellow</h2>
     <h2 rtl>The Default (Gray)</h2>
     <h2>No Highlight</h2>
     <div rtl>Vasili</div>
-  `
+  `,
+    standalone: true
 })
 class TestComponent {}
 
@@ -26,18 +27,17 @@ describe('RtlSupportDirective', () => {
   beforeEach(() => {
     languageSubject = new BehaviorSubject({ lang: 'he' });
     fixture = TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, TranslateModule.forRoot()],
-      declarations: [RtlSupportDirective, TestComponent],
-      providers: [
+    imports: [NoopAnimationsModule, TranslateModule.forRoot(), RtlSupportDirective, TestComponent],
+    providers: [
         {
-          provide: TranslateService,
-          useValue: {
-            currentLang: 'he',
-            onLangChange: languageSubject.asObservable()
-          }
+            provide: TranslateService,
+            useValue: {
+                currentLang: 'he',
+                onLangChange: languageSubject.asObservable()
+            }
         }
-      ]
-    }).createComponent(TestComponent);
+    ]
+}).createComponent(TestComponent);
 
     fixture.detectChanges(); // initial binding
 

@@ -22,17 +22,17 @@ describe('AppComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [
-          SharedModule,
-          MatSidenavModule,
-          MatToolbarModule,
-          RouterTestingModule,
-          NoopAnimationsModule,
-          TranslateModule.forRoot()
-        ],
-        providers: [provideMockStore()],
-        declarations: [AppComponent]
-      }).compileComponents();
+    imports: [
+        SharedModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        RouterTestingModule,
+        NoopAnimationsModule,
+        TranslateModule.forRoot(),
+        AppComponent
+    ],
+    providers: [provideMockStore()]
+}).compileComponents();
 
       store = TestBed.inject(MockStore);
       store.overrideSelector(selectIsAuthenticated, false);

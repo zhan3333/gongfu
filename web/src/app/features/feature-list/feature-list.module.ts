@@ -7,7 +7,6 @@ import { FeatureListComponent } from './feature-list/feature-list.component';
 import { FeatureListRoutingModule } from './feature-list-routing.module';
 
 @NgModule({
-  declarations: [FeatureListComponent],
-  imports: [CommonModule, SharedModule, FeatureListRoutingModule]
+    imports: [CommonModule, SharedModule, FeatureListRoutingModule, FeatureListComponent]
 })
 export class FeatureListModule {}

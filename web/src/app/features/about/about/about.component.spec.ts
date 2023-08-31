@@ -13,13 +13,13 @@ describe('AboutComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [
-          SharedModule,
-          NoopAnimationsModule,
-          TranslateModule.forRoot()
-        ],
-        declarations: [AboutComponent]
-      }).compileComponents();
+    imports: [
+        SharedModule,
+        NoopAnimationsModule,
+        TranslateModule.forRoot(),
+        AboutComponent
+    ]
+}).compileComponents();
     })
   );
 

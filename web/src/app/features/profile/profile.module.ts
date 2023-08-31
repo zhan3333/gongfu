@@ -6,13 +6,13 @@ import { ProfileComponent } from './profile.component';
 import { MatLineModule } from '@angular/material/core';
 
 @NgModule({
-  declarations: [ProfileComponent],
-  imports: [
-    CommonModule,
-    SharedModule,
-    ProfileRoutingModule,
-    MatLineModule,
-    NgOptimizedImage
-  ]
+    imports: [
+        CommonModule,
+        SharedModule,
+        ProfileRoutingModule,
+        MatLineModule,
+        NgOptimizedImage,
+        ProfileComponent
+    ]
 })
 export class ProfileModule {}

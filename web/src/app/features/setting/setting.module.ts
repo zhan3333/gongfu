@@ -8,9 +8,9 @@ import { MatRippleModule } from '@angular/material/core';
 
 
 @NgModule({
-  declarations: [SettingComponent],
-  imports: [
-    SharedModule, SettingRoutingModule, MatRippleModule
-  ]
+    imports: [
+        SharedModule, SettingRoutingModule, MatRippleModule,
+        SettingComponent
+    ]
 })
 export class SettingModule { }

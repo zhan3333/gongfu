@@ -38,15 +38,15 @@ describe('SettingsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
+    imports: [
         FontAwesomeModule,
         SharedModule,
         NoopAnimationsModule,
-        TranslateModule.forRoot()
-      ],
-      providers: [provideMockStore()],
-      declarations: [SettingsContainerComponent]
-    }).compileComponents();
+        TranslateModule.forRoot(),
+        SettingsContainerComponent
+    ],
+    providers: [provideMockStore()]
+}).compileComponents();
 
     TestBed.inject(FaIconLibrary).addIcons(faBars);
 

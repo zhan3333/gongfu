@@ -10,18 +10,21 @@ import { ApiService } from '../../api/api.service';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { BottomSheetComponent } from '../../shared/bottom-sheet.component';
-import {
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators
-} from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../core/auth/auth.service';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatRippleModule } from '@angular/material/core';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: 'anms-setting',
-  templateUrl: './setting.component.html',
-  styleUrls: ['./setting.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
+    selector: 'anms-setting',
+    templateUrl: './setting.component.html',
+    styleUrls: ['./setting.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: true,
+    imports: [MatCardModule, MatRippleModule, MatButtonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule]
 })
 export class SettingComponent implements OnInit {
   @ViewChild('fileUpload') fileUpload!: ElementRef;

@@ -8,8 +8,8 @@ describe('CheckInShowComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CheckInShowComponent ]
-    })
+    imports: [CheckInShowComponent]
+})
     .compileComponents();
   });
 

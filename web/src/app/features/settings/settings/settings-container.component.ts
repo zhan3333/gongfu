@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -24,12 +24,23 @@ import {
   faStream,
   faWindowMaximize
 } from '@fortawesome/free-solid-svg-icons';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatOptionModule } from '@angular/material/core';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatIconModule } from '@angular/material/icon';
+import { NgIf, NgClass, NgFor, AsyncPipe } from '@angular/common';
+import { RtlSupportDirective } from '../../../shared/rtl-support/rtl-support.directive';
 
 @Component({
-  selector: 'anms-settings',
-  templateUrl: './settings-container.component.html',
-  styleUrls: ['./settings-container.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'anms-settings',
+    templateUrl: './settings-container.component.html',
+    styleUrls: ['./settings-container.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [RtlSupportDirective, NgIf, NgClass, MatIconModule, FontAwesomeModule, MatFormFieldModule, MatSelectModule, FormsModule, NgFor, MatOptionModule, MatSlideToggleModule, MatTooltipModule, AsyncPipe, TranslateModule]
 })
 export class SettingsContainerComponent implements OnInit {
   public faLanguage = faLanguage;

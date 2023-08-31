@@ -8,16 +8,15 @@
         <!--        <span>{{ 'anms.title.short' | translate}}</span>-->
       </div>
       <mat-nav-list>
-        <ng-container *ngFor="let item of navigationSideMenu">
+        <mat-list-item *ngFor="let item of navigationSideMenu">
           <a (click)="sidenav.close()"
              *ngIf="user?.hasAnyRole(item?.roles || [])"
              [routerLink]="[item.link]"
-             mat-list-item
-             routerLinkActive="active">
+             matListItemTitle
+          >
             {{item.label | translate}}
           </a>
-        </ng-container>
-
+        </mat-list-item>
       </mat-nav-list>
     </mat-sidenav>
 

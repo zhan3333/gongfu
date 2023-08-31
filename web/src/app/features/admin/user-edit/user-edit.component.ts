@@ -1,23 +1,30 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import {
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators
-} from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { AdminApiService } from '../../../api/admin/admin-api.service';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { displayRoleName } from '../../../api/models/user';
 import { Levels } from '../../../services/coach-level';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
+import { MatButtonModule } from '@angular/material/button';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatIconModule } from '@angular/material/icon';
+import { MatOptionModule } from '@angular/material/core';
+import { NgFor } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
 
 // 用户编辑页，可以设置用户角色，设置教练信息等
 @Component({
-  selector: 'anms-user-edit',
-  templateUrl: './user-edit.component.html',
-  styleUrls: ['./user-edit.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
+    selector: 'anms-user-edit',
+    templateUrl: './user-edit.component.html',
+    styleUrls: ['./user-edit.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: true,
+    imports: [MatCardModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, NgFor, MatOptionModule, MatChipsModule, MatIconModule, FontAwesomeModule, MatButtonModule]
 })
 export class UserEditComponent implements OnInit {
   public faBan = faBan;

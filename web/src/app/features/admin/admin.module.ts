@@ -9,17 +9,15 @@ import { CourseCreateComponent } from './courses/course-create/course-create.com
 import { CourseEditComponent } from './courses/course-edit/course-edit.component';
 
 @NgModule({
-  declarations: [
-    UserEditComponent,
-    CoursesComponent,
-    CourseCreateComponent,
-    CourseEditComponent
-  ],
-  imports: [
-    SharedModule,
-    MatTableModule,
-    MatPaginatorModule,
-    AdminRoutingModule
-  ]
+    imports: [
+        SharedModule,
+        MatTableModule,
+        MatPaginatorModule,
+        AdminRoutingModule,
+        UserEditComponent,
+        CoursesComponent,
+        CourseCreateComponent,
+        CourseEditComponent
+    ]
 })
 export class AdminModule {}

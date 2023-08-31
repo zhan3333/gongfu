@@ -9,23 +9,28 @@ import { CheckIn, CheckInList } from '../../api/models/check-in';
 import { ApiService } from '../../api/api.service';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { WechatService } from '../../services/wechat.service';
-import {
-  MatCalendar,
-  MatCalendarCellCssClasses
-} from '@angular/material/datepicker';
+import { MatCalendar, MatCalendarCellCssClasses, MatDatepickerModule } from '@angular/material/datepicker';
 import * as moment from 'moment/moment';
 import { AuthService } from '../../core/auth/auth.service';
 import { CalendarHeaderComponent } from '../../shared/calendar-header/calendar-header.component';
 import { refreshSharedCheckInToWechat } from '../../core/util';
 import { Router } from '@angular/router';
 import { faCheck, faFile } from '@fortawesome/free-solid-svg-icons';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { NgIf } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: 'anms-check-in',
-  templateUrl: './check-in.component.html',
-  styleUrls: ['./check-in.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
-  encapsulation: ViewEncapsulation.None
+    selector: 'anms-check-in',
+    templateUrl: './check-in.component.html',
+    styleUrls: ['./check-in.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Default,
+    encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [MatCardModule, NgIf, MatButtonModule, MatIconModule, FontAwesomeModule, MatProgressBarModule, MatDatepickerModule]
 })
 export class CheckInComponent implements OnInit {
   @ViewChild(MatCalendar) calendar: MatCalendar<Date> | undefined;

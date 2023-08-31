@@ -6,13 +6,13 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { LoginRoutingModule } from './login-routing.module';
 
 @NgModule({
-  declarations: [LoginComponent],
-  imports: [
-    CommonModule,
-    SharedModule,
-    MatProgressBarModule,
-    LoginRoutingModule,
-    NgOptimizedImage
-  ]
+    imports: [
+        CommonModule,
+        SharedModule,
+        MatProgressBarModule,
+        LoginRoutingModule,
+        NgOptimizedImage,
+        LoginComponent
+    ]
 })
 export class LoginModule {}

@@ -6,8 +6,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule } from '../../shared.module';
 
 @Component({
-  selector: 'anms-host-for-test',
-  template: ''
+    selector: 'anms-host-for-test',
+    template: '',
+    standalone: true,
+    imports: [SharedModule]
 })
 class HostComponent {
   actionHandler = () => {};
@@ -34,9 +36,8 @@ describe('BigInputActionComponent', () => {
 
   beforeEach(() =>
     TestBed.configureTestingModule({
-      declarations: [HostComponent],
-      imports: [SharedModule, NoopAnimationsModule]
-    })
+    imports: [SharedModule, NoopAnimationsModule, HostComponent]
+})
   );
 
   it('should be created', () => {

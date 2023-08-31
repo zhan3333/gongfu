@@ -5,8 +5,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule } from '../../shared.module';
 
 @Component({
-  selector: 'anms-host-for-test',
-  template: `
+    selector: 'anms-host-for-test',
+    template: `
     <anms-big-input
       placeholder="I am going to do..."
       [value]="newValue"
@@ -15,7 +15,9 @@ import { SharedModule } from '../../shared.module';
       (keyup.escape)="onKeyEvent($event)"
     >
     </anms-big-input>
-  `
+  `,
+    standalone: true,
+    imports: [SharedModule]
 })
 class HostComponent {
   newValue = '';
@@ -30,9 +32,8 @@ describe('BigInputComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [HostComponent],
-      imports: [SharedModule, NoopAnimationsModule]
-    });
+    imports: [SharedModule, NoopAnimationsModule, HostComponent]
+});
     fixture = TestBed.createComponent(HostComponent);
     component = fixture.componentInstance;
     spyOn(component, 'onKeyEvent');
