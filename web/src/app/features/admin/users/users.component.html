@@ -16,7 +16,8 @@
     <ng-container matColumnDef="avatar">
       <th *matHeaderCellDef mat-header-cell> 头像</th>
       <td *matCellDef="let element" mat-cell>
-        <img [ngSrc]="element?.headimgurl" alt="head_img" class="rounded-full" height=140 width=140>
+        <img [ngSrc]="element?.headimgurl" [routerLink]="'/profile/' + element.uuid" alt="head_img" class="rounded-full" height=140
+             width=140>
       </td>
     </ng-container>
 
