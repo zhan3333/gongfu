@@ -1,3 +1,6 @@
+import { TeachingRecord } from './teaching-record';
+import { StudyRecord } from './study-record';
+
 export class User {
   id = 0;
   openid = '';
@@ -7,6 +10,8 @@ export class User {
   phone = '';
   roleNames: string[] = [];
   uuid = '';
+  teachingRecords: TeachingRecord[] = [];
+  studyRecords: StudyRecord[] = [];
 
   constructor(payload: Partial<User>) {
     this.id = payload.id || 0;
@@ -17,6 +22,8 @@ export class User {
     this.phone = payload.phone || '';
     this.roleNames = payload.roleNames || [];
     this.uuid = payload.uuid || '';
+    this.teachingRecords = payload.teachingRecords || [];
+    this.studyRecords = payload.studyRecords || [];
   }
 
   hasRole(role: string): boolean {

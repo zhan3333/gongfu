@@ -87,6 +87,10 @@ func (r Route) Route(app *gin.Engine) {
 				adminApi.PUT("courses/:id", action.Wrap(r.AdminUseCase.UpdateCourse))
 				adminApi.DELETE("courses/:id", action.Wrap(r.AdminUseCase.DeleteCourse))
 				adminApi.GET("role-names", action.Wrap(r.AdminUseCase.AdminGetRoleNames))
+				adminApi.POST("teaching-record", action.Wrap(r.AdminUseCase.AdminEditTeachingRecord))
+				adminApi.DELETE("teaching-record/:id", action.Wrap(r.AdminUseCase.AdminDeleteTeachingRecord))
+				adminApi.POST("study-record", action.Wrap(r.AdminUseCase.AdminEditStudyRecord))
+				adminApi.DELETE("study-record/:id", action.Wrap(r.AdminUseCase.AdminDeleteStudyRecord))
 			}
 		}
 		api.GET("wechat/js-config", action.Wrap(r.UserUseCase.JSConfig))

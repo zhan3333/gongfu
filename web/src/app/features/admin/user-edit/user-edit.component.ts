@@ -4,18 +4,24 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { AdminApiService } from '../../../api/admin/admin-api.service';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
-import { displayRoleName } from '../../../api/models/user';
+import { displayRoleName, User } from '../../../api/models/user';
 import { Levels } from '../../../services/coach-level';
-import { faBan } from '@fortawesome/free-solid-svg-icons';
+import { faBan, faChalkboardTeacher, faEdit, faFolder, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 import { MatButtonModule } from '@angular/material/button';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatIconModule } from '@angular/material/icon';
-import { MatOptionModule } from '@angular/material/core';
-import { NgFor } from '@angular/common';
+import { MatOptionModule, MatRippleModule } from '@angular/material/core';
+import { NgFor, NgIf } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatListModule } from '@angular/material/list';
+import { TeachingRecordDialog } from './teaching-dialog';
+import { StudyRecordDialog } from './study-dialog';
+import { StudyRecord } from '../../../api/models/study-record';
+import { TeachingRecord } from '../../../api/models/teaching-record';
 
 // 用户编辑页，可以设置用户角色，设置教练信息等
 @Component({
@@ -35,7 +41,11 @@ import { MatCardModule } from '@angular/material/card';
     MatChipsModule,
     MatIconModule,
     FontAwesomeModule,
-    MatButtonModule
+    MatButtonModule,
+    MatListModule,
+    NgIf,
+    MatDialogModule,
+    MatRippleModule
   ]
 })
 export class UserEditComponent implements OnInit {
@@ -56,12 +66,18 @@ export class UserEditComponent implements OnInit {
   public displayRoleName = displayRoleName;
 
   public Levels = Levels;
+  public user: User | null = null;
+  protected readonly faEdit = faEdit;
+  protected readonly faFolder = faFolder;
+  protected readonly faChalkboardTeacher = faChalkboardTeacher;
+  protected readonly faGraduationCap = faGraduationCap;
 
   constructor(
     public adminApi: AdminApiService,
     public route: ActivatedRoute,
     public notification: NotificationService,
-    public router: Router
+    public router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -70,7 +86,12 @@ export class UserEditComponent implements OnInit {
       this.notification.error('invalid user id');
       return;
     }
+    this.refresh();
+  }
+
+  refresh() {
     this.adminApi.getUser(this.id).subscribe((user) => {
+      this.user = user;
       this.form.patchValue({
         nickname: user.nickname,
         phone: user.phone,
@@ -144,5 +165,80 @@ export class UserEditComponent implements OnInit {
 
     // Clear the input value
     $event.chipInput?.clear();
+  }
+
+  // 打开新增授课记录弹窗
+  openTeachingRecordDialog(record?: TeachingRecord) {
+    this.dialog
+      .open(TeachingRecordDialog, { data: record })
+      .afterClosed()
+      .subscribe(
+        (result?: {
+          data?: { id: number; date: string; address: string };
+          isDelete?: boolean;
+        }) => {
+          if (!result) {
+            return;
+          }
+          if (result.isDelete) {
+            // 删除
+          }
+          if (result.data) {
+            this.adminApi
+              .editTeachingRecord({
+                id: result.data.id,
+                date: result.data.date,
+                address: result.data.address,
+                userId: this.user!.id
+              })
+              .subscribe({
+                next: () => {
+                  this.refresh();
+                  this.notification.success('ok');
+                }
+              });
+          }
+        }
+      );
+  }
+
+  // 打开新增授课记录弹窗
+  openStudyRecordDialog(record?: StudyRecord) {
+    this.dialog
+      .open(StudyRecordDialog, { data: record })
+      .afterClosed()
+      .subscribe(
+        (result?: {
+          data?: { id: number; date: string; content: string };
+          isDelete?: boolean;
+        }) => {
+          if (!result) {
+            return;
+          }
+          if (result.isDelete) {
+            this.adminApi.deleteStudyRecord(record!.id).subscribe({
+              next: () => {
+                this.refresh();
+                this.notification.success('ok');
+              }
+            });
+          }
+          if (result.data) {
+            this.adminApi
+              .editStudyRecord({
+                id: result.data.id,
+                date: result.data.date,
+                content: result.data.content,
+                userId: this.user!.id
+              })
+              .subscribe({
+                next: () => {
+                  this.refresh();
+                  this.notification.success('ok');
+                }
+              });
+          }
+        }
+      );
   }
 }

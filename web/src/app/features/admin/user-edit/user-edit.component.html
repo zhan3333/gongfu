@@ -1,4 +1,4 @@
-<mat-card appearance="outlined" class="m-1">
+<mat-card>
   <mat-card-header>
     <mat-card-title>{{'编辑个人信息'}}</mat-card-title>
   </mat-card-header>
@@ -62,4 +62,37 @@
     <button (click)="onClickSave()" [disabled]="form.invalid || loading" color="accent"
             mat-raised-button>{{'保存'}}</button>
   </mat-card-actions>
+</mat-card>
+<mat-card *ngIf="user">
+  <mat-card-content>
+    <mat-list>
+      <div mat-subheader>授课经历</div>
+      <mat-list-item (click)="openTeachingRecordDialog(teachingRecord)"
+                     *ngFor="let teachingRecord of user.teachingRecords" matRipple>
+        <mat-icon matListItemIcon>
+          <fa-icon [icon]="faChalkboardTeacher"></fa-icon>
+        </mat-icon>
+        <div matListItemLine>{{teachingRecord.address}}</div>
+        <div matListItemTitle>{{teachingRecord.date}}</div>
+      </mat-list-item>
+      <mat-list-item>
+        <button (click)="openTeachingRecordDialog()" color="accent"
+                mat-raised-button>{{'新增'}}</button>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <div mat-subheader>学习经历</div>
+      <mat-list-item (click)="openStudyRecordDialog(studyRecord)" *ngFor="let studyRecord of user.studyRecords"
+                     matRipple>
+        <mat-icon matListItemIcon>
+          <fa-icon [icon]="faGraduationCap"></fa-icon>
+        </mat-icon>
+        <div matListItemLine>{{studyRecord.content}}</div>
+        <div matListItemTitle>{{studyRecord.date}}</div>
+      </mat-list-item>
+      <mat-list-item>
+        <button (click)="openStudyRecordDialog()" color="accent"
+                mat-raised-button>{{'新增'}}</button>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
 </mat-card>

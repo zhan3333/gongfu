@@ -1,6 +1,7 @@
 package action
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
@@ -43,6 +44,14 @@ func Wrap(f Action) gin.HandlerFunc {
 		}
 		c2.Logger = logrus.WithContext(c2).WithField("x-request-id", c2.RequestID).WithField("user_id", c2.UserID)
 		r := f(c2)
+
+		fmt.Println(c.Errors, c.Writer.Status())
+		// bad request
+		if len(c.Errors) > 0 && c.Writer.Status() == http.StatusBadRequest {
+			c.JSON(http.StatusBadRequest, gin.H{"msg": c.Errors.String(), "errors": c.Errors.Errors()})
+			return
+		}
+
 		if c.Writer.Written() { // already write response
 			return
 		}

@@ -6,6 +6,30 @@ import (
 	"gongfu/internal/model"
 )
 
+type CreateTeachingRecordInput struct {
+	Date    string
+	Address string
+	UserId  uint
+}
+
+type UpdateTeachingRecordInput struct {
+	Id      uint
+	Date    string
+	Address string
+}
+
+type CreateStudyRecordInput struct {
+	Date    string
+	Content string
+	UserId  uint
+}
+
+type UpdateStudyRecordInput struct {
+	Id      uint
+	Date    string
+	Content string
+}
+
 type User interface {
 	UserIDExists(ctx context.Context, userID uint) (bool, error)
 	OpenIDExists(ctx context.Context, openID string) (bool, error)
@@ -24,6 +48,55 @@ type User interface {
 	GetTeachingRecords(ctx context.Context, userId uint) ([]model.TeachingRecord, error)
 	// GetStudyRecords 获取学习记录
 	GetStudyRecords(ctx context.Context, userId uint) ([]model.StudyRecord, error)
+	CreateTeachingRecord(ctx context.Context, in *CreateTeachingRecordInput) error
+	UpdateTeachingRecord(ctx context.Context, in *UpdateTeachingRecordInput) error
+	DeleteTeachingRecord(ctx context.Context, recordId uint) error
+
+	CreateStudyRecord(ctx context.Context, in *CreateStudyRecordInput) error
+	UpdateStudyRecord(ctx context.Context, in *UpdateStudyRecordInput) error
+	DeleteStudyRecord(ctx context.Context, recordId uint) error
+}
+
+func (s DBStore) CreateTeachingRecord(ctx context.Context, in *CreateTeachingRecordInput) error {
+	record := model.TeachingRecord{
+		Date:    in.Date,
+		Address: in.Address,
+		UserId:  in.UserId,
+	}
+	return s.DB.WithContext(ctx).Create(&record).Error
+}
+
+func (s DBStore) UpdateTeachingRecord(ctx context.Context, in *UpdateTeachingRecordInput) error {
+	return s.DB.WithContext(ctx).Save(&model.TeachingRecord{
+		ID:      in.Id,
+		Date:    in.Date,
+		Address: in.Address,
+	}).Error
+}
+
+func (s DBStore) DeleteTeachingRecord(ctx context.Context, recordId uint) error {
+	return s.DB.WithContext(ctx).Delete(&model.TeachingRecord{}, recordId).Error
+}
+
+func (s DBStore) CreateStudyRecord(ctx context.Context, in *CreateStudyRecordInput) error {
+	record := model.StudyRecord{
+		Date:    in.Date,
+		Content: in.Content,
+		UserId:  in.UserId,
+	}
+	return s.DB.WithContext(ctx).Create(&record).Error
+}
+
+func (s DBStore) UpdateStudyRecord(ctx context.Context, in *UpdateStudyRecordInput) error {
+	return s.DB.WithContext(ctx).Save(&model.StudyRecord{
+		ID:      in.Id,
+		Date:    in.Date,
+		Content: in.Content,
+	}).Error
+}
+
+func (s DBStore) DeleteStudyRecord(ctx context.Context, recordId uint) error {
+	return s.DB.WithContext(ctx).Delete(&model.StudyRecord{}, recordId).Error
 }
 
 type UserPageQuery struct {

@@ -17,6 +17,7 @@ export class AppErrorHandler extends ErrorHandler {
   override handleError(error: Error | HttpErrorResponse) {
     let displayMessage = '';
     if (error instanceof HttpErrorResponse) {
+      console.log(error)
       switch (error.status) {
         case 400:
           if (error.error !== null && error.error['msg']) {

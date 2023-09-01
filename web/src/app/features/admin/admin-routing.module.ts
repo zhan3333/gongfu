@@ -1,9 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserEditComponent } from './user-edit/user-edit.component';
-import { CourseCreateComponent } from './courses/course-create/course-create.component';
-import { CoursesComponent } from './courses/courses.component';
-import { CourseEditComponent } from './courses/course-edit/course-edit.component';
 
 const routes: Routes = [
   {
@@ -11,22 +7,32 @@ const routes: Routes = [
     children: [
       {
         path: 'users/:id',
-        component: UserEditComponent,
+        loadComponent: () =>
+          import('./user-edit/user-edit.component').then(
+            (m) => m.UserEditComponent
+          ),
         data: { title: 'user edit' }
       },
       {
         path: 'courses/create',
-        component: CourseCreateComponent,
+        loadComponent: () =>
+          import('./courses/course-create/course-create.component').then(
+            (m) => m.CourseCreateComponent
+          ),
         data: { title: 'create course' }
       },
       {
         path: 'courses/:id',
-        component: CourseEditComponent,
+        loadComponent: () =>
+          import('./courses/course-edit/course-edit.component').then(
+            (m) => m.CourseEditComponent
+          ),
         data: { title: 'edit course' }
       },
       {
         path: 'courses',
-        component: CoursesComponent,
+        loadComponent: () =>
+          import('./courses/courses.component').then((m) => m.CoursesComponent),
         data: { title: 'courses page' }
       }
     ]

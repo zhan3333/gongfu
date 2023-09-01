@@ -69,13 +69,15 @@ func (r UseCase) AdminGetUsers(c *app.Context) result.Result {
 }
 
 type MeResponse struct {
-	ID         uint     `json:"id"`
-	OpenID     *string  `json:"openid"`
-	Phone      *string  `json:"phone"`
-	Nickname   string   `json:"nickname"`
-	HeadImgURL string   `json:"headimgurl"`
-	RoleNames  []string `json:"roleNames"`
-	UUID       string   `json:"uuid"`
+	ID              uint                   `json:"id"`
+	OpenID          *string                `json:"openid"`
+	Phone           *string                `json:"phone"`
+	Nickname        string                 `json:"nickname"`
+	HeadImgURL      string                 `json:"headimgurl"`
+	RoleNames       []string               `json:"roleNames"`
+	UUID            string                 `json:"uuid"`
+	TeachingRecords []model.TeachingRecord `json:"teachingRecords"`
+	StudyRecords    []model.StudyRecord    `json:"studyRecords"`
 }
 
 func (r UseCase) AdminGetUser(c *app.Context) result.Result {
@@ -92,14 +94,24 @@ func (r UseCase) AdminGetUser(c *app.Context) result.Result {
 		c.String(http.StatusNotFound, "user not found")
 		return result.Err(nil)
 	}
+	teachingRecords, err := r.Store.GetTeachingRecords(c.Request.Context(), user.ID)
+	if err != nil {
+		return result.Err(err)
+	}
+	studyRecords, err := r.Store.GetStudyRecords(c.Request.Context(), user.ID)
+	if err != nil {
+		return result.Err(err)
+	}
 	return result.Ok(MeResponse{
-		ID:         user.ID,
-		OpenID:     user.OpenID,
-		Phone:      user.Phone,
-		Nickname:   user.Nickname,
-		HeadImgURL: r.Storage.GetHeadImageVisitURL(user.HeadImgURL),
-		RoleNames:  user.GetRoleNames(),
-		UUID:       user.UUID,
+		ID:              user.ID,
+		OpenID:          user.OpenID,
+		Phone:           user.Phone,
+		Nickname:        user.Nickname,
+		HeadImgURL:      r.Storage.GetHeadImageVisitURL(user.HeadImgURL),
+		RoleNames:       user.GetRoleNames(),
+		UUID:            user.UUID,
+		TeachingRecords: teachingRecords,
+		StudyRecords:    studyRecords,
 	})
 }
 
@@ -178,4 +190,93 @@ func (r UseCase) AdminGetRoleNames(c *app.Context) result.Result {
 		return result.Err(err)
 	}
 	return result.Ok(roleNames)
+}
+
+// AdminEditTeachingRecord 编辑授课记录
+func (r UseCase) AdminEditTeachingRecord(c *app.Context) result.Result {
+	req := struct {
+		Id      uint   `json:"id" binding:"omitempty"`
+		Date    string `json:"date" binding:"required"`
+		Address string `json:"address" binding:"required"`
+		UserId  uint   `json:"userId" binding:"required"`
+	}{}
+	if err := c.Bind(&req); err != nil {
+		return result.Err(nil)
+	}
+	if req.Id == 0 {
+		err := r.Store.CreateTeachingRecord(c.Request.Context(), &store.CreateTeachingRecordInput{
+			Date:    req.Date,
+			Address: req.Address,
+			UserId:  req.UserId,
+		})
+		if err != nil {
+			return result.Err(err)
+		}
+	} else {
+		err := r.Store.UpdateTeachingRecord(c.Request.Context(), &store.UpdateTeachingRecordInput{
+			Id:      req.Id,
+			Date:    req.Date,
+			Address: req.Address,
+		})
+		if err != nil {
+			return result.Err(err)
+		}
+	}
+	return result.Ok(nil)
+}
+
+func (r UseCase) AdminDeleteTeachingRecord(c *app.Context) result.Result {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return result.Err(err)
+	}
+	err = r.Store.DeleteTeachingRecord(c.Request.Context(), uint(id))
+	if err != nil {
+		return result.Err(err)
+	}
+	return result.Ok(nil)
+}
+
+func (r UseCase) AdminEditStudyRecord(c *app.Context) result.Result {
+	req := struct {
+		Id      uint   `json:"id" binding:"omitempty"`
+		Date    string `json:"date" binding:"required"`
+		Content string `json:"content" binding:"required"`
+		UserId  uint   `json:"userId" binding:"required"`
+	}{}
+	if err := c.Bind(&req); err != nil {
+		return result.Err(nil)
+	}
+	if req.Id == 0 {
+		err := r.Store.CreateStudyRecord(c.Request.Context(), &store.CreateStudyRecordInput{
+			Date:    req.Date,
+			Content: req.Content,
+			UserId:  req.UserId,
+		})
+		if err != nil {
+			return result.Err(err)
+		}
+	} else {
+		err := r.Store.UpdateStudyRecord(c.Request.Context(), &store.UpdateStudyRecordInput{
+			Id:      req.Id,
+			Date:    req.Date,
+			Content: req.Content,
+		})
+		if err != nil {
+			return result.Err(err)
+		}
+	}
+	return result.Ok(nil)
+}
+
+func (r UseCase) AdminDeleteStudyRecord(c *app.Context) result.Result {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return result.Err(err)
+	}
+	err = r.Store.DeleteStudyRecord(c.Request.Context(), uint(id))
+	if err != nil {
+		return result.Err(err)
+	}
+	return result.Ok(nil)
 }
