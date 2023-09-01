@@ -15,10 +15,9 @@ export function refreshSharedCheckInToWechat(
     wechatService.refresh(location.href.split('#')[0]).subscribe(() => {
       let checkInAtStr = '无';
       if (checkIn?.createdAt) {
-        checkInAtStr = new Date(checkIn?.createdAt * 1000 ?? 0).toLocaleString(
-          'chinese',
-          { hour12: false }
-        );
+        checkInAtStr = new Date(
+          checkIn?.createdAt * 1000 ?? 0
+        ).toLocaleString('chinese', { hour12: false });
       }
       wechatService.wx.updateAppMessageShareData({
         title: checkIn?.userName + ' 的今日打卡',
@@ -41,7 +40,7 @@ export function refreshSharedProfileToWechat(
     wechatService.refresh(location.href.split('#')[0]).subscribe(() => {
       let title = profile.nickname + '的个人信息';
       let desc = '';
-      if (profile.role === 'coach') {
+      if (profile.isCoach()) {
         title = profile.nickname + '教练的个人信息';
         desc = `等级: ${displayLevel(profile.coach?.level)}\n任教: ${
           profile?.coach?.teachingSpace

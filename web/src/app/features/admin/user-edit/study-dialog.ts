@@ -46,14 +46,16 @@ import * as moment from 'moment/moment';
     <div mat-dialog-actions>
       <button mat-button (click)="onNoClick()">取消</button>
       <button
-        mat-button
+        mat-raised-button
         (click)="onClickDelete()"
         *ngIf="form.value.id"
         color="warn"
       >
         删除
       </button>
-      <button mat-button (click)="onClickSubmit()" color="primary">保存</button>
+      <button mat-raised-button (click)="onClickSubmit()" color="primary">
+        保存
+      </button>
     </div>
   `,
   standalone: true,

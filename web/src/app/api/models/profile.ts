@@ -1,4 +1,4 @@
-import { displayRoles, ICoach } from './user';
+import { displayRoles, ICoach, ROLE_COACH } from './user';
 import { StudyRecord } from './study-record';
 import { TeachingRecord } from './teaching-record';
 
@@ -6,7 +6,6 @@ export class Profile {
   id = 0;
   nickname = '';
   headimgurl = '';
-  role?: string;
   roleNames: string[] = [];
   uuid = '';
   coach?: ICoach;
@@ -20,7 +19,6 @@ export class Profile {
     this.roleNames = payload.roleNames || [];
     this.uuid = payload.uuid || '';
     this.coach = payload.coach;
-    console.log('paylod', payload);
     this.studyRecords = payload.studyRecords || [];
     this.teachingRecords = payload.teachingRecords || [];
   }
@@ -30,5 +28,9 @@ export class Profile {
       return '';
     }
     return displayRoles(this.roleNames);
+  }
+
+  isCoach(): boolean {
+    return -1 !== this.roleNames.indexOf(ROLE_COACH);
   }
 }
