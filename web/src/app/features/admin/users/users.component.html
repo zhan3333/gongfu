@@ -1,3 +1,10 @@
+<mat-form-field>
+  <mat-label>角色</mat-label>
+  <mat-select [(value)]="selectRoleIds" [multiple]="true">
+    <mat-option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</mat-option>
+  </mat-select>
+</mat-form-field>
+<button (click)="refreshTable()" mat-button>确定</button>
 <div>
   <table [dataSource]="dataSource" class="w-100" mat-table>
     <!-- actions -->
@@ -16,7 +23,8 @@
     <ng-container matColumnDef="avatar">
       <th *matHeaderCellDef mat-header-cell> 头像</th>
       <td *matCellDef="let element" mat-cell>
-        <img [ngSrc]="element?.headimgurl" [routerLink]="'/profile/' + element.uuid" alt="head_img" class="rounded-full" height=140
+        <img [ngSrc]="element?.headimgurl" [routerLink]="'/profile/' + element.uuid" alt="head_img" class="rounded-full"
+             height=140
              width=140>
       </td>
     </ng-container>
@@ -24,19 +32,19 @@
     <!-- Nickname -->
     <ng-container matColumnDef="nickname">
       <th *matHeaderCellDef mat-header-cell> 昵称</th>
-      <td *matCellDef="let element" mat-cell> {{element?.nickname}} </td>
+      <td *matCellDef="let element" mat-cell> {{ element?.nickname }}</td>
     </ng-container>
 
     <!-- Phone -->
     <ng-container matColumnDef="phone">
       <th *matHeaderCellDef mat-header-cell> 电话</th>
-      <td *matCellDef="let element" mat-cell> {{element.phone}} </td>
+      <td *matCellDef="let element" mat-cell> {{ element.phone }}</td>
     </ng-container>
 
     <!-- roles -->
     <ng-container matColumnDef="roles">
       <th *matHeaderCellDef mat-header-cell> 角色</th>
-      <td *matCellDef="let element" mat-cell> {{element.displayRoles()}} </td>
+      <td *matCellDef="let element" mat-cell> {{ element.displayRoles() }}</td>
     </ng-container>
 
     <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>

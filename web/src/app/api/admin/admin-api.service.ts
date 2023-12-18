@@ -14,7 +14,8 @@ const getCoach = '/admin/coach';
   providedIn: 'root'
 })
 export class AdminApiService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   getUsers(data: GetUsersParams) {
     return this.http
@@ -23,7 +24,8 @@ export class AdminApiService {
           page: data.page,
           limit: data.limit,
           keyword: data.keyword,
-          desc: data.desc
+          desc: data.desc,
+          roleIds: data.roleIds,
         }
       })
       .pipe(map((v) => new UsersPage(v)));
@@ -66,7 +68,7 @@ export class AdminApiService {
   // 获取课程列表
   getCoursesPage(input: GetCoursesPageInput) {
     return this.http
-      .get('/admin/courses', { params: { ...input } })
+      .get('/admin/courses', {params: {...input}})
       .pipe(map((v) => new CoursesPage(v)));
   }
 
@@ -130,6 +132,7 @@ export interface GetUsersParams {
   limit: number;
   keyword: string;
   desc: boolean;
+  roleIds: number[];
 }
 
 export interface GetCoursesPageInput {

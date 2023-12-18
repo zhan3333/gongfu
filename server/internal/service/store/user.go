@@ -104,6 +104,7 @@ type UserPageQuery struct {
 	Limit   int
 	Keyword string
 	Desc    bool
+	RoleIds []int
 }
 
 type UserPage struct {
@@ -120,6 +121,9 @@ func (s DBStore) GetUserPage(ctx context.Context, query UserPageQuery) (*UserPag
 	}
 	if query.Keyword != "" {
 		q = q.Where("nickname like ?", query.Keyword).Or("phone like ?", query.Keyword)
+	}
+	if len(query.RoleIds) != 0 {
+		q = q.Joins("left join user_has_roles on users.id = user_has_roles.user_id").Where("user_has_roles.role_id in (?)", query.RoleIds)
 	}
 	count := int64(0)
 	if err := q.Count(&count).Error; err != nil {

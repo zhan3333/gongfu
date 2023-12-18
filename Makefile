@@ -7,7 +7,7 @@ build_api:
 
 # 编译 web 服务
 build_web:
-	cd web && pnpm run build:prod
+	cd web && npm run build:prod
 	rm -rf build/web/*
 	cp -r web/dist/gongfu/* build/web/
 

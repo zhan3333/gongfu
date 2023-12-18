@@ -35,6 +35,7 @@ func (r UseCase) AdminGetUsers(c *app.Context) result.Result {
 		Limit   int    `json:"limit" form:"limit"`
 		Keyword string `json:"keyword" form:"keyword"`
 		Desc    bool   `json:"desc" form:"desc"`
+		RoleIds []int  `json:"roleIds" form:"roleIds"`
 	}{}
 	if err := c.Bind(&req); err != nil {
 		return result.Err(nil)
@@ -44,6 +45,7 @@ func (r UseCase) AdminGetUsers(c *app.Context) result.Result {
 		Limit:   req.Limit,
 		Keyword: req.Keyword,
 		Desc:    req.Desc,
+		RoleIds: req.RoleIds,
 	})
 	if err != nil {
 		return result.Err(err)

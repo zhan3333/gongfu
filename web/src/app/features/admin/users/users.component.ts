@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { User } from '../../../api/models/user';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -12,9 +6,10 @@ import { AdminApiService } from '../../../api/admin/admin-api.service';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { NgOptimizedImage } from '@angular/common';
+import { NgForOf, NgOptimizedImage } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'anms-users',
@@ -27,7 +22,9 @@ import { MatButtonModule } from '@angular/material/button';
     MatIconModule,
     NgOptimizedImage,
     FontAwesomeModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSelectModule,
+    NgForOf
   ],
   standalone: true
 })
@@ -43,10 +40,18 @@ export class UsersComponent implements OnInit, AfterViewInit {
     'roles'
   ];
   public dataSource = new MatTableDataSource<User>([]);
+  roles: { id: number, name: string }[] = [
+    {id: 1, name: '管理员'},
+    {id: 2, name: '教练'},
+    {id: 3, name: '会员'}
+  ];
+  public selectRoleIds: number[] = [];
 
-  constructor(private adminApi: AdminApiService) {}
+  constructor(private adminApi: AdminApiService) {
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   refreshTable() {
     if (this.paginator === undefined) {
@@ -57,7 +62,8 @@ export class UsersComponent implements OnInit, AfterViewInit {
         desc: true,
         keyword: '',
         limit: this.paginator.pageSize,
-        page: this.paginator.pageIndex
+        page: this.paginator.pageIndex,
+        roleIds: this.selectRoleIds,
       })
       .subscribe((data) => {
         this.dataSource.data = data.users;
