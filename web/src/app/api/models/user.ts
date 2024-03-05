@@ -82,6 +82,8 @@ export function displayRoleName(name: string): string {
     case ROLE_COACH:
       return '教练';
     case ROLE_USER:
+      return '用户';
+    case ROLE_MEMBER:
       return '会员';
     default:
       return name;
@@ -96,6 +98,8 @@ export const ROLE_USER = 'user';
 
 // 教练
 export const ROLE_COACH = 'coach';
+
+export const ROLE_MEMBER = "member"
 
 // 教练信息
 export interface ICoach {

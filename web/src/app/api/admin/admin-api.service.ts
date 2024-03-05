@@ -110,6 +110,48 @@ export class AdminApiService {
   deleteStudyRecord(id: number) {
     return this.http.delete('/admin/study-record/' + id);
   }
+
+  getMemberCourses(userId: number) {
+    return this.http.get<MemberCourse[]>('/admin/member-courses', {
+      params: {
+        userId
+      }
+    });
+  }
+
+  delMemberCourse(memberCourseId: number) {
+    return this.http.delete(`/admin/member-courses/${memberCourseId}`);
+  }
+
+  createMemberCourse(data: CreateMemberCourseParams) {
+    console.log('create', data)
+    return this.http.post('/admin/member-courses', data);
+  }
+
+  updateMemberCourse(id: number, params: UpdateMemberCourseParams) {
+    return this.http.put(`/admin/member-courses/${id}`, params);
+  }
+}
+
+export interface CreateMemberCourseParams {
+  name: string
+  userId: number
+  startTime: string
+  endTime: string
+  total: number
+  remark: string
+}
+
+export interface MemberCourse {
+  id: number
+  name: string
+  userId: number
+  startTime: string
+  endTime: string
+  total: number
+  remain: number
+  remark: string
+  status: string
 }
 
 export interface CreateCourseInput {
@@ -119,6 +161,15 @@ export interface CreateCourseInput {
   startDate: string;
   startTime: string;
   managerId: number;
+}
+
+export interface UpdateMemberCourseParams {
+  name: string
+  startTime: string
+  endTime: string
+  total: number
+  remark: string
+  status: string
 }
 
 // 简易的教练信息

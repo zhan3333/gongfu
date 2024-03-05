@@ -1,49 +1,49 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>{{'编辑个人信息'}}</mat-card-title>
+    <mat-card-title>{{ '编辑个人信息' }}</mat-card-title>
   </mat-card-header>
   <form [formGroup]="form" class="flex flex-col flex-nowrap">
     <!--昵称-->
     <mat-form-field class="flex-1">
-      <mat-label>{{'输入新的昵称'}}</mat-label>
+      <mat-label>{{ '输入新的昵称' }}</mat-label>
       <input formControlName="nickname" matInput>
     </mat-form-field>
     <!--手机号-->
     <mat-form-field class=" flex-1">
-      <mat-label>{{'手机号'}}</mat-label>
+      <mat-label>{{ '手机号' }}</mat-label>
       <input formControlName="phone" matInput>
     </mat-form-field>
     <!--角色-->
     <mat-form-field class=" flex-1">
       <mat-label>角色</mat-label>
-      <mat-select [multiple]="true" formControlName="roleNames">
-        <mat-option *ngFor="let roleName of roleNames" [value]="roleName">{{displayRoleName(roleName)}}</mat-option>
+      <mat-select [formControl]="form.controls.roleNames" [multiple]="true">
+        <mat-option *ngFor="let roleName of roleNames" [value]="roleName">{{ displayRoleName(roleName) }}</mat-option>
       </mat-select>
     </mat-form-field>
     <!--教练级别-->
-    <mat-form-field class=" flex-1">
+    <mat-form-field *ngIf="selectedCoach" class=" flex-1">
       <mat-label>教练级别</mat-label>
       <mat-select formControlName="level">
-        <mat-option *ngFor="let lv of Levels" [value]="lv.value">{{lv.key}}</mat-option>
+        <mat-option *ngFor="let lv of Levels" [value]="lv.value">{{ lv.key }}</mat-option>
       </mat-select>
     </mat-form-field>
     <!--任教单位-->
-    <mat-form-field class=" flex-1">
-      <mat-label>{{'任教单位'}}</mat-label>
+    <mat-form-field *ngIf="selectedCoach" class=" flex-1">
+      <mat-label>{{ '任教单位' }}</mat-label>
       <input formControlName="teachingSpace" matInput>
     </mat-form-field>
     <!--任教年限-->
-    <mat-form-field class=" flex-1">
-      <mat-label>{{'任教年限'}}</mat-label>
+    <mat-form-field *ngIf="selectedCoach" class=" flex-1">
+      <mat-label>{{ '任教年限' }}</mat-label>
       <input formControlName="teachingAge" matInput>
     </mat-form-field>
     <!--任教经历-->
-    <mat-form-field class=" flex-1">
+    <mat-form-field *ngIf="selectedCoach" class=" flex-1">
       <mat-label>任教经历</mat-label>
       <mat-chip-grid #chipList aria-label="Fruit selection">
         <mat-chip-row (removed)="onRemoveExp(exp)"
                       *ngFor="let exp of form.get('teachingExperiences')?.value" [removable]="true">
-          {{exp}}
+          {{ exp }}
           <button matChipRemove>
             <mat-icon>
               <fa-icon [icon]="faBan"></fa-icon>
@@ -60,10 +60,11 @@
   <mat-card-actions>
     <!--保存按钮-->
     <button (click)="onClickSave()" [disabled]="form.invalid || loading" color="accent"
-            mat-raised-button>{{'保存'}}</button>
+            mat-raised-button>{{ '保存' }}
+    </button>
   </mat-card-actions>
 </mat-card>
-<mat-card *ngIf="user">
+<mat-card *ngIf="user" class="mt-2">
   <mat-card-content>
     <mat-list>
       <div mat-subheader>授课经历</div>
@@ -72,12 +73,13 @@
         <mat-icon matListItemIcon>
           <fa-icon [icon]="faChalkboardTeacher"></fa-icon>
         </mat-icon>
-        <div matListItemLine>{{teachingRecord.address}}</div>
-        <div matListItemTitle>{{teachingRecord.date}}</div>
+        <div matListItemLine>{{ teachingRecord.address }}</div>
+        <div matListItemTitle>{{ teachingRecord.date }}</div>
       </mat-list-item>
       <mat-list-item>
         <button (click)="openTeachingRecordDialog()" color="accent"
-                mat-raised-button>{{'新增'}}</button>
+                mat-raised-button>{{ '新增' }}
+        </button>
       </mat-list-item>
       <mat-divider></mat-divider>
       <div mat-subheader>学习经历</div>
@@ -86,13 +88,45 @@
         <mat-icon matListItemIcon>
           <fa-icon [icon]="faGraduationCap"></fa-icon>
         </mat-icon>
-        <div matListItemLine>{{studyRecord.content}}</div>
-        <div matListItemTitle>{{studyRecord.date}}</div>
+        <div matListItemLine>{{ studyRecord.content }}</div>
+        <div matListItemTitle>{{ studyRecord.date }}</div>
       </mat-list-item>
       <mat-list-item>
         <button (click)="openStudyRecordDialog()" color="accent"
-                mat-raised-button>{{'新增'}}</button>
+                mat-raised-button>{{ '新增' }}
+        </button>
       </mat-list-item>
     </mat-list>
   </mat-card-content>
+</mat-card>
+<mat-card *ngIf="selectedMember" class="mt-2">
+  <mat-card-header>
+    <mat-card-title>{{ '会员课程' }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-card *ngFor="let course of memberCourses" matRipple>
+      <mat-card-header>
+        <mat-card-title>{{ course.name }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!--display startTime, endTime, total, remain, remark info-->
+        <p>{{ course.startTime | date: 'yyyy-MM-dd' }} - {{ course.endTime | date: 'yyyy-MM-dd' }}</p>
+        <p>{{ course.total }}节课，剩余{{ course.remain }}节</p>
+        <p *ngIf="course.remark">{{ course.remark }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <!--删除-->
+        <button (click)="deleteCourse(course)" color="warn"
+                mat-raised-button>{{ '删除' }}
+        </button>
+        <!--编辑-->
+        <button (click)="openEditMemberCourseDialog(course)" class="ml-2" color="accent"
+                mat-raised-button>{{ '编辑' }}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </mat-card-content>
+  <mat-card-actions>
+    <button (click)="openCreateMemberCourseDialog()" color="accent" mat-raised-button>{{ '新增' }}</button>
+  </mat-card-actions>
 </mat-card>

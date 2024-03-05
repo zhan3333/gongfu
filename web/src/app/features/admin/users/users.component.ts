@@ -43,7 +43,8 @@ export class UsersComponent implements OnInit, AfterViewInit {
   roles: { id: number, name: string }[] = [
     {id: 1, name: '管理员'},
     {id: 2, name: '教练'},
-    {id: 3, name: '会员'}
+    {id: 3, name: '用户'},
+    {id: 4, name: '会员'}
   ];
   public selectRoleIds: number[] = [];
 
