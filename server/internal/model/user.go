@@ -41,6 +41,17 @@ func (u User) HasRole(role string) bool {
 	return false
 }
 
+func (u User) HasAnyRole(roles []string) bool {
+	for _, v := range u.Roles {
+		for _, v2 := range roles {
+			if v.RoleName == v2 {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 // ROLE_ADMIN 管理员
 const ROLE_ADMIN = "admin"
 
@@ -49,3 +60,5 @@ const ROLE_USER = "user"
 
 // ROLE_COACH 教练
 const ROLE_COACH = "coach"
+
+const ROLE_MEMBER = "member"

@@ -191,6 +191,11 @@ export class ApiService {
   visitFile(key: string) {
     return environment.api + '/storage/visit/' + key
   }
+
+  // update member course remain
+  updateMemberCourseRemain(id: number, courseRemain: number) {
+    return this.http.put('/member-courses/' + id + '/remain', {remain: courseRemain})
+  }
 }
 
 

@@ -18,7 +18,9 @@ type MemberCourse struct {
 	// 备注
 	Remark string `json:"remark" gorm:"column:remark;type:varchar(255);not null;default:'';comment:备注"`
 	// 状态
-	Status string `json:"status" gorm:"column:status;type:varchar(50);not null;default:'';comment:状态"`
+	Status       string `json:"status" gorm:"column:status;type:varchar(50);not null;default:'';comment:状态"`
+	CreateUserId uint32 `json:"createUserId" gorm:"column:create_user_id;type:bigint(32);not null;default:0;comment:创建用户 id"`
+	UpdateUserId uint32 `json:"updateUserId" gorm:"column:update_user_id;type:bigint(32);not null;default:0;comment:更新用户 id"`
 }
 
 func (m MemberCourse) TableName() string {

@@ -73,6 +73,9 @@ func (r Route) Route(app *gin.Engine) {
 			authedApi.GET("courses/:id", action.Wrap(r.UserUseCase.GetCourse))
 			authedApi.PUT("courses/:id", action.Wrap(r.UserUseCase.UpdateCourse))
 
+			// update member courses remain
+			authedApi.PUT("member-courses/:id/remain", action.Wrap(r.UserUseCase.ChangeMemberCourseRemain))
+
 			adminApi := authedApi.Group("admin", r.Middleware.Role(model.ROLE_ADMIN))
 			{
 				adminApi.GET("users", action.Wrap(r.AdminUseCase.AdminGetUsers))

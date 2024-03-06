@@ -80,14 +80,15 @@ func (r UseCase) CreateMemberCourse(c *app.Context) result.Result {
 		return result.Err(fmt.Errorf("invalid total"))
 	}
 	err := r.Store.CreateMemberCourse(c.Request.Context(), &store.CreateMemberCourseInput{
-		UserId:    req.UserID,
-		Name:      req.Name,
-		StartTime: req.StartTime,
-		EndTime:   req.EndTime,
-		Total:     req.Total,
-		Remain:    req.Total,
-		Remark:    req.Remark,
-		Status:    "normal",
+		UserId:       req.UserID,
+		Name:         req.Name,
+		StartTime:    req.StartTime,
+		EndTime:      req.EndTime,
+		Total:        req.Total,
+		Remain:       req.Total,
+		Remark:       req.Remark,
+		Status:       "normal",
+		CreateUserId: uint32(c.UserID),
 	})
 	if err != nil {
 		return result.Err(err)
@@ -130,13 +131,14 @@ func (r UseCase) UpdateMemberCourse(c *app.Context) result.Result {
 		return result.Err(err)
 	}
 	err = r.Store.UpdateMemberCourse(c.Request.Context(), uint(id), &store.UpdateMemberCourseInput{
-		Name:      req.Name,
-		StartTime: req.StartTime,
-		EndTime:   req.EndTime,
-		Total:     req.Total,
-		Remain:    req.Remain,
-		Remark:    req.Remark,
-		Status:    req.Status,
+		Name:         req.Name,
+		StartTime:    req.StartTime,
+		EndTime:      req.EndTime,
+		Total:        req.Total,
+		Remain:       req.Remain,
+		Remark:       req.Remark,
+		Status:       req.Status,
+		UpdateUserId: uint32(c.UserID),
 	})
 	if err != nil {
 		return result.Err(err)

@@ -1,4 +1,4 @@
-import { displayRoles, ICoach, ROLE_COACH, ROLE_MEMBER } from './user';
+import { displayRoles, ICoach, ROLE_ADMIN, ROLE_COACH, ROLE_MEMBER } from './user';
 import { StudyRecord } from './study-record';
 import { TeachingRecord } from './teaching-record';
 import { MemberCourse } from '../admin/admin-api.service';
@@ -35,6 +35,10 @@ export class Profile {
 
   isCoach(): boolean {
     return -1 !== this.roleNames.indexOf(ROLE_COACH);
+  }
+
+  isAdmin(): boolean {
+    return -1 !== this.roleNames.indexOf(ROLE_ADMIN);
   }
 
   // 是否是会员
