@@ -7,15 +7,16 @@ import { refreshSharedProfileToWechat } from '../../core/util';
 import { WechatService } from '../../services/wechat.service';
 import { displayLevel } from '../../services/coach-level';
 import { MatLineModule } from '@angular/material/core';
-import { NgIf, NgOptimizedImage, NgFor } from '@angular/common';
+import { DatePipe, NgFor, NgIf, NgOptimizedImage } from '@angular/common';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
-    selector: 'anms-profile',
-    templateUrl: './profile.component.html',
-    styleUrls: ['./profile.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default,
-    standalone: true,
-    imports: [NgIf, NgOptimizedImage, NgFor, MatLineModule]
+  selector: 'anms-profile',
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [NgIf, NgOptimizedImage, NgFor, MatLineModule, DatePipe, MatDividerModule]
 })
 export class ProfileComponent implements OnInit {
   public profile: Profile | undefined;
@@ -26,7 +27,8 @@ export class ProfileComponent implements OnInit {
     private notificationService: NotificationService,
     private api: ApiService,
     private wechat: WechatService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.activeRoute.paramMap.subscribe((data) => {

@@ -1,6 +1,7 @@
-import { displayRoles, ICoach, ROLE_COACH } from './user';
+import { displayRoles, ICoach, ROLE_COACH, ROLE_MEMBER } from './user';
 import { StudyRecord } from './study-record';
 import { TeachingRecord } from './teaching-record';
+import { MemberCourse } from '../admin/admin-api.service';
 
 export class Profile {
   id = 0;
@@ -11,6 +12,7 @@ export class Profile {
   coach?: ICoach;
   studyRecords: StudyRecord[]; // 学习记录
   teachingRecords: TeachingRecord[]; // 授课记录
+  memberCourses: MemberCourse[]; // 会员课程
 
   constructor(payload: Partial<Profile>) {
     this.id = payload.id || 0;
@@ -21,6 +23,7 @@ export class Profile {
     this.coach = payload.coach;
     this.studyRecords = payload.studyRecords || [];
     this.teachingRecords = payload.teachingRecords || [];
+    this.memberCourses = payload.memberCourses || [];
   }
 
   displayRoles(): string {
@@ -32,5 +35,10 @@ export class Profile {
 
   isCoach(): boolean {
     return -1 !== this.roleNames.indexOf(ROLE_COACH);
+  }
+
+  // 是否是会员
+  isMember(): boolean {
+    return -1 !== this.roleNames.indexOf(ROLE_MEMBER);
   }
 }

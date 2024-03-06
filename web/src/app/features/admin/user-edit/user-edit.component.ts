@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import {
-  FormArray,
   FormControl,
   FormGroup,
   FormsModule,
@@ -66,26 +65,12 @@ export class UserEditComponent implements OnInit {
 
   public form = new FormGroup({
     phone: new FormControl('', {nonNullable: true}),
-    nickname: new FormControl('', {nonNullable: true}),
+    nickname: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
     level: new FormControl('', {nonNullable: true}),
     teachingSpace: new FormControl('', {nonNullable: true}),
     teachingAge: new FormControl('', {nonNullable: true}),
-    teachingExperiences: new FormControl<string[]>([], {nonNullable: true, validators: [Validators.required]}),
+    teachingExperiences: new FormControl<string[]>([], {nonNullable: true}),
     roleNames: new FormControl<string[]>([], {nonNullable: true, validators: [Validators.required]}),
-    // 会员类型
-    memberType: new FormControl('', {nonNullable: true}),
-    memberCourses: new FormArray([new FormGroup({
-      // 课程名称
-      name: new FormControl('', {nonNullable: true}),
-      // 课程开始日期
-      startDate: new FormControl('', {nonNullable: true}),
-      // 课程结束日期
-      endDate: new FormControl('', {nonNullable: true}),
-      // 总课时数
-      total: new FormControl(0, {nonNullable: true}),
-      // 剩余课时数
-      remain: new FormControl(0, {nonNullable: true}),
-    })])
   });
   public loading = false;
   // 角色名选项
@@ -411,7 +396,6 @@ export class CreateMemberCourseDialog {
     public dialogRef: MatDialogRef<CreateMemberCourseDialog>,
     private fb: NonNullableFormBuilder,
   ) {
-    this.form.valueChanges.subscribe(v => console.log('vvv', v))
   }
 
   onNoClick(): void {

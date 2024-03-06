@@ -1,35 +1,38 @@
 <div *ngIf="profile">
   <div class="flex flex-col items-center">
     <img [ngSrc]="profile.headimgurl || ''" alt="head_img" class="head_img" height=140 width=140>
-    <div class="mt-1">@{{profile.nickname}}</div>
+    <div class="mt-1">@{{ profile.nickname }}</div>
   </div>
-  <div>
-    <div class="px-4 sm:px-0">
-      <h3 class="text-base font-semibold leading-7 text-gray-900">会员信息</h3>
-      <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">{{profile.displayRoles()}}</p>
-    </div>
+  <div class="px-4 sm:px-0">
+    <h3 class="text-base font-semibold leading-7 text-gray-900">会员信息</h3>
+    <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">{{ profile.displayRoles() }}</p>
+  </div>
+  <!--教练显示-->
+  <div *ngIf="profile.isCoach()">
     <div class="mt-6 border-t border-gray-100">
       <dl class="divide-y divide-gray-100">
         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
           <dt class="text-sm font-medium leading-6 text-gray-900">教练级别</dt>
           <dd
-            class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{displayLevel(profile.coach?.level)}}</dd>
+            class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ displayLevel(profile.coach?.level) }}
+          </dd>
         </div>
         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
           <dt class="text-sm font-medium leading-6 text-gray-900">任教单位</dt>
           <dd
-            class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{profile.coach?.teachingSpace}}</dd>
+            class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ profile.coach?.teachingSpace }}
+          </dd>
         </div>
         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
           <dt class="text-sm font-medium leading-6 text-gray-900">任教年限</dt>
-          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{profile.coach?.teachingAge}}</dd>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ profile.coach?.teachingAge }}</dd>
         </div>
         <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
           <dt class="text-sm font-medium leading-6 text-gray-900">任教经历</dt>
           <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
             <ng-template [ngIf]="(profile.coach?.teachingExperiences || []).length > 0">
               <div *ngFor="let e of profile.coach?.teachingExperiences" mat-line>
-                <div class="ms-3">{{'- ' + e}}</div>
+                <div class="ms-3">{{ '- ' + e }}</div>
               </div>
             </ng-template>
             <ng-template [ngIf]="(profile.coach?.teachingExperiences || []).length === 0">
@@ -51,10 +54,10 @@
                   <div class="h-1.5 w-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300"></div>
                 </div>
                 <p class="flex-auto py-0.5 text-xs leading-5 text-gray-500">
-                  <span class="font-medium text-gray-900">{{teaching.address}}</span> 授课
+                  <span class="font-medium text-gray-900">{{ teaching.address }}</span> 授课
                 </p>
                 <time class="flex-none py-0.5 text-xs leading-5 text-gray-500">
-                  {{teaching.date}}
+                  {{ teaching.date }}
                 </time>
               </li>
             </ul>
@@ -73,10 +76,10 @@
                   <div class="h-1.5 w-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300"></div>
                 </div>
                 <p class="flex-auto py-0.5 text-xs leading-5 text-gray-500">
-                  <span class="font-medium text-gray-900">学习 {{study.content}}</span>
+                  <span class="font-medium text-gray-900">学习 {{ study.content }}</span>
                 </p>
                 <time class="flex-none py-0.5 text-xs leading-5 text-gray-500">
-                  {{study.date}}
+                  {{ study.date }}
                 </time>
               </li>
             </ul>
@@ -84,6 +87,26 @@
         </div>
       </dl>
     </div>
+  </div>
+  <!--会员显示 memberCourse 信息-->
+  <div *ngIf="profile.isMember()" class="px-4 sm:px-0 mt-6">
+    <mat-divider></mat-divider>
+    <h3 class="text-base font-semibold leading-7 text-gray-900 mt-6">会员课程</h3>
+    <ul class="divide-y divide-gray-100" role="list">
+      <li *ngFor="let mc of profile.memberCourses" class="flex justify-between gap-x-6 py-5">
+        <div class="flex min-w-0 gap-x-4">
+          <div class="min-w-0 flex-auto">
+            <p class="text-sm font-semibold leading-6 text-gray-900">{{ mc.name }}</p>
+            <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{ mc.startTime | date: 'YYYY/MM/dd' }}
+              - {{ mc.endTime | date:'YYYY/MM/dd' }}</p>
+          </div>
+        </div>
+        <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+          <p class="text-sm leading-6 text-gray-900">总课程数 {{ mc.total }}</p>
+          <p class="mt-1 text-xs leading-5 text-gray-500">剩余课程数 {{ mc.remain }}</p>
+        </div>
+      </li>
+    </ul>
   </div>
 </div>
 
