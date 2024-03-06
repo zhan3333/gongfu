@@ -20,6 +20,7 @@ type ProfileResponse struct {
 	Coach           ProfileCoach           `json:"coach"`
 	TeachingRecords []model.TeachingRecord `json:"teachingRecords"` // 授课记录
 	StudyRecords    []model.StudyRecord    `json:"studyRecords"`    // 学习记录
+	MemberCourses   []*model.MemberCourse  `json:"memberCourses"`   // 会员课程
 }
 
 type ProfileCoach struct {
@@ -66,6 +67,10 @@ func (r UseCase) Profile(c *app.Context) result.Result {
 	if err != nil {
 		return result.Err(fmt.Errorf("get user study records failed: %w", err))
 	}
+	memberCourses, err := r.Store.GetMemberCourses(c.Context.Request.Context(), uint32(user.ID))
+	if err != nil {
+		return result.Err(fmt.Errorf("get user member course failed: %w", err))
+	}
 	return result.Ok(ProfileResponse{
 		ID:         user.ID,
 		Nickname:   user.Nickname,
@@ -80,5 +85,6 @@ func (r UseCase) Profile(c *app.Context) result.Result {
 		},
 		TeachingRecords: teachingRecords,
 		StudyRecords:    studyRecords,
+		MemberCourses:   memberCourses,
 	})
 }
