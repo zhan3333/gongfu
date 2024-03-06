@@ -62,8 +62,18 @@ func (r Route) Route(app *gin.Engine) {
 			authedApi.GET("me", action.Wrap(r.UserUseCase.Me))
 			authedApi.POST("bind/phone", action.Wrap(r.UserUseCase.GetBindCode))
 			authedApi.POST("bind/phone/valid", action.Wrap(r.UserUseCase.ValidBindCode))
-			authedApi.GET("check-in/today", action.Wrap(r.UserUseCase.GetTodayCheckIn))
-			authedApi.POST("check-in", action.Wrap(r.UserUseCase.PostCheckIn))
+			checkIn := authedApi.Group("check-in")
+			{
+				// 获取今日打卡信息
+				checkIn.GET("today", action.Wrap(r.UserUseCase.GetTodayCheckIn))
+				// 创建打卡
+				checkIn.POST("", action.Wrap(r.UserUseCase.PostCheckIn))
+				// 评论打卡
+				checkIn.POST("comment", action.Wrap(r.UserUseCase.CreateCheckInComment))
+				// 获取打卡评论列表
+				checkIn.GET("comments", action.Wrap(r.UserUseCase.GetCheckInComments))
+			}
+
 			// 获取上传文件的 token
 			authedApi.GET("storage/upload-token", action.Wrap(r.UserUseCase.GetUploadToken))
 			authedApi.GET("coach", action.Wrap(r.UserUseCase.GetCoach))
@@ -105,11 +115,20 @@ func (r Route) Route(app *gin.Engine) {
 			}
 		}
 		api.GET("wechat/js-config", action.Wrap(r.UserUseCase.JSConfig))
-		api.GET("check-in/top", action.Wrap(r.UserUseCase.GetCheckInTop))
-		api.GET("check-in/top/count", action.Wrap(r.UserUseCase.GetCheckInCountTop))
-		api.GET("check-in/top/continuous", action.Wrap(r.UserUseCase.GetCheckInContinuousTop))
-		api.GET("check-in/histories", action.Wrap(r.UserUseCase.GetCheckInHistories))
-		api.GET("check-in/:key", action.Wrap(r.UserUseCase.GetCheckIn))
+
+		checkIn := api.Group("check-in")
+		{
+			// 打卡排行榜(时间)
+			checkIn.GET("top", action.Wrap(r.UserUseCase.GetCheckInTop))
+			// 打卡次数排行榜
+			checkIn.GET("top/count", action.Wrap(r.UserUseCase.GetCheckInCountTop))
+			// 连续打卡排行榜
+			checkIn.GET("top/continuous", action.Wrap(r.UserUseCase.GetCheckInContinuousTop))
+			// 获取个人的打卡历史
+			checkIn.GET("histories", action.Wrap(r.UserUseCase.GetCheckInHistories))
+			// 获取打卡详情
+			checkIn.GET(":key", action.Wrap(r.UserUseCase.GetCheckIn))
+		}
 
 		// 用户详情页
 		api.GET("profile/:uuid", action.Wrap(r.UserUseCase.Profile))

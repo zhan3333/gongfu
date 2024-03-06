@@ -128,3 +128,10 @@ export class UsersPage {
     this.limit = payload.limit || 0;
   }
 }
+
+export interface SimpleUser {
+  id: number;
+  uuid: number;
+  headImgUrl: string;
+  name: string;
+}

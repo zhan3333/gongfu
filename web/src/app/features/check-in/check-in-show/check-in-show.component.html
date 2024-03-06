@@ -1,4 +1,4 @@
-<mat-card appearance="outlined" class="h-full">
+<mat-card>
   <div class="flex flex-nowrap flex-col items-center mt-4">
     <img *ngIf="checkIn?.headImgUrl"
          [routerLink]="'/profile/' + checkIn?.userUUID"
@@ -6,14 +6,14 @@
          alt=""
          class="head_img"/>
     <div class="row">
-      <h2 class="text-center">{{checkIn?.userName}}</h2>
+      <h2 class="text-center">{{ checkIn?.userName }}</h2>
     </div>
   </div>
   <mat-card-title>
-    <div class="text-center">打卡排名: {{checkIn?.dayRank}}</div>
+    <div class="text-center">打卡排名: {{ checkIn?.dayRank }}</div>
   </mat-card-title>
   <mat-card-subtitle>
-    <div class="text-center">打卡时间: {{(checkIn?.createdAt || 0) * 1000 | date: 'mediumTime'}}</div>
+    <div class="text-center">打卡时间: {{ (checkIn?.createdAt || 0) * 1000 | date: 'mediumTime' }}</div>
   </mat-card-subtitle>
   <mat-card-content>
     <ng-container *ngIf="checkIn">
@@ -22,5 +22,41 @@
         Your browser does not support the video tag.
       </video>
     </ng-container>
+    <div class="mt-4"></div>
+    <!--comment-->
+    <mat-card *ngFor="let comment of comments" class="mt-2">
+      <mat-card-header>
+        <div [ngStyle]="{'background-image': 'url(' + comment.user.headImgUrl + ')'}"
+             [routerLink]="'/profile/' + comment.user.uuid"
+             class="bg-cover" mat-card-avatar matRipple></div>
+        <mat-card-title>{{ comment.user.name }} 的评论</mat-card-title>
+        <mat-card-subtitle>{{ comment.createdAt | date: 'YYYY-MM-dd HH:mm:ss' }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          {{ comment.content }}
+        </p>
+      </mat-card-content>
+    </mat-card>
+    <!--comment input-->
+    <mat-card class="mt-6">
+      <mat-card-header>
+        <mat-card-title>
+          评论
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngIf="user.hasAnyRole([ROLE_ADMIN, ROLE_COACH])" class="">
+          <mat-form-field class="w-full">
+            <mat-label>评论</mat-label>
+            <textarea [formControl]="commentForm" matInput></textarea>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button (click)="submitComment()" color="primary" mat-raised-button type="submit">提交</button>
+      </mat-card-actions>
+    </mat-card>
+
   </mat-card-content>
 </mat-card>

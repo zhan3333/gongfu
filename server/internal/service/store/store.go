@@ -41,12 +41,34 @@ type Store interface {
 	UpdateMemberCourse(ctx context.Context, id uint, in *UpdateMemberCourseInput) error
 	ChangeMemberCourseRemain(ctx context.Context, id uint, remain int) error
 	GetMemberCourse(ctx context.Context, id uint) (*model.MemberCourse, error)
+	CreateCheckInComment(ctx context.Context, checkInId uint32, userId uint32, content string) error
+	GetCheckInComments(ctx context.Context, checkInId uint32) ([]*model.CheckInComment, error)
 }
 
 var _ Store = (*DBStore)(nil)
 
 type DBStore struct {
 	DB *gorm.DB
+}
+
+func (s DBStore) GetCheckInComments(ctx context.Context, checkInId uint32) ([]*model.CheckInComment, error) {
+	var comments []*model.CheckInComment
+	err := s.DB.WithContext(ctx).Where("check_in_id = ?", checkInId).Order("created_at desc").Find(&comments).Error
+	if err != nil {
+		return nil, err
+	}
+	return comments, nil
+
+}
+
+func (s DBStore) CreateCheckInComment(ctx context.Context, checkInId uint32, userId uint32, content string) error {
+	// create comment
+	comment := model.CheckInComment{
+		Content:      content,
+		CheckInId:    checkInId,
+		CreateUserId: userId,
+	}
+	return s.DB.WithContext(ctx).Create(&comment).Error
 }
 
 func (s DBStore) GetMemberCourse(ctx context.Context, id uint) (*model.MemberCourse, error) {

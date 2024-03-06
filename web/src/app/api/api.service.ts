@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEventType, HttpRequest } from '@angular/common/http';
-import { ICoach, User, UsersPage } from './models/user';
+import { ICoach, SimpleUser, User, UsersPage } from './models/user';
 import { CheckIn, CheckInCountList, CheckInExist, CheckInList } from './models/check-in';
 import { last, map, switchMap, tap } from 'rxjs/operators';
 import { Profile } from './models/profile';
@@ -196,8 +196,32 @@ export class ApiService {
   updateMemberCourseRemain(id: number, courseRemain: number) {
     return this.http.put('/member-courses/' + id + '/remain', {remain: courseRemain})
   }
+
+  // create check in comment
+  createCheckInComment(checkInId: number, content: string) {
+    return this.http.post('/check-in/comment', {content}, {
+      params: {
+        id: checkInId,
+      }
+    })
+  }
+
+  // get check in comments
+  getCheckInComments(checkInId: number) {
+    return this.http.get<CheckInComment[]>('/check-in/comments', {
+      params: {
+        id: checkInId
+      }
+    })
+  }
 }
 
+export interface CheckInComment {
+  id: number
+  content: string
+  createdAt: string
+  user: SimpleUser
+}
 
 export interface GetUsersParams {
   page: number,
