@@ -19,7 +19,7 @@ import {
   actionSettingsChangeLanguage
 } from '../core/settings/settings.actions';
 import { AuthService } from '../core/auth/auth.service';
-import { ActivatedRoute, NavigationEnd, Router, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CHECK_IN_TOP_PATH } from '../core/router/route-path';
 import { User } from '../api/models/user';
 import {
@@ -41,16 +41,22 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+
+interface NavigationItem {
+  label: string
+  link: string
+  roles?: string[]
+}
 
 @Component({
-    selector: 'anms-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
-    animations: [routeAnimations],
-    changeDetection: ChangeDetectionStrategy.Default,
-    standalone: true,
-    imports: [NgIf, MatSidenavModule, MatListModule, NgFor, RouterLinkActive, RouterLink, MatToolbarModule, MatButtonModule, FontAwesomeModule, MatMenuModule, MatIconModule, RouterOutlet, MatTooltipModule, AsyncPipe, TranslateModule]
+  selector: 'anms-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+  animations: [routeAnimations],
+  changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [NgIf, MatSidenavModule, MatListModule, NgFor, RouterLinkActive, RouterLink, MatToolbarModule, MatButtonModule, FontAwesomeModule, MatMenuModule, MatIconModule, RouterOutlet, MatTooltipModule, AsyncPipe, TranslateModule]
 })
 export class AppComponent implements OnInit {
   faBars = faBars;
@@ -69,16 +75,16 @@ export class AppComponent implements OnInit {
   year = new Date().getFullYear();
   logo = 'assets/logo.png';
   languages = ['en', 'de', 'sk', 'fr', 'es', 'pt-br', 'zh-cn', 'he', 'ar'];
-  navigation = [
+  navigation: NavigationItem[] = [
     // {link: 'about', label: 'anms.menu.about'},
     // {link: 'feature-list', label: 'anms.menu.features'},
     // {link: 'examples', label: 'anms.menu.examples'},
-    { link: 'me', label: '我的' },
-    { link: 'check-in', label: '打卡' },
-    { link: CHECK_IN_TOP_PATH, label: '打卡排行' },
-    { link: 'courses', label: '我的课程', roles: ['admin', 'coach'] },
-    { link: 'admin/courses', label: '课程管理', roles: ['admin'] },
-    { link: 'admin/users', label: '用户管理', roles: ['admin'] }
+    {link: 'me', label: '我的'},
+    {link: 'check-in', label: '打卡'},
+    {link: CHECK_IN_TOP_PATH, label: '打卡排行'},
+    {link: 'courses', label: '我的课程', roles: ['admin', 'coach']},
+    {link: 'admin/courses', label: '课程管理', roles: ['admin']},
+    {link: 'admin/users', label: '用户管理', roles: ['admin']}
   ];
   navigationSideMenu = [
     ...this.navigation
@@ -128,7 +134,7 @@ export class AppComponent implements OnInit {
   }
 
   onLoginClick() {
-    this.router.navigate(['/login'], { queryParams: { type: 'login' } });
+    this.router.navigate(['/login'], {queryParams: {type: 'login'}});
   }
 
   onLogoutClick() {
@@ -138,7 +144,7 @@ export class AppComponent implements OnInit {
 
   onLanguageSelect(event: MatSelectChange) {
     this.store.dispatch(
-      actionSettingsChangeLanguage({ language: event.value })
+      actionSettingsChangeLanguage({language: event.value})
     );
   }
 

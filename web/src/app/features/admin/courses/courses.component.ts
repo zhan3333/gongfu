@@ -1,15 +1,8 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { AdminApiService } from '../../../api/admin/admin-api.service';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { User } from '../../../api/models/user';
 import { Course } from '../../../api/models/course';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -18,12 +11,12 @@ import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-    selector: 'anms-courses',
-    templateUrl: './courses.component.html',
-    styleUrls: ['./courses.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [MatButtonModule, RouterLink, MatTableModule, MatIconModule, FontAwesomeModule, MatPaginatorModule]
+  selector: 'anms-courses',
+  templateUrl: './courses.component.html',
+  styleUrls: ['./courses.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [MatButtonModule, RouterLink, MatTableModule, MatIconModule, FontAwesomeModule, MatPaginatorModule]
 })
 export class CoursesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
@@ -42,9 +35,11 @@ export class CoursesComponent implements OnInit, AfterViewInit {
   constructor(
     private adminApi: AdminApiService,
     private notification: NotificationService
-  ) {}
+  ) {
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   refreshTable() {
     if (this.paginator === undefined) {
@@ -72,7 +67,7 @@ export class CoursesComponent implements OnInit, AfterViewInit {
     if (this.paginator === undefined) {
       return;
     }
-    this.paginator.pageSize = 10;
+    // this.paginator.pageSize = 10;
     this.paginator.page.subscribe((v) => {
       this.refreshTable();
     });

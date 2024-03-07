@@ -7,16 +7,13 @@
         <img [alt]="logo" [src]="logo"/>
         <!--        <span>{{ 'anms.title.short' | translate}}</span>-->
       </div>
-      <mat-nav-list>
-        <mat-list-item *ngFor="let item of navigationSideMenu">
-          <a (click)="sidenav.close()"
-             *ngIf="user?.hasAnyRole(item?.roles || [])"
-             [routerLink]="[item.link]"
-             matListItemTitle
-          >
-            {{item.label | translate}}
-          </a>
-        </mat-list-item>
+      <mat-nav-list role="navigation">
+        <ng-container *ngFor="let item of navigationSideMenu">
+          <mat-list-item (click)="sidenav.close()" *ngIf="user?.hasAnyRole(item?.roles || [])" [id]="item.link"
+                         [routerLink]="[item.link]">
+            {{ item.label | translate }}
+          </mat-list-item>
+        </ng-container>
       </mat-nav-list>
     </mat-sidenav>
 
@@ -41,15 +38,16 @@
           <!--            <img [src]="logo" [alt]="logo"/> {{ 'anms.title.long' | translate}}-->
           <!--          </span>-->
           <span class="branding spacer center d-inline d-sm-none">
-            {{ 'anms.title.short' | translate}}
+            {{ 'anms.title.short' | translate }}
           </span>
           <!--navigation buttons-->
           <div class="hidden md:inline">
             <ng-container *ngFor="let item of navigation">
-              <button *ngIf="user?.hasAnyRole(item?.roles || [])" [routerLink]="[item.link]" class="nav-button"
-                      mat-button
-                      routerLinkActive="active">
-                {{item.label | translate}}
+              <button *ngIf="user?.hasAnyRole(item?.roles || [])"
+                      [routerLink]="[item.link]"
+                      class="nav-button"
+                      mat-button routerLinkActive="active">
+                {{ item.label | translate }}
               </button>
             </ng-container>
           </div>
@@ -145,13 +143,13 @@
         </div>
         <div class="row">
           <div class="col-12 signature">
-            &#169; <span class="year">{{year}}</span> - Tomas Trajan
+            &#169; <span class="year">{{ year }}</span> - Tomas Trajan
             <br class="d-block d-sm-none">
             <a [matTooltip]="'anms.footer.changelog' | translate"
                href="https://github.com/tomastrajan/angular-ngrx-material-starter/blob/master/CHANGELOG.md"
                matTooltipPosition="before">
               <fa-icon [icon]="faRocket"></fa-icon>
-              {{version}} <span *ngIf="!isProd">[{{envName}}]</span>
+              {{ version }} <span *ngIf="!isProd">[{{ envName }}]</span>
             </a>
           </div>
         </div>
