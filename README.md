@@ -1,16 +1,37 @@
 # gongfu
 
-公众号前后端集成，使用到了以下技术：
+Kungfu Wechat public account Frontend and Backend end integration, including the following components:
 
-- 前端 Angular、Material
-- 后端 Golang、Gin、Redis、JWT、MySQL
+- Front-End: Angular(v16.1)、Material
+- Back-End: Golang(v1.20)、Gin、Redis、JWT、MySQL
 
-使用 Gin static files 代理 Angular html，Golang 部分采用领域驱动模型开发方法
+Using the Gin static files proxy Angular html, the Golang section takes a domain-driven model development approach.
 
-## Todos
+## Quick start
 
-- [ ] 支持添加学习记录
-- [ ] 支持展示学习记录
-- [ ] 支持展示教练教课记录
-- [ ] 优化 hot reload 速度
-- [x] 迁移到 standalone 组件
+Backend:
+
+```shell
+$ git clone
+$ cd gongfu/server
+$ cp config/dev.toml config/local.toml
+$ go run cmd/main.go --config=config/local.toml
+```
+
+Frontend:
+
+```shell
+$ cd gongfu/web
+$ yarn run start
+```
+
+Than access `http://localhost:4200` to see the web side.
+
+## Config file
+
+- Backend: `gongfu/server/config/default.toml`
+- Frontend: `gongfu/web/src/environments/environment.ts`
+
+## Want to help?
+
+Create a issue or pull request.
