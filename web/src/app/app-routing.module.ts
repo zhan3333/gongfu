@@ -2,10 +2,7 @@ import { NgModule } from '@angular/core';
 import { NoPreloading, RouterModule, Routes } from '@angular/router';
 import { AuthService } from './core/auth/auth.service';
 import { CheckInHistoriesComponent } from './features/check-in/check-in-histories/check-in-histories.component';
-import {
-  CHECK_IN_HISTORIES_PATH,
-  CHECK_IN_TOP_PATH
-} from './core/router/route-path';
+import { CHECK_IN_HISTORIES_PATH, CHECK_IN_TOP_PATH } from './core/router/route-path';
 
 const routes: Routes = [
   {
@@ -30,7 +27,7 @@ const routes: Routes = [
     path: 'me',
     loadComponent: () =>
       import('./features/me/me.component').then((m) => m.MeComponent),
-    data: { title: 'anms.menu.me' },
+    data: {title: 'anms.menu.me'},
     canActivate: [AuthService]
   },
   {
@@ -93,7 +90,11 @@ const routes: Routes = [
         (m) => m.UsersComponent
       ),
     canActivate: [AuthService],
-    data: { title: 'admin users' }
+    data: {title: 'admin users'}
+  },
+  {
+    path: 'pages',
+    loadChildren: () => import('./pages/routes').then(m => m.routes)
   },
   {
     path: '**',
@@ -110,4 +111,5 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}
