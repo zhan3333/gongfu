@@ -20,6 +20,19 @@ type UpdateMemberCourseInput struct {
 	UpdateUserId uint32
 }
 
+type CreateEnrollInput struct {
+	UserId      uint
+	ActivityId  string
+	Status      string
+	Amount      int64
+	OutTradeNo  string
+	Description string
+	Attach      string
+	Username    string
+	Phone       string
+	Sex         string
+}
+
 type Store interface {
 	// CheckIn 打卡相关查询
 	CheckIn
@@ -43,12 +56,60 @@ type Store interface {
 	GetMemberCourse(ctx context.Context, id uint) (*model.MemberCourse, error)
 	CreateCheckInComment(ctx context.Context, checkInId uint32, userId uint32, content string) error
 	GetCheckInComments(ctx context.Context, checkInId uint32) ([]*model.CheckInComment, error)
+
+	CreateEnroll(ctx context.Context, in *CreateEnrollInput) error
+	UpdateEnroll(ctx context.Context, enroll *model.Enroll) error
+	GetEnroll(ctx context.Context, outTradeNo string) (*model.Enroll, error)
+	GetEnrollByActivityId(ctx context.Context, activityId string) (*model.Enroll, error)
 }
 
 var _ Store = (*DBStore)(nil)
 
 type DBStore struct {
 	DB *gorm.DB
+}
+
+func (s DBStore) UpdateEnroll(ctx context.Context, enroll *model.Enroll) error {
+	return s.DB.WithContext(ctx).Save(enroll).Error
+}
+
+func (s DBStore) GetEnroll(ctx context.Context, outTradeNo string) (*model.Enroll, error) {
+	var enroll model.Enroll
+	err := s.DB.WithContext(ctx).Where("out_trade_no = ?", outTradeNo).First(&enroll).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return &enroll, nil
+}
+
+func (s DBStore) GetEnrollByActivityId(ctx context.Context, activityId string) (*model.Enroll, error) {
+	var enroll model.Enroll
+	err := s.DB.WithContext(ctx).Where("activity_id = ?", activityId).Order("created_at desc").First(&enroll).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return &enroll, nil
+}
+
+func (s DBStore) CreateEnroll(ctx context.Context, in *CreateEnrollInput) error {
+	return s.DB.WithContext(ctx).Create(&model.Enroll{
+		ActivityId:  in.ActivityId,
+		Status:      in.Status,
+		Amount:      in.Amount,
+		UserId:      in.UserId,
+		OutTradeNo:  in.OutTradeNo,
+		Description: in.Description,
+		Attach:      in.Attach,
+		Username:    in.Username,
+		Phone:       in.Phone,
+		Sex:         in.Sex,
+	}).Error
 }
 
 func (s DBStore) GetCheckInComments(ctx context.Context, checkInId uint32) ([]*model.CheckInComment, error) {

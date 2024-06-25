@@ -68,7 +68,34 @@
     style="text-align:left;line-height:1.75;color:rgba(15, 76, 129, 1);font-weight:bold">地址</strong>：武汉市硚口区南国大武汉家装U座1101<br><strong
     style="text-align:left;line-height:1.75;color:rgba(15, 76, 129, 1);font-weight:bold">活动费用</strong>：298元/人<br><strong
     style="text-align:left;line-height:1.75;color:rgba(15, 76, 129, 1);font-weight:bold">注意事项</strong>：请着运动服、运动鞋<br><strong
-    style="text-align:left;line-height:1.75;color:rgba(15, 76, 129, 1);font-weight:bold">报名方式</strong>：现场</p>
+    style="text-align:left;line-height:1.75;color:rgba(15, 76, 129, 1);font-weight:bold">报名方式</strong>：
+    <button (click)="clickEnroll()" color="primary" mat-raised-button>去报名</button>
+    <mat-card class="mt-2">
+      <mat-card-header>
+        <mat-card-title>我的报名</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!--未登陆-->
+        <ng-container *ngIf="!auth.isAuthenticated()">
+          <button (click)="toLogin()" mat-raised-button>登陆后查看</button>
+        </ng-container>
+        <ng-container *ngIf="auth.isAuthenticated()">
+          <!--有报名信息-->
+          <ng-container *ngIf="enroll">
+            <p>单号: {{ enroll.out_trade_no }}</p>
+            <p>时间: {{ enroll.created_at | date }}</p>
+            <p>金额: {{ enroll.amount / 100 }}¥</p>
+            <p>状态: {{ enroll.status }}</p>
+          </ng-container>
+          <!--无报名信息-->
+          <ng-container *ngIf="!enroll">
+            <p>无报名信息</p>
+          </ng-container>
+          <button (click)="refreshEnroll()" mat-raised-button>刷新</button>
+        </ng-container>
+      </mat-card-content>
+    </mat-card>
+  </p>
   <h3
     style="text-align:left;line-height:1.2;font-family:-apple-system-font,BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB , Microsoft YaHei UI , Microsoft YaHei ,Arial,sans-serif;font-size:1.1em;font-weight:bold;margin:2em 8px 0.75em 0;padding-left:8px;border-left:3px solid rgba(15, 76, 129, 1);color:#3f3f3f">
     活动流程</h3>
@@ -95,7 +122,8 @@
     <strong
       style="text-align:left;line-height:1.75;color:rgba(15, 76, 129, 1);font-weight:bold">让常武功夫极简咏春拳成为你商务人生的精彩点缀！</strong>
   </p>
-  <app-image [src]="'assets/article-1/WechatIMG280.jpg'"></app-image>
+  <!--  <app-image [src]="'assets/article-1/WechatIMG280.jpg'"></app-image>-->
+  <app-image [src]="'assets/article-1/wechat-person.png'" class="w-1/2"></app-image>
 
   <style>
     .hljs.code__pre::before {

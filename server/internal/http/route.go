@@ -115,6 +115,9 @@ func (r Route) Route(app *gin.Engine) {
 			}
 		}
 		api.GET("wechat/js-config", action.Wrap(r.UserUseCase.JSConfig))
+		api.GET("wechat/pay", r.Middleware.Auth(), action.Wrap(r.UserUseCase.Pay))
+		api.POST("wechat/pay-notify", action.Wrap(r.UserUseCase.PayNotify))
+		api.GET("wechat/enroll", r.Middleware.Auth(), action.Wrap(r.UserUseCase.GetEnroll))
 
 		checkIn := api.Group("check-in")
 		{

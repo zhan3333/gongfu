@@ -1,11 +1,6 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { MatProgressBar, MatProgressBarModule } from '@angular/material/progress-bar';
-import { UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { AuthService } from '../../core/auth/auth.service';
@@ -15,14 +10,15 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgOptimizedImage } from '@angular/common';
+import { LoginService } from '../../services/login.service';
 
 @Component({
-    selector: 'anms-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default,
-    standalone: true,
-    imports: [MatProgressBarModule, NgOptimizedImage, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule]
+  selector: 'anms-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [MatProgressBarModule, NgOptimizedImage, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule]
 })
 export class LoginComponent implements OnInit {
   @ViewChild(MatProgressBar) public progressBar: MatProgressBar | undefined;
@@ -43,28 +39,34 @@ export class LoginComponent implements OnInit {
     private notify: NotificationService,
     private api: ApiService,
     private activeRoute: ActivatedRoute,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private loginService: LoginService,
+  ) {
+  }
 
   ngOnInit() {
-    console.log('snapshot', this.activeRoute.snapshot);
+    let redirectTo = this.loginService.getLoginRedirectUrl()
+    if (redirectTo === null) {
+      redirectTo = '/me'
+    }
     if (!this.authService.isAuthenticated()) {
-      const accessToken =
-        this.activeRoute.snapshot.queryParamMap.get('accessToken') ?? '';
+      const accessToken = this.activeRoute.snapshot.queryParamMap.get('accessToken') ?? '';
       if (accessToken !== '') {
         this.authService.login(accessToken);
         this.api.me().subscribe(
           (user) => {
             this.authService.setUser(user);
           },
-          () => {},
-          () => this.router.navigate(['/me']).then(() => location.reload())
+          () => {
+          },
+          () => this.router.navigate([redirectTo]).then(() => location.reload())
         );
         return;
       }
     } else {
       // 已登录且在登录页，跳转到 /me
-      this.toMe();
+      this.router.navigate([redirectTo]).then(() => location.reload())
+      return
     }
 
     setInterval(() => {

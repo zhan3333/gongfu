@@ -62,6 +62,10 @@ func (c Config) IsProd() bool {
 }
 
 type WeChat struct {
-	AppID     string
-	AppSecret string
+	AppID                      string
+	AppSecret                  string
+	MchID                      string // 商户号
+	MchCertificateSerialNumber string // 商户证书序列号
+	MchAPIv3Key                string // 商户APIv3密钥
+	PrivateCertPath            string
 }

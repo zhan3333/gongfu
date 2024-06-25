@@ -22,6 +22,7 @@ type UseCase struct {
 	Token           service.Token
 	Store           store.Store
 	Storage         service.Storage
+	Wechat          service.Wechat
 }
 
 func NewController(
@@ -31,8 +32,9 @@ func NewController(
 	token service.Token,
 	store store.Store,
 	storage service.Storage,
+	wechat service.Wechat,
 ) *UseCase {
-	return &UseCase{Config: config, OfficialAccount: officialAccount, AuthCode: authCode, Token: token, Store: store, Storage: storage}
+	return &UseCase{Config: config, OfficialAccount: officialAccount, AuthCode: authCode, Token: token, Store: store, Storage: storage, Wechat: wechat}
 }
 
 func (r UseCase) NewUsersQuery(userIds ...uint) (*common.UsersQuery, error) {

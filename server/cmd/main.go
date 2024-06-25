@@ -63,11 +63,16 @@ func main() {
 	token := service.NewToken(conf.Token.Secret)
 	storageService := getStorageService(&conf.Tencent)
 
+	wechat, err := service.NewWechat(&conf)
+	if err != nil {
+		logrus.WithError(err).Fatal("new wechat service failed")
+	}
+
 	store, err := getStore(&conf.DB)
 	if err != nil {
 		panic(err)
 	}
-	control := controller.NewController(&conf, oa, authCode, token, store, storageService)
+	control := controller.NewController(&conf, oa, authCode, token, store, storageService, wechat)
 	admin := admin2.NewUseCase(store, storageService)
 	middleware := middlewares.NewMiddlewares(token, store)
 
@@ -128,6 +133,7 @@ func getStore(conf *config.DB) (store.Store, error) {
 		&model.StudyRecord{},
 		&model.MemberCourse{},
 		&model.CheckInComment{},
+		&model.Enroll{},
 	); err != nil {
 		return nil, fmt.Errorf("auto migrate: %w", err)
 	}

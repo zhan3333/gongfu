@@ -1,0 +1,29 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>报名表</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="form">
+      <mat-form-field>
+        <mat-label>姓名</mat-label>
+        <input [formControl]="form.controls.username" matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>性别</mat-label>
+        <mat-select [formControl]="form.controls.sex">
+          <mat-option value="man">男</mat-option>
+          <mat-option value="woman">女</mat-option>
+          <mat-option value="other">其他</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>联系方式</mat-label>
+        <input [formControl]="form.controls.phone" matInput>
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-button matDialogClose>取消</button>
+    <button (click)="confirm()" [disabled]="form.invalid" mat-raised-button>确定</button>
+  </mat-card-actions>
+</mat-card>

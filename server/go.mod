@@ -7,11 +7,11 @@ require (
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-redis/redis/v8 v8.11.6-0.20220405070650-99c79f7041fc
 	github.com/golang-jwt/jwt/v4 v4.4.2
-	github.com/google/uuid v1.1.2
+	github.com/google/uuid v1.6.0
 	github.com/silenceper/wechat/v2 v2.1.3
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/viper v1.13.0
-	github.com/stretchr/testify v1.8.0
+	github.com/stretchr/testify v1.8.1
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.496
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sms v1.0.496
 	github.com/tencentyun/cos-go-sdk-v5 v0.7.38
@@ -59,6 +59,7 @@ require (
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
+	github.com/wechatpay-apiv3/wechatpay-go v0.2.18 // indirect
 	golang.org/x/crypto v0.0.0-20221005025214-4161e89ecf1b // indirect
 	golang.org/x/exp v0.0.0-20220428152302-39d4317da171 // indirect
 	golang.org/x/net v0.0.0-20220520000938-2e3eb7b945c2 // indirect
