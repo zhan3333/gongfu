@@ -39,7 +39,7 @@ export class Article1Component implements OnInit {
           title: title,
           desc: desc,
           link: location.href,
-          imgUrl: 'https://gongfu.grianchan.com/web/assets/article-1/WechatIMG285.jpg', // 分享图标
+          imgUrl: 'https://gongfu.cwgfone.com/web/assets/article-1/WechatIMG285.jpg', // 分享图标
           success: function () {
             console.log('shared success');
           }
