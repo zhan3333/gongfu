@@ -13,7 +13,7 @@ import (
 
 var wechatLoginURL = "/web/login"
 
-var wechatAuthRedirectURL = "https://gongfu.grianchan.com/wechat-login"
+var wechatAuthRedirectURL = "https://gongfu.cwgfone.com/wechat-login"
 
 //var wechatAuthRedirectURL = "http://127.0.0.1:9003/wechat-login"
 

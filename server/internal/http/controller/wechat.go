@@ -77,7 +77,7 @@ func (r UseCase) Pay(c *app.Context) result.Result {
 		OutTradeNo:  outTradeNo,
 		Description: req.Description,
 		Attach:      req.Attach,
-		NotifyUrl:   "https://gongfu.grianchan.com/api/wechat/pay-notify",
+		NotifyUrl:   "https://gongfu.cwgfone.com/api/wechat/pay-notify",
 		Amount:      req.Amount,
 		PayerOpenId: *c.User.OpenID,
 	})
