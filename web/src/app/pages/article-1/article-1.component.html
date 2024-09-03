@@ -1,10 +1,8 @@
 <div class="m-2">
   <h1
     style="text-align:center;line-height:1.75;font-family:-apple-system-font,BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB , Microsoft YaHei UI , Microsoft YaHei ,Arial,sans-serif;font-size:1.2em;font-weight:bold;display:table;margin:2em auto 1em;padding:0 1em;border-bottom:2px solid rgba(15, 76, 129, 1);color:#3f3f3f;margin-top: 0">
-    常武功夫极简咏春拳成人班公开课等你来！</h1>
-  <h2
-    style="text-align:center;line-height:1.75;font-family:-apple-system-font,BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB , Microsoft YaHei UI , Microsoft YaHei ,Arial,sans-serif;font-size:1.2em;font-weight:bold;display:table;margin:4em auto 2em;padding:0 0.2em;background:rgba(15, 76, 129, 1);color:#fff">
-    极简咏春拳：商务人士的卓越之选</h2>
+    极简咏春拳:商务人士的卓越之选</h1>
+
   <p
     style="text-align:justify;line-height:1.75;font-family:-apple-system-font,BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB , Microsoft YaHei UI , Microsoft YaHei ,Arial,sans-serif;font-size:14px;margin:1.5em 8px;letter-spacing:0.1em;color:#3f3f3f">
     各位商务精英们，当您在商海中拼搏时，是否想拥有一项独特的技能与素养提升方式？极简咏春拳，就是您的理想之选。</p>
@@ -64,7 +62,7 @@
     我们的公开课活动流程如下：</h3>
   <p
     style="text-align:justify;line-height:1.75;font-family:-apple-system-font,BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB , Microsoft YaHei UI , Microsoft YaHei ,Arial,sans-serif;font-size:14px;margin:1.5em 8px;letter-spacing:0.1em;color:#3f3f3f">
-    <strong style="text-align:left;line-height:1.75;color:rgba(15, 76, 129, 1);font-weight:bold">时间</strong>：2024年6月22日周六15:00-17:00<br><strong
+    <strong style="text-align:left;line-height:1.75;color:rgba(15, 76, 129, 1);font-weight:bold">时间</strong>：2024年7月13日周六15:00-17:00<br><strong
     style="text-align:left;line-height:1.75;color:rgba(15, 76, 129, 1);font-weight:bold">地址</strong>：武汉市硚口区南国大武汉家装U座1101<br><strong
     style="text-align:left;line-height:1.75;color:rgba(15, 76, 129, 1);font-weight:bold">活动费用</strong>：298元/人<br><strong
     style="text-align:left;line-height:1.75;color:rgba(15, 76, 129, 1);font-weight:bold">注意事项</strong>：请着运动服、运动鞋<br><strong
@@ -82,8 +80,8 @@
         <ng-container *ngIf="auth.isAuthenticated()">
           <!--有报名信息-->
           <ng-container *ngIf="enroll">
-            <p>单号: {{ enroll.out_trade_no }}</p>
-            <p>时间: {{ enroll.created_at | date }}</p>
+            <p>单号: {{ enroll.out_trade_no.substring(enroll.out_trade_no.length - 10) }}</p>
+            <p>时间: {{ enroll.created_at }}</p>
             <p>金额: {{ enroll.amount / 100 }}¥</p>
             <p>状态: {{ enroll.status }}</p>
           </ng-container>

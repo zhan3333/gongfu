@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { CommonModule, DatePipe, NgOptimizedImage } from '@angular/common';
 import { ImageComponent } from '../image/image.component';
 import { EnrollResponse, WechatService } from '../../services/wechat.service';
 import { isWechat } from '../../core/util';
@@ -12,13 +12,14 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { EnrollDialogComponent } from '../enroll/enroll-dialog.component';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { MatCardModule } from '@angular/material/card';
+import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
-const activityId = 'activity-1'
+const activityId = 'activity-2'
 
 @Component({
   selector: 'app-article-1',
   standalone: true,
-  imports: [CommonModule, NgOptimizedImage, ImageComponent, MatButtonModule, RouterLink, MatDialogModule, MatCardModule],
+  imports: [CommonModule, NgOptimizedImage, ImageComponent, MatButtonModule, RouterLink, MatDialogModule, MatCardModule, MatBottomSheetModule, DatePipe],
   templateUrl: './article-1.component.html',
 })
 export class Article1Component implements OnInit {
@@ -29,6 +30,7 @@ export class Article1Component implements OnInit {
     public auth: AuthService,
     private loginService: LoginService,
     private dialog: MatDialog,
+    private _bottomSheet: MatBottomSheet,
     private notify: NotificationService,
   ) {
     if (isWechat()) {
@@ -58,24 +60,25 @@ export class Article1Component implements OnInit {
   clickEnroll() {
     // 去登陆
     if (!this.auth.isAuthenticated()) {
-      this.dialog.open(BottomSheetComponent, {
-        data: {
-          true: '登陆',
-          false: '取消'
-        }
-      }).afterClosed().subscribe(v => {
-        if (v) {
+      this._bottomSheet.open(BottomSheetComponent, {
+        data: new Map<string, string>([
+          ['ok', '去登陆'],
+          ['cancel', '取消']
+        ])
+      }).afterDismissed().subscribe(v => {
+        if (v == 'ok') {
           this.loginService.setLoginRedirectUrl('/pages/article-1')
           window.location.href = '/wechat-login';
           return
         }
       })
+      return
     }
 
     this.dialog.open(EnrollDialogComponent, {}).afterClosed().subscribe(v => {
       if (v) {
         this.wechatService.pay({
-          amount: 1,
+          amount: 29800, // 298元
           attach: activityId,
           activity_id: activityId,
           description: '常武功夫活动报名',

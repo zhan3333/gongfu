@@ -145,6 +145,6 @@ func (r UseCase) GetEnroll(c *app.Context) result.Result {
 		"transaction_id": enroll.TransactionId,
 		"activity_id":    enroll.ActivityId,
 		"amount":         enroll.Amount,
-		"created_at":     enroll.CreatedAt.String(),
+		"created_at":     enroll.CreatedAt.Format("2006-01-02 15:04"),
 	})
 }

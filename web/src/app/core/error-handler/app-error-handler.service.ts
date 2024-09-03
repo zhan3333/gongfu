@@ -1,8 +1,6 @@
 import { ErrorHandler, Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { environment } from '../../../environments/environment';
-
 import { NotificationService } from '../notifications/notification.service';
 
 /** Application-wide error handler that adds a UI notification to the error handling
@@ -39,10 +37,14 @@ export class AppErrorHandler extends ErrorHandler {
       }
     } else {
       // 其他类型错误
-      displayMessage = '有错误发生: ';
-      if (!environment.production) {
-        displayMessage += ' 从控制台查看详情.';
-      }
+      displayMessage = `有错误发生: ${error.name} / ${error.message}`;
+      // 保存到 localstorage 中
+      localStorage.setItem("error", JSON.stringify({
+        name: error.name,
+        stack: error.stack,
+        cause: error.cause,
+        message: error.message,
+      }));
     }
 
     this.notificationsService.error(displayMessage);
