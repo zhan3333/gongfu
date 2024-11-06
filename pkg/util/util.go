@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"github.com/google/uuid"
 	"strings"
+	"time"
 )
 
 func UUID() string {
@@ -21,4 +22,11 @@ func DBTimeToTimestamp(t sql.NullTime) int64 {
 		return t.Time.Unix()
 	}
 	return 0
+}
+
+func NullTime(t sql.NullTime) *time.Time {
+	if t.Valid {
+		return &t.Time
+	}
+	return nil
 }

@@ -33,6 +33,16 @@ type CreateEnrollInput struct {
 	Sex         string
 }
 
+type SchoolMap map[uint]*model.School
+
+func (receiver SchoolMap) Name(schoolId uint) string {
+	s, ok := receiver[schoolId]
+	if !ok {
+		return "unknown"
+	}
+	return s.Name
+}
+
 type Store interface {
 	// CheckIn 打卡相关查询
 	CheckIn
@@ -61,12 +71,27 @@ type Store interface {
 	UpdateEnroll(ctx context.Context, enroll *model.Enroll) error
 	GetEnroll(ctx context.Context, outTradeNo string) (*model.Enroll, error)
 	GetEnrollByActivityId(ctx context.Context, activityId string) (*model.Enroll, error)
+
+	SchoolMap(ctx context.Context, schoolIds ...uint) (SchoolMap, error)
 }
 
 var _ Store = (*DBStore)(nil)
 
 type DBStore struct {
 	DB *gorm.DB
+}
+
+func (s DBStore) SchoolMap(ctx context.Context, schoolIds ...uint) (SchoolMap, error) {
+	var schools []*model.School
+	err := s.DB.WithContext(ctx).Where("id in ?", schoolIds).Find(&schools).Error
+	if err != nil {
+		return nil, err
+	}
+	m := make(SchoolMap)
+	for _, s := range schools {
+		m[s.ID] = s
+	}
+	return m, nil
 }
 
 func (s DBStore) UpdateEnroll(ctx context.Context, enroll *model.Enroll) error {

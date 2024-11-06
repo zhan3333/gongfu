@@ -29,7 +29,7 @@ func (r UseCase) CreateCourse(c *app.Context) result.Result {
 		StartTime         string `form:"startTime"`         // 上课时间
 		SchoolId          uint   `form:"schoolId"`          // 学校
 		ManagerId         uint   `form:"managerId"`         // 学校
-		CoachId           *uint  `form:"coachId"`           // 教练
+		CoachId           uint   `form:"coachId"`           // 教练
 		AssistantCoachIds []uint `form:"assistantCoachIds"` // 助理教练列表
 	}{}
 	if err := c.Bind(&req); err != nil {
@@ -78,18 +78,24 @@ func (r UseCase) GetCoursePage(c *app.Context) result.Result {
 	if err != nil {
 		return result.Err(err)
 	}
+	var schoolIds = util.Reduce(page.Items, func(arr []uint, course *model.Course) []uint {
+		return append(arr, course.SchoolId)
+	})
+	schoolsQuery, err := r.Store.SchoolMap(c.Ctx(), schoolIds...)
+	if err != nil {
+		return result.Err(err)
+	}
+
 	return result.Ok(gin.H{
 		"items": util.Map(page.Items, func(course *model.Course) gin.H {
-			// todo 优化查询
-			school, _ := r.Store.GetSchool(context.TODO(), course.SchoolId)
 			return gin.H{
 				"id":               course.ID,
 				"createdAt":        course.CreatedAt.Unix(),
 				"startDate":        course.StartDate,
 				"startTime":        course.StartTime,
 				"schoolId":         course.SchoolId,
-				"school":           school,
-				"manager":          usersQuery.GetCoach(&course.ManagerId),
+				"school":           schoolsQuery.Name(course.SchoolId),
+				"manager":          usersQuery.GetCoach(course.ManagerId),
 				"coach":            usersQuery.GetCoach(course.CoachId),
 				"assistantCoaches": usersQuery.GetCoaches(course.GetAssistantCoachIds()...),
 				"checkInBy":        usersQuery.GetCoach(course.CheckInBy),
@@ -135,7 +141,7 @@ func (r UseCase) GetCourse(c *app.Context) result.Result {
 		"coach":             userQuery.GetCoach(course.CoachId),
 		"schoolId":          course.SchoolId,
 		"school":            school,
-		"manager":           userQuery.GetCoach(&course.ManagerId),
+		"manager":           userQuery.GetCoach(course.ManagerId),
 		"summary":           course.Summary,
 		"content":           course.Content,
 		"images":            course.GetImages(),
@@ -194,14 +200,60 @@ func (r UseCase) UpdateCourse(c *app.Context) result.Result {
 	course.StartTime = req.StartTime
 	course.SchoolId = req.SchoolId
 	course.ManagerId = req.ManagerId
-	course.CoachId = req.CoachId
-	course.Images = util2.JSON(req.Images)
+	if req.CoachId != nil {
+		course.CoachId = *req.CoachId
+	}
+	course.Images = req.Images
 	course.Summary = req.Summary
 	course.Content = req.Content
-	course.AssistantCoachIds = util2.JSON(req.AssistantCoachIds)
+	course.AssistantCoachIds = req.AssistantCoachIds
 
-	if err := r.Store.UpdateCourse(context.TODO(), course); err != nil {
+	if err := r.Store.UpdateCourse(c.Ctx(), course); err != nil {
 		return result.Err(err)
 	}
 	return result.Ok(nil)
+}
+
+func (r UseCase) GetCourseList(c *app.Context) result.Result {
+	userId, err := strconv.Atoi(c.Query("userId"))
+	if err != nil {
+		return result.Err(err)
+	}
+
+	courses, err := r.Store.GetCoursesByUser(context.Background(), uint(userId))
+	if err != nil {
+		return result.Err(err)
+	}
+	var userIds = util.Reduce(courses, func(arr []uint, course *model.Course) []uint {
+		return append(arr, course.GetRelatedUserIds()...)
+	})
+	usersQuery, err := r.NewUsersQuery(userIds...)
+	if err != nil {
+		return result.Err(err)
+	}
+	var schoolIds = util.Reduce(courses, func(arr []uint, course *model.Course) []uint {
+		return append(arr, course.SchoolId)
+	})
+	schoolMap, err := r.Store.SchoolMap(c.Ctx(), schoolIds...)
+	if err != nil {
+		return result.Err(err)
+	}
+
+	return result.Ok(util.Map(courses, func(course *model.Course) gin.H {
+		return gin.H{
+			"id":             course.ID,
+			"schoolName":     schoolMap.Name(course.ID),
+			"startDate":      course.StartDate,
+			"startTime":      course.StartTime,
+			"managerName":    usersQuery.Name(course.ManagerId),
+			"coachName":      usersQuery.Name(course.CoachId),
+			"assistantNames": usersQuery.Names(course.GetAssistantCoachIds()...),
+			"checkInBy":      usersQuery.Name(course.CheckInBy),
+			"checkOutBy":     usersQuery.Name(course.CheckOutBy),
+			"checkInAt":      util2.NullTime(course.CheckInAt),
+			"checkOutAt":     util2.NullTime(course.CheckOutAt),
+			"summary":        course.Summary,
+			"content":        course.Content,
+		}
+	}))
 }

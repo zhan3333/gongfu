@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"gongfu/internal/model"
-	"gongfu/pkg/util"
 	"gorm.io/datatypes"
 )
 
@@ -46,18 +45,18 @@ func (s DBStore) CreateCourse(ctx context.Context, input CreateCourseInput) erro
 		StartDate:         input.StartDate,
 		SchoolId:          input.SchoolId,
 		CoachId:           input.CoachId,
-		AssistantCoachIds: util.JSON(input.AssistantCoachIds),
-		Images:            datatypes.JSON{},
+		AssistantCoachIds: input.AssistantCoachIds,
+		Images:            []string{},
 		Summary:           "",
 		ManagerId:         input.ManagerId,
 	}
-	return s.DB.Model(&model.Course{}).Create(&course).Error
+	return s.DB.Model(&model.Course{}).WithContext(ctx).Create(&course).Error
 }
 
 type CreateCourseInput struct {
 	StartDate         string `json:"start_date"`          // 上课日期
 	StartTime         string `json:"start_time"`          // 上课时间
-	CoachId           *uint  `json:"coach_id"`            // 教练
+	CoachId           uint   `json:"coach_id"`            // 教练
 	SchoolId          uint   `json:"school_id"`           // 学校
 	AssistantCoachIds []uint `json:"assistant_coach_ids"` // 助理教练列表
 	ManagerId         uint   `json:"manager_id"`          // 负责人

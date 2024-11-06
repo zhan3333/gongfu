@@ -16,11 +16,26 @@ type Coach struct {
 	Avatar string `json:"avatar"`
 }
 
-func (q UsersQuery) GetCoach(id *uint) *Coach {
-	if id == nil {
+func (q UsersQuery) Name(id uint) string {
+	if user := q.UsersMap[id]; user != nil {
+		return user.Nickname
+	}
+	return "unknown"
+}
+
+func (q UsersQuery) Names(ids ...uint) []string {
+	var names []string
+	for _, id := range ids {
+		names = append(names, q.Name(id))
+	}
+	return names
+}
+
+func (q UsersQuery) GetCoach(id uint) *Coach {
+	if id == 0 {
 		return nil
 	}
-	if user := q.UsersMap[*id]; user != nil {
+	if user := q.UsersMap[id]; user != nil {
 		return &Coach{
 			ID:     user.ID,
 			Name:   user.Nickname,
@@ -31,9 +46,9 @@ func (q UsersQuery) GetCoach(id *uint) *Coach {
 }
 
 func (q UsersQuery) GetCoaches(ids ...uint) []Coach {
-	var items = []Coach{}
+	var items []Coach
 	for _, id := range ids {
-		if coach := q.GetCoach(&id); coach != nil {
+		if coach := q.GetCoach(id); coach != nil {
 			items = append(items, *coach)
 		}
 	}

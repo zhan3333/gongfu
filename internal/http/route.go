@@ -94,6 +94,7 @@ func (r Route) Route(app *gin.Engine) {
 				adminApi.GET("coach/:id", action.Wrap(r.AdminUseCase.AdminGetCoach))
 				adminApi.GET("coaches", action.Wrap(r.AdminUseCase.GetCoaches))
 				adminApi.POST("course", action.Wrap(r.AdminUseCase.CreateCourse))
+				adminApi.GET("course/list", action.Wrap(r.AdminUseCase.GetCourseList))
 				adminApi.GET("schools", action.Wrap(r.AdminUseCase.GetSchools))
 				adminApi.GET("courses", action.Wrap(r.AdminUseCase.GetCoursePage))
 				adminApi.GET("courses/:id", action.Wrap(r.AdminUseCase.GetCourse))

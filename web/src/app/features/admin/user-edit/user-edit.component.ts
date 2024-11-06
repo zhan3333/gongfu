@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -32,6 +32,8 @@ import { TeachingRecord } from '../../../api/models/teaching-record';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { BottomSheetComponent } from '../../../shared/bottom-sheet.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatTabChangeEvent, MatTabGroup, MatTabsModule } from '@angular/material/tabs';
+import { CourseListComponent } from './course-list/course-list.component';
 
 // 用户编辑页，可以设置用户角色，设置教练信息等
 @Component({
@@ -56,10 +58,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     NgIf,
     MatDialogModule,
     MatRippleModule,
-    DatePipe
+    DatePipe,
+    MatTabsModule,
+    CourseListComponent,
   ]
 })
-export class UserEditComponent implements OnInit {
+export class UserEditComponent implements OnInit, AfterViewInit {
+  @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
   public faBan = faBan;
   public id = 0;
 
@@ -78,7 +83,7 @@ export class UserEditComponent implements OnInit {
   public displayRoleName = displayRoleName;
 
   public Levels = Levels;
-  public user: User | null = null;
+  public user!: User;
   public memberCourses: MemberCourse[] = [];
   protected readonly faEdit = faEdit;
   protected readonly faFolder = faFolder;
@@ -105,12 +110,27 @@ export class UserEditComponent implements OnInit {
     return this.form.controls.roleNames.value.indexOf(ROLE_MEMBER) !== -1
   }
 
+  ngAfterViewInit(): void {
+    this.tabGroup.selectedTabChange.subscribe(v => {
+      console.debug('tab change', v)
+      localStorage.setItem('user-edit-tab', '' + v.index);
+    })
+    const tabIndex = parseInt(localStorage.getItem('user-edit-tab') || '0', 10);
+    if (tabIndex) {
+      console.debug('tab set index', tabIndex)
+      setTimeout(() => {
+        this.tabGroup.selectedIndex = tabIndex;
+      }, 0)
+    }
+  }
+
   ngOnInit(): void {
     this.id = parseInt(this.route.snapshot.params['id'], 10);
     if (this.id === 0) {
       this.notification.error('invalid user id');
       return;
     }
+    console.log('tab group', this.tabGroup)
     this.refresh();
     this.refreshMemberCourses()
   }
@@ -326,6 +346,10 @@ export class UserEditComponent implements OnInit {
             });
         }
       });
+  }
+
+  onTabChange($event: MatTabChangeEvent) {
+    console.log('change', $event)
   }
 
   private refreshMemberCourses() {

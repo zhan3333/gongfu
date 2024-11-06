@@ -19,6 +19,7 @@ import { CourseEditComponent } from './courses/course-edit/course-edit.component
     CourseCreateComponent,
     CourseEditComponent
   ],
+  exports: [],
   declarations: []
 })
 export class AdminModule {

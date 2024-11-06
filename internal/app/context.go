@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"gongfu/internal/model"
@@ -21,4 +22,8 @@ type Return struct {
 
 func (r Return) Message(code int, msg string) {
 	r.Context.JSON(code, gin.H{"msg": msg})
+}
+
+func (c Context) Ctx() context.Context {
+	return c.Context.Request.Context()
 }

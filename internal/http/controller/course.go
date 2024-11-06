@@ -35,7 +35,7 @@ func (r UseCase) GetCourses(c *app.Context) result.Result {
 			"startTime":        course.StartTime,
 			"schoolId":         course.SchoolId,
 			"school":           school,
-			"manager":          usersQuery.GetCoach(&course.ManagerId),
+			"manager":          usersQuery.GetCoach(course.ManagerId),
 			"coach":            usersQuery.GetCoach(course.CoachId),
 			"assistantCoaches": usersQuery.GetCoaches(course.GetAssistantCoachIds()...),
 			"checkInBy":        usersQuery.GetCoach(course.CheckInBy),
@@ -77,7 +77,7 @@ func (r UseCase) GetCourse(c *app.Context) result.Result {
 		"coach":            userQuery.GetCoach(course.CoachId),
 		"schoolId":         course.SchoolId,
 		"school":           school,
-		"manager":          userQuery.GetCoach(&course.ManagerId),
+		"manager":          userQuery.GetCoach(course.ManagerId),
 		"content":          course.Content,
 		"summary":          course.Summary,
 		"images":           course.GetImages(),
@@ -108,19 +108,19 @@ func (r UseCase) UpdateCourse(c *app.Context) result.Result {
 		Summary           string
 		Images            []string `form:"images"`            // 图片 key 列表
 		ManagerId         uint     `form:"managerId"`         // 学校
-		CoachId           *uint    `form:"coachId"`           // 教练
+		CoachId           uint     `form:"coachId"`           // 教练
 		AssistantCoachIds []uint   `form:"assistantCoachIds"` // 助理教练列表
 	}{}
 	if err := c.Bind(&req); err != nil {
 		return result.Err(nil)
 	}
 
-	course.Images = util2.JSON(req.Images)
+	course.Images = req.Images
 	course.Content = req.Content
 	course.Summary = req.Summary
 	course.ManagerId = req.ManagerId
 	course.CoachId = req.CoachId
-	course.AssistantCoachIds = util2.JSON(req.AssistantCoachIds)
+	course.AssistantCoachIds = req.AssistantCoachIds
 
 	if err := r.Store.UpdateCourse(context.TODO(), course); err != nil {
 		return result.Err(err)

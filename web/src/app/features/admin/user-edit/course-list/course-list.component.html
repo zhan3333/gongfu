@@ -1,0 +1,68 @@
+<table [dataSource]="courses" mat-table>
+  <div *matNoDataRow>
+    <p>{{ '无数据' }}</p>
+  </div>
+  <!--id-->
+  <ng-container matColumnDef="id">
+    <th *matHeaderCellDef mat-header-cell> Id</th>
+    <td *matCellDef="let course" mat-cell> {{ course.id }}</td>
+  </ng-container>
+  <!--schoolName-->
+  <ng-container matColumnDef="schoolName">
+    <th *matHeaderCellDef mat-header-cell> 学校</th>
+    <td *matCellDef="let course" mat-cell> {{ course.schoolName }}</td>
+  </ng-container>
+  <!--startDate-->
+  <ng-container matColumnDef="startDate">
+    <th *matHeaderCellDef mat-header-cell> 上课时间</th>
+    <td *matCellDef="let course" class="whitespace-nowrap"
+        mat-cell> {{ course.startDate | date: 'yyyy-MM-dd' }} {{ course.startTime }}
+    </td>
+  </ng-container>
+  <!--managerName-->
+  <ng-container matColumnDef="managerName">
+    <th *matHeaderCellDef mat-header-cell> 管理员</th>
+    <td *matCellDef="let course" class="whitespace-nowrap" mat-cell> {{ course.managerName }}</td>
+  </ng-container>
+  <!--coachName-->
+  <ng-container matColumnDef="coachName">
+    <th *matHeaderCellDef mat-header-cell> 教练</th>
+    <td *matCellDef="let course" class="whitespace-nowrap" mat-cell> {{ course.coachName }}</td>
+  </ng-container>
+  <!--assistantNames-->
+  <ng-container matColumnDef="assistantNames">
+    <th *matHeaderCellDef mat-header-cell> 助教</th>
+    <td *matCellDef="let course" class="whitespace-nowrap" mat-cell> {{ (course.assistantNames || []).join(',') }}</td>
+  </ng-container>
+  <!--checkInAt-->
+  <ng-container matColumnDef="checkInAt">
+    <th *matHeaderCellDef mat-header-cell> 进场时间</th>
+    <td *matCellDef="let course" class="whitespace-nowrap min-w-10" mat-cell>
+      <div class="min-w-24">{{ course.checkInAt | date }}</div>
+    </td>
+  </ng-container>
+  <!--checkOutAt-->
+  <ng-container matColumnDef="checkOutAt">
+    <th *matHeaderCellDef mat-header-cell> 出场时间</th>
+    <td *matCellDef="let course" class="whitespace-nowrap" mat-cell>
+      <div class="min-w-24">{{ course.checkOutAt | date }}</div>
+    </td>
+  </ng-container>
+  <!--summary-->
+  <ng-container matColumnDef="summary">
+    <th *matHeaderCellDef mat-header-cell> 总结</th>
+    <td *matCellDef="let course" mat-cell>
+      <div class="min-w-48">{{ course.summary }}</div>
+    </td>
+  </ng-container>
+  <!--content-->
+  <ng-container matColumnDef="content">
+    <th *matHeaderCellDef mat-header-cell> 内容</th>
+    <td *matCellDef="let course" mat-cell>
+      <div class="min-w-48">{{ course.content }}</div>
+    </td>
+  </ng-container>
+
+  <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+</table>
