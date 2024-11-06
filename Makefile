@@ -1,5 +1,5 @@
 remote_dir = /home/zhan/Application/gongfu
-remote_ssh = zhan@t
+remote_ssh = zhan@t2
 
 # 编译 api 服务
 build_api:
@@ -34,3 +34,7 @@ restart:
 .PHONY: web
 web:
 	cd web && yarn run start
+
+# 启动本地 api
+run:
+	go run cmd/main.go --config=config/local.toml

@@ -1,10 +1,9 @@
 <mat-form-field>
   <mat-label>角色</mat-label>
-  <mat-select [(value)]="selectRoleIds" [multiple]="true">
+  <mat-select [formControl]="conditions.controls.roleIds" [multiple]="true">
     <mat-option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</mat-option>
   </mat-select>
 </mat-form-field>
-<button (click)="refreshTable()" mat-button>确定</button>
 <div>
   <table [dataSource]="dataSource" class="w-100" mat-table>
     <!-- actions -->
@@ -12,9 +11,7 @@
       <th *matHeaderCellDef mat-header-cell> 操作</th>
       <td *matCellDef="let user" mat-cell>
         <button [routerLink]="'/admin/users/' + user?.id" color="primary" mat-icon-button>
-          <mat-icon>
-            <fa-icon [icon]="faEdit"></fa-icon>
-          </mat-icon>
+          <mat-icon>edit</mat-icon>
         </button>
       </td>
     </ng-container>
@@ -24,8 +21,7 @@
       <th *matHeaderCellDef mat-header-cell> 头像</th>
       <td *matCellDef="let element" mat-cell>
         <img [ngSrc]="element?.headimgurl" [routerLink]="'/profile/' + element.uuid" alt="head_img" class="rounded-full"
-             height=140
-             width=140>
+             height=40 width=40>
       </td>
     </ng-container>
 

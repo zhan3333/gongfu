@@ -10,6 +10,7 @@ import { NgForOf, NgOptimizedImage } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'anms-users',
@@ -24,7 +25,8 @@ import { MatSelectModule } from '@angular/material/select';
     FontAwesomeModule,
     MatButtonModule,
     MatSelectModule,
-    NgForOf
+    NgForOf,
+    ReactiveFormsModule
   ],
   standalone: true
 })
@@ -47,14 +49,24 @@ export class UsersComponent implements OnInit, AfterViewInit {
     {id: 4, name: '会员'}
   ];
   public selectRoleIds: number[] = [];
+  public conditions = this.fb.group({
+    roleIds: [[] as Array<number>],
+  })
 
-  constructor(private adminApi: AdminApiService) {
+  constructor(
+    private adminApi: AdminApiService,
+    private fb: NonNullableFormBuilder,
+  ) {
+    this.conditions.valueChanges.subscribe(() => {
+      this.refreshTable()
+    })
   }
 
   ngOnInit(): void {
   }
 
   refreshTable() {
+    console.log('refresh table', this.conditions.value)
     if (this.paginator === undefined) {
       return;
     }
@@ -64,7 +76,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
         keyword: '',
         limit: this.paginator.pageSize,
         page: this.paginator.pageIndex,
-        roleIds: this.selectRoleIds,
+        roleIds: this.conditions.value.roleIds || [],
       })
       .subscribe((data) => {
         this.dataSource.data = data.users;
