@@ -5,7 +5,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { AdminRoutingModule } from './admin-routing.module';
 import { UserEditComponent } from './user-edit/user-edit.component';
 import { CoursesComponent } from './courses/courses.component';
-import { CourseCreateComponent } from './courses/course-create/course-create.component';
+import { CourseCreateDialogComponent } from './courses/course-create-dialog/course-create-dialog.component';
 import { CourseEditComponent } from './courses/course-edit/course-edit.component';
 
 @NgModule({
@@ -16,7 +16,7 @@ import { CourseEditComponent } from './courses/course-edit/course-edit.component
     AdminRoutingModule,
     UserEditComponent,
     CoursesComponent,
-    CourseCreateComponent,
+    CourseCreateDialogComponent,
     CourseEditComponent
   ],
   exports: [],

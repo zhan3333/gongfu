@@ -1,4 +1,5 @@
-<table [dataSource]="courses" mat-table>
+<button (click)="openCreateCourseDialog()" color="primary" mat-button mat-raised-button>{{ '新增' }}</button>
+<table [dataSource]="courses" class="mt-2" mat-table>
   <div *matNoDataRow>
     <p>{{ '无数据' }}</p>
   </div>

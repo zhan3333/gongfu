@@ -9,6 +9,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { CourseCreateDialogComponent } from './course-create-dialog/course-create-dialog.component';
 
 @Component({
   selector: 'anms-courses',
@@ -34,7 +36,8 @@ export class CoursesComponent implements OnInit, AfterViewInit {
 
   constructor(
     private adminApi: AdminApiService,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private dialog: MatDialog,
   ) {
   }
 
@@ -81,5 +84,15 @@ export class CoursesComponent implements OnInit, AfterViewInit {
       this.refreshTable();
       this.notification.success('删除成功');
     });
+  }
+
+  openCreateCourseDialog() {
+    this.dialog.open(CourseCreateDialogComponent, {
+      minWidth: '400px'
+    }).afterClosed().subscribe(v => {
+      if (v) {
+        this.refreshTable();
+      }
+    })
   }
 }

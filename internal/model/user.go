@@ -5,6 +5,13 @@ import (
 	"time"
 )
 
+type CoachStatus string
+
+const (
+	CoachStatusRegular    CoachStatus = "regular"
+	CoachStatusInternship CoachStatus = "internship"
+)
+
 type User struct {
 	ID         uint           `json:"id" gorm:"primarykey"`
 	CreatedAt  time.Time      `json:"created_at"`
@@ -20,8 +27,9 @@ type User struct {
 	Country    string         `json:"country" gorm:"column:country"`
 	HeadImgURL string         `json:"headimgurl" gorm:"column:head_img_url"`
 	// 用户唯一编码
-	UUID  string `json:"uuid" gorm:"unique"`
-	Roles []UserHasRole
+	UUID        string `json:"uuid" gorm:"unique"`
+	Roles       []UserHasRole
+	CoachStatus CoachStatus `json:"coachStatus" gorm:"column:coach_status"`
 }
 
 func (u User) GetRoleNames() []string {

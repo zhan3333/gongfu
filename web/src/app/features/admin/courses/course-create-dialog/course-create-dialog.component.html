@@ -1,0 +1,55 @@
+<mat-dialog-content>
+  <span matDialogTitle>Course create</span>
+  <form [formGroup]="form" class="flex flex-col">
+    <mat-form-field appearance="fill">
+      <mat-label>学校</mat-label>
+      <mat-select formControlName="schoolId">
+        <mat-option *ngFor="let school of schools" [value]="school.id">
+          {{ school.name }} {{ school.address }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>上课日期</mat-label>
+      <input [matDatepicker]="picker" formControlName="startDate" matInput>
+      <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>上课时间</mat-label>
+      <input formControlName="startTime" matInput placeholder="12:00-14:00" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>负责人</mat-label>
+      <mat-select formControlName="managerId" required>
+        <mat-option *ngFor="let coach of coaches" [value]="coach.id">
+          {{ coach.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>教练</mat-label>
+      <mat-select formControlName="coachId">
+        <mat-option *ngFor="let coach of coaches" [value]="coach.id">
+          {{ coach.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>助教(多选)</mat-label>
+      <mat-select [multiple]="true" formControlName="assistantCoachIds">
+        <mat-option *ngFor="let coach of coaches" [value]="coach.id">
+          {{ coach.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <div class="space-x-2">
+    <button (click)="dialogRef.close(false)" mat-button>取消</button>
+    <button (click)="onSave()" color="primary" mat-raised-button>保存</button>
+  </div>
+</mat-dialog-actions>

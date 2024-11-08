@@ -3,6 +3,7 @@ package admin
 import (
 	"context"
 	"encoding/json"
+	"github.com/gin-gonic/gin"
 	"gongfu/internal/app"
 	"gongfu/internal/model"
 	"gongfu/internal/result"
@@ -104,16 +105,17 @@ func (r UseCase) AdminGetUser(c *app.Context) result.Result {
 	if err != nil {
 		return result.Err(err)
 	}
-	return result.Ok(MeResponse{
-		ID:              user.ID,
-		OpenID:          user.OpenID,
-		Phone:           user.Phone,
-		Nickname:        user.Nickname,
-		HeadImgURL:      r.Storage.GetHeadImageVisitURL(user.HeadImgURL),
-		RoleNames:       user.GetRoleNames(),
-		UUID:            user.UUID,
-		TeachingRecords: teachingRecords,
-		StudyRecords:    studyRecords,
+	return result.Ok(gin.H{
+		"id":              user.ID,
+		"openid":          user.OpenID,
+		"phone":           user.Phone,
+		"nickname":        user.Nickname,
+		"headimgurl":      r.Storage.GetHeadImageVisitURL(user.HeadImgURL),
+		"roleNames":       user.GetRoleNames(),
+		"uuid":            user.UUID,
+		"teachingRecords": teachingRecords,
+		"studyRecords":    studyRecords,
+		"coachStatus":     user.CoachStatus,
 	})
 }
 
@@ -136,7 +138,8 @@ func (r UseCase) AdminUpdateUser(c *app.Context) result.Result {
 		// 任教经历
 		TeachingExperiences []string `json:"teachingExperiences"`
 		// 设置角色
-		RoleNames []string `json:"roleNames"`
+		RoleNames   []string          `json:"roleNames"`
+		CoachStatus model.CoachStatus `json:"coachStatus"`
 	}{}
 	if err := c.Bind(&req); err != nil {
 		return result.Err(nil)
@@ -151,6 +154,7 @@ func (r UseCase) AdminUpdateUser(c *app.Context) result.Result {
 	}
 	user.Nickname = req.Nickname
 	user.Phone = &req.Phone
+	user.CoachStatus = req.CoachStatus
 	if err := r.Store.UpdateUser(context.TODO(), user); err != nil {
 		return result.Err(err)
 	}

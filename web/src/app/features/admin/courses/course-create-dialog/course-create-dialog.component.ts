@@ -1,9 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  AdminApiService,
-  ISampleCoach
-} from '../../../../api/admin/admin-api.service';
+import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AdminApiService, ISampleCoach } from '../../../../api/admin/admin-api.service';
 import { NotificationService } from '../../../../core/notifications/notification.service';
 import { Router } from '@angular/router';
 import { School } from '../../../../api/models/school';
@@ -16,23 +13,23 @@ import { NgFor } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-    selector: 'anms-course-create',
-    templateUrl: './course-create.component.html',
-    styleUrls: ['./course-create.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [MatCardModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, NgFor, MatOptionModule, MatInputModule, MatDatepickerModule, MatButtonModule]
+  selector: 'anms-course-create-dialog',
+  templateUrl: './course-create-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [MatCardModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, NgFor, MatOptionModule, MatInputModule, MatDatepickerModule, MatButtonModule, MatDialogModule]
 })
-export class CourseCreateComponent implements OnInit {
-  public form = new UntypedFormGroup({
-    schoolId: new UntypedFormControl(null, [Validators.required]),
-    startDate: new UntypedFormControl(null, [Validators.required]),
-    startTime: new UntypedFormControl(null, [Validators.required]),
-    managerId: new UntypedFormControl(null, [Validators.required]),
-    coachId: new UntypedFormControl(null),
-    assistantCoachIds: new UntypedFormControl([])
+export class CourseCreateDialogComponent implements OnInit {
+  public form = this.fb.group({
+    schoolId: [0, Validators.required],
+    startDate: ['', [Validators.required]],
+    startTime: ['', [Validators.required]],
+    managerId: [0, [Validators.required]],
+    coachId: [0, [Validators.required]],
+    assistantCoachIds: [[] as Array<number>]
   });
 
   // 教练数组
@@ -41,10 +38,13 @@ export class CourseCreateComponent implements OnInit {
   public schools: School[] = [];
 
   constructor(
+    public dialogRef: MatDialogRef<CourseCreateDialogComponent>,
     private adminApi: AdminApiService,
     private notification: NotificationService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private fb: NonNullableFormBuilder
+  ) {
+  }
 
   ngOnInit(): void {
     this.adminApi.getCoaches().subscribe((data) => (this.coaches = data));
@@ -56,17 +56,17 @@ export class CourseCreateComponent implements OnInit {
     this.loading = true;
     this.adminApi
       .createCourse({
-        assistantCoachIds: data['assistantCoachIds'],
-        coachId: data['coachId'],
-        managerId: data['managerId'],
-        startDate: moment(data['startDate']).format('YYYY/MM/DD'),
-        startTime: data['startTime'],
-        schoolId: data['schoolId']
+        assistantCoachIds: this.form.value.assistantCoachIds || [],
+        coachId: this.form.value.coachId || 0,
+        managerId: this.form.value.managerId || 0,
+        startDate: moment(this.form.value.startDate).format('YYYY/MM/DD'),
+        startTime: this.form.value.startTime || '',
+        schoolId: this.form.value.schoolId || 0,
       })
       .subscribe(
         () => {
           this.notification.success('创建成功');
-          this.router.navigate(['/admin/courses']);
+          this.dialogRef.close(true)
         },
         (err) => {
           this.notification.error('创建失败');

@@ -5,15 +5,15 @@ import { ApiService } from '../../api/api.service';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
-    selector: 'anms-courses',
-    templateUrl: './courses.component.html',
-    styleUrls: ['./courses.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default,
-    standalone: true,
-    imports: [NgIf, NgFor, MatCardModule, MatButtonModule, RouterLink]
+  selector: 'anms-courses',
+  templateUrl: './courses.component.html',
+  styleUrls: ['./courses.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [NgIf, NgFor, MatCardModule, MatButtonModule, RouterLink]
 })
 export class CoursesComponent implements OnInit {
 
@@ -30,6 +30,9 @@ export class CoursesComponent implements OnInit {
 
   // 显示助教信息
   public displayAssistantCoaches(coaches: ISampleCoach[]): string {
+    if (!coaches || !coaches.length) {
+      return ''
+    }
     return coaches.map(v => v.name).join('、')
   }
 }

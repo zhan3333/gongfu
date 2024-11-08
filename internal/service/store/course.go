@@ -25,7 +25,7 @@ type Course interface {
 }
 
 func (s DBStore) GetCoursesByUser(ctx context.Context, userId uint) ([]*model.Course, error) {
-	var courses = []*model.Course{}
+	var courses []*model.Course
 	var err = s.DB.WithContext(ctx).Model(&model.Course{}).
 		Where("coach_id = ?", userId).
 		Or("manager_id = ?", userId).

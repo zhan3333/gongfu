@@ -1,16 +1,16 @@
 <div>
-  <button mat-raised-button [routerLink]="'/admin/courses/create'" color="primary" class="m-1">创建课程</button>
-  <table mat-table [dataSource]="dataSource" class="w-100">
+  <button (click)="openCreateCourseDialog()" class="m-1" color="primary" mat-raised-button>创建课程</button>
+  <table [dataSource]="dataSource" class="w-100" mat-table>
     <!-- actions -->
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>操作</th>
-      <td mat-cell *matCellDef="let course">
-        <button mat-icon-button color="primary" [routerLink]="'/admin/courses/' + course?.id">
+      <th *matHeaderCellDef mat-header-cell>操作</th>
+      <td *matCellDef="let course" mat-cell>
+        <button [routerLink]="'/admin/courses/' + course?.id" color="primary" mat-icon-button>
           <mat-icon>
             <fa-icon [icon]="faEdit"></fa-icon>
           </mat-icon>
         </button>
-        <button mat-icon-button color="warn" (click)="onClickDeleteCourse(course?.id)">
+        <button (click)="onClickDeleteCourse(course?.id)" color="warn" mat-icon-button>
           <mat-icon>
             <fa-icon [icon]="faTrash"></fa-icon>
           </mat-icon>
@@ -20,31 +20,31 @@
 
     <!-- id -->
     <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td mat-cell *matCellDef="let element"> {{element?.id}} </td>
+      <th *matHeaderCellDef mat-header-cell>ID</th>
+      <td *matCellDef="let element" mat-cell> {{ element?.id }}</td>
     </ng-container>
 
     <ng-container matColumnDef="school">
-      <th mat-header-cell *matHeaderCellDef>学校</th>
-      <td mat-cell *matCellDef="let element"> {{element?.school?.name}} </td>
+      <th *matHeaderCellDef mat-header-cell>学校</th>
+      <td *matCellDef="let element" mat-cell> {{ element?.school?.name }}</td>
     </ng-container>
 
     <ng-container matColumnDef="coach">
-      <th mat-header-cell *matHeaderCellDef>教练</th>
-      <td mat-cell *matCellDef="let element"> {{element?.coach?.name}} </td>
+      <th *matHeaderCellDef mat-header-cell>教练</th>
+      <td *matCellDef="let element" mat-cell> {{ element?.coach?.name }}</td>
     </ng-container>
 
     <ng-container matColumnDef="startDateTime">
-      <th mat-header-cell *matHeaderCellDef>上课时间</th>
-      <td mat-cell *matCellDef="let element"> {{element.startDate + ' ' + element.startTime}} </td>
+      <th *matHeaderCellDef mat-header-cell>上课时间</th>
+      <td *matCellDef="let element" mat-cell> {{ element.startDate + ' ' + element.startTime }}</td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
   </table>
 
   <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                 showFirstLastButtons
-                 aria-label="Select page of periodic elements">
+                 aria-label="Select page of periodic elements"
+                 showFirstLastButtons>
   </mat-paginator>
 </div>

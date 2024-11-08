@@ -11,15 +11,7 @@ const routes: Routes = [
           import('./user-edit/user-edit.component').then(
             (m) => m.UserEditComponent
           ),
-        data: { title: 'user edit' }
-      },
-      {
-        path: 'courses/create',
-        loadComponent: () =>
-          import('./courses/course-create/course-create.component').then(
-            (m) => m.CourseCreateComponent
-          ),
-        data: { title: 'create course' }
+        data: {title: 'user edit'}
       },
       {
         path: 'courses/:id',
@@ -27,13 +19,13 @@ const routes: Routes = [
           import('./courses/course-edit/course-edit.component').then(
             (m) => m.CourseEditComponent
           ),
-        data: { title: 'edit course' }
+        data: {title: 'edit course'}
       },
       {
         path: 'courses',
         loadComponent: () =>
           import('./courses/courses.component').then((m) => m.CoursesComponent),
-        data: { title: 'courses page' }
+        data: {title: 'courses page'}
       }
     ]
   }
@@ -43,4 +35,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AdminRoutingModule {}
+export class AdminRoutingModule {
+}
