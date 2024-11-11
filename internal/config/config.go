@@ -1,6 +1,9 @@
 package config
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/spf13/viper"
+)
 
 type SMS struct {
 	AppID      string
@@ -68,4 +71,12 @@ type WeChat struct {
 	MchCertificateSerialNumber string // 商户证书序列号
 	MchAPIv3Key                string // 商户APIv3密钥
 	PrivateCertPath            string
+}
+
+func NewConfig(file string) (*Config, error) {
+	var conf Config
+	if err := viper.Unmarshal(&conf); err != nil {
+		return nil, fmt.Errorf("unmarshal config: %w", err)
+	}
+	return &conf, nil
 }

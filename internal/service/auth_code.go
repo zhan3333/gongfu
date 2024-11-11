@@ -4,8 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/go-redis/redis/v8"
+	"github.com/redis/go-redis/v9"
+	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
+	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"
+	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/regions"
 	sms "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sms/v20210111"
+	"gongfu/internal/config"
 	"math/rand"
 	"strconv"
 	"time"
@@ -26,6 +30,22 @@ type authCode struct {
 	CodeLength  int
 	SendLimit   int
 	Rand        *rand.Rand
+}
+
+func NewAuthCodeService(conf *config.Config, redis redis.Cmdable) AuthCode {
+	credential := common.NewCredential(conf.Tencent.SecretId, conf.Tencent.SecretKey)
+	client, _ := sms.NewClient(credential, regions.Guangzhou, profile.NewClientProfile())
+	return &authCode{
+		Client:      client,
+		Redis:       redis,
+		SmsSdkAppId: conf.Tencent.SMS.AppID,
+		SignName:    conf.Tencent.SMS.SignName,
+		TemplateId:  conf.Tencent.SMS.TemplateID,
+		Period:      5 * time.Minute,
+		CodeLength:  4,
+		SendLimit:   10,
+		Rand:        rand.New(rand.NewSource(time.Now().Unix())),
+	}
 }
 
 func NewAuthCode(

@@ -1,14 +1,9 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { ApiService } from '../../api/api.service';
-import { ICoach, User } from '../../api/models/user';
+import { ICoach, UserClass } from '../../api/models/userClass';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
@@ -51,7 +46,7 @@ import { MatRippleModule } from '@angular/material/core';
 })
 export class MeComponent implements OnInit {
   public accessToken = '';
-  public user: User | undefined = undefined;
+  public user: UserClass | undefined = undefined;
   public coach: ICoach | undefined;
   public bindPhone = new UntypedFormControl('', [
     Validators.required,
@@ -73,9 +68,10 @@ export class MeComponent implements OnInit {
     private api: ApiService,
     private router: Router,
     private changeRef: ChangeDetectorRef
-  ) {}
+  ) {
+  }
 
-  public blockMenus(user: User): {
+  public blockMenus(user: UserClass): {
     img: string;
     name: string;
     link: string;
@@ -104,7 +100,7 @@ export class MeComponent implements OnInit {
     ];
   }
 
-  public listMenus(user: User): {
+  public listMenus(user: UserClass): {
     icon: IconDefinition;
     name: string;
     link: string;
@@ -121,7 +117,7 @@ export class MeComponent implements OnInit {
         icon: faBolt,
         name: '我的历史打卡',
         link: '/check-in-histories',
-        queryParams: { userID: user.id }
+        queryParams: {userID: user.id}
       },
       {
         icon: faCalendar,
@@ -154,11 +150,11 @@ export class MeComponent implements OnInit {
   }
 
   public toBindPhonePage() {
-    this.router.navigate(['/login'], { queryParams: { type: 'bind_phone' } });
+    this.router.navigate(['/login'], {queryParams: {type: 'bind_phone'}});
   }
 
   public toLoginPage() {
-    this.router.navigate(['/login'], { queryParams: { type: 'login' } });
+    this.router.navigate(['/login'], {queryParams: {type: 'login'}});
   }
 
   public toWeChatLogin() {

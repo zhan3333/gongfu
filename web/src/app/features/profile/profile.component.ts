@@ -10,7 +10,7 @@ import { MatLineModule, MatRippleModule } from '@angular/material/core';
 import { DatePipe, NgFor, NgIf, NgOptimizedImage } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { AuthService } from '../../core/auth/auth.service';
-import { ROLE_ADMIN, ROLE_COACH, User } from '../../api/models/user';
+import { ROLE_ADMIN, ROLE_COACH, UserClass } from '../../api/models/userClass';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -29,7 +29,7 @@ import { MemberCourse } from '../../api/admin/admin-api.service';
 export class ProfileComponent implements OnInit {
   public profile: Profile | undefined;
   public displayLevel = displayLevel;
-  public user: User
+  public user: UserClass
   private userUUID: string = ''
 
   constructor(

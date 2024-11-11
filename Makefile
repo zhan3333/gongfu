@@ -3,7 +3,7 @@ remote_ssh = zhan@t2
 
 # 编译 api 服务
 build_api:
-	cd server && GOOS=linux GOARCH=amd64 go build -o ../build/gongfu cmd/main.go
+	GOOS=linux GOARCH=amd64 go build -o ./build/gongfu cmd/main.go
 
 # 编译 web 服务
 build_web:

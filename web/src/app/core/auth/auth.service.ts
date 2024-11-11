@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { Observable, ReplaySubject } from 'rxjs';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { User } from '../../api/models/user';
+import { UserClass } from '../../api/models/userClass';
 
 const KEY_IS_AUTHENTICATED = 'isAuthenticated'
 const KEY_ACCESS_TOKEN = 'accessToken'
@@ -12,10 +12,10 @@ const KEY_AUTH = 'auth'
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService  {
+export class AuthService {
   public isAuthenticated$ = new ReplaySubject<boolean>();
   public accessToken$ = new ReplaySubject<string>();
-  public user$ = new ReplaySubject<User>();
+  public user$ = new ReplaySubject<UserClass>();
 
   private store
 
@@ -34,11 +34,11 @@ export class AuthService  {
     return this.store.getItem(KEY_AUTH)[KEY_ACCESS_TOKEN] || ''
   }
 
-  getUser(): User {
-    return new User(this.store.getItem(KEY_USER))
+  getUser(): UserClass {
+    return new UserClass(this.store.getItem(KEY_USER))
   }
 
-  setUser(user: User) {
+  setUser(user: UserClass) {
     this.store.setItem(KEY_USER, user)
     this.user$.next(user)
   }

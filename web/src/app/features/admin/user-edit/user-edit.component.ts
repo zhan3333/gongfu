@@ -11,9 +11,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { AdminApiService, MemberCourse } from '../../../api/admin/admin-api.service';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
-import { displayRoleName, ROLE_COACH, ROLE_MEMBER, User } from '../../../api/models/user';
+import { displayRoleName, ROLE_COACH, ROLE_MEMBER, User } from '../../../api/models/userClass';
 import { Levels } from '../../../services/coach-level';
-import { faBan, faChalkboardTeacher, faEdit, faFolder, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
+import { faBan, faChalkboardTeacher, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 import { MatButtonModule } from '@angular/material/button';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatIconModule } from '@angular/material/icon';
@@ -61,6 +61,7 @@ import { CourseListComponent } from './course-list/course-list.component';
     DatePipe,
     MatTabsModule,
     CourseListComponent,
+    MatDatepickerModule,
   ]
 })
 export class UserEditComponent implements OnInit, AfterViewInit {
@@ -76,6 +77,8 @@ export class UserEditComponent implements OnInit, AfterViewInit {
     teachingAge: new FormControl('', {nonNullable: true}),
     teachingExperiences: new FormControl<string[]>([], {nonNullable: true}),
     roleNames: new FormControl<string[]>([], {nonNullable: true, validators: [Validators.required]}),
+    coachStatus: new FormControl('', {nonNullable: true}),
+    coachRegisterDate: new FormControl('', {nonNullable: true}),
   });
   public loading = false;
   // 角色名选项
@@ -85,8 +88,6 @@ export class UserEditComponent implements OnInit, AfterViewInit {
   public Levels = Levels;
   public user!: User;
   public memberCourses: MemberCourse[] = [];
-  protected readonly faEdit = faEdit;
-  protected readonly faFolder = faFolder;
   protected readonly faChalkboardTeacher = faChalkboardTeacher;
   protected readonly faGraduationCap = faGraduationCap;
 
@@ -142,7 +143,10 @@ export class UserEditComponent implements OnInit, AfterViewInit {
         nickname: user.nickname,
         phone: user.phone,
         roleNames: user.roleNames,
+        coachStatus: user.coachStatus,
+        coachRegisterDate: user.coachRegisterDate,
       });
+      console.log(this.form.value);
     });
     this.adminApi.getCoach(this.id).subscribe((coach) => {
       this.form.patchValue({
@@ -167,7 +171,9 @@ export class UserEditComponent implements OnInit, AfterViewInit {
         teachingAge: this.form.controls.teachingAge.value,
         teachingExperiences: this.form.controls.teachingExperiences.value,
         teachingSpace: this.form.controls.teachingSpace.value,
-        roleNames: this.form.controls.roleNames.value
+        roleNames: this.form.controls.roleNames.value,
+        coachStatus: this.form.controls.coachStatus.value,
+        coachRegisterDate: this.form.value.coachRegisterDate,
       })
       .subscribe({
         next: () => {

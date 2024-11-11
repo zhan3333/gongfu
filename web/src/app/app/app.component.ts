@@ -21,7 +21,7 @@ import {
 import { AuthService } from '../core/auth/auth.service';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CHECK_IN_TOP_PATH } from '../core/router/route-path';
-import { User } from '../api/models/user';
+import { UserClass } from '../api/models/userClass';
 import {
   faBars,
   faCog,
@@ -95,7 +95,7 @@ export class AppComponent implements OnInit {
   stickyHeader$: Observable<boolean> | undefined;
   language$: Observable<string> | undefined;
   theme$: Observable<string> | undefined;
-  public user: User | undefined;
+  public user: UserClass | undefined;
 
   constructor(
     private store: Store<AppState>,

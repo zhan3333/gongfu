@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEventType, HttpRequest } from '@angular/common/http';
-import { ICoach, SimpleUser, User, UsersPage } from './models/user';
+import { ICoach, SimpleUser, UserClass, UsersPage } from './models/userClass';
 import { CheckIn, CheckInCountList, CheckInExist, CheckInList } from './models/check-in';
 import { last, map, switchMap, tap } from 'rxjs/operators';
 import { Profile } from './models/profile';
@@ -35,8 +35,8 @@ export class ApiService {
   }
 
   me() {
-    return this.http.get<User>(meUrl).pipe(
-      map(v => new User(v))
+    return this.http.get<UserClass>(meUrl).pipe(
+      map(v => new UserClass(v))
     )
   }
 
@@ -163,8 +163,8 @@ export class ApiService {
 
   // 获取用户信息
   getUser(id: number) {
-    return this.http.get<User>(getUser + '/' + id).pipe(
-      map(v => new User(v))
+    return this.http.get<UserClass>(getUser + '/' + id).pipe(
+      map(v => new UserClass(v))
     )
   }
 

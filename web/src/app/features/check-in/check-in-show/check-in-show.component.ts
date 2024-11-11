@@ -7,7 +7,7 @@ import { refreshSharedCheckInToWechat } from '../../../core/util';
 import { WechatService } from '../../../services/wechat.service';
 import { DatePipe, NgForOf, NgIf, NgOptimizedImage, NgStyle } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { ROLE_ADMIN, ROLE_COACH, User } from '../../../api/models/user';
+import { ROLE_ADMIN, ROLE_COACH, UserClass } from '../../../api/models/userClass';
 import { AuthService } from '../../../core/auth/auth.service';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -25,7 +25,7 @@ import { MatRippleModule } from '@angular/material/core';
 export class CheckInShowComponent implements OnInit {
   public checkIn: CheckIn | undefined
   comments: CheckInComment[] = [];
-  user: User
+  user: UserClass
   commentForm = new FormControl('', {nonNullable: true, validators: [Validators.required]});
   protected readonly ROLE_COACH = ROLE_COACH;
   protected readonly ROLE_ADMIN = ROLE_ADMIN;

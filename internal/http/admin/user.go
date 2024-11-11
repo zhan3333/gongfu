@@ -106,16 +106,17 @@ func (r UseCase) AdminGetUser(c *app.Context) result.Result {
 		return result.Err(err)
 	}
 	return result.Ok(gin.H{
-		"id":              user.ID,
-		"openid":          user.OpenID,
-		"phone":           user.Phone,
-		"nickname":        user.Nickname,
-		"headimgurl":      r.Storage.GetHeadImageVisitURL(user.HeadImgURL),
-		"roleNames":       user.GetRoleNames(),
-		"uuid":            user.UUID,
-		"teachingRecords": teachingRecords,
-		"studyRecords":    studyRecords,
-		"coachStatus":     user.CoachStatus,
+		"id":                user.ID,
+		"openid":            user.OpenID,
+		"phone":             user.Phone,
+		"nickname":          user.Nickname,
+		"headimgurl":        r.Storage.GetHeadImageVisitURL(user.HeadImgURL),
+		"roleNames":         user.GetRoleNames(),
+		"uuid":              user.UUID,
+		"teachingRecords":   teachingRecords,
+		"studyRecords":      studyRecords,
+		"coachStatus":       user.CoachStatus,
+		"coachRegisterDate": user.CoachRegisterDate,
 	})
 }
 
@@ -140,6 +141,8 @@ func (r UseCase) AdminUpdateUser(c *app.Context) result.Result {
 		// 设置角色
 		RoleNames   []string          `json:"roleNames"`
 		CoachStatus model.CoachStatus `json:"coachStatus"`
+		// 教练注册日期
+		CoachRegisterDate string `json:"coachRegisterDate"`
 	}{}
 	if err := c.Bind(&req); err != nil {
 		return result.Err(nil)
@@ -155,6 +158,7 @@ func (r UseCase) AdminUpdateUser(c *app.Context) result.Result {
 	user.Nickname = req.Nickname
 	user.Phone = &req.Phone
 	user.CoachStatus = req.CoachStatus
+	user.CoachRegisterDate = req.CoachRegisterDate
 	if err := r.Store.UpdateUser(context.TODO(), user); err != nil {
 		return result.Err(err)
 	}

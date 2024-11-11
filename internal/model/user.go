@@ -27,9 +27,10 @@ type User struct {
 	Country    string         `json:"country" gorm:"column:country"`
 	HeadImgURL string         `json:"headimgurl" gorm:"column:head_img_url"`
 	// 用户唯一编码
-	UUID        string `json:"uuid" gorm:"unique"`
-	Roles       []UserHasRole
-	CoachStatus CoachStatus `json:"coachStatus" gorm:"column:coach_status"`
+	UUID              string `json:"uuid" gorm:"unique"`
+	Roles             []UserHasRole
+	CoachStatus       CoachStatus `json:"coachStatus" gorm:"column:coach_status"`
+	CoachRegisterDate string      `json:"coachRegisterDate" gorm:"column:coach_register_date"`
 }
 
 func (u User) GetRoleNames() []string {

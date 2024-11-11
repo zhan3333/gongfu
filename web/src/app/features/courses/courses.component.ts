@@ -10,7 +10,6 @@ import { NgFor, NgIf } from '@angular/common';
 @Component({
   selector: 'anms-courses',
   templateUrl: './courses.component.html',
-  styleUrls: ['./courses.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
   imports: [NgIf, NgFor, MatCardModule, MatButtonModule, RouterLink]

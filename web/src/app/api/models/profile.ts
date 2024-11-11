@@ -1,4 +1,4 @@
-import { displayRoles, ICoach, ROLE_ADMIN, ROLE_COACH, ROLE_MEMBER } from './user';
+import { displayRoles, ICoach, ROLE_ADMIN, ROLE_COACH, ROLE_MEMBER } from './userClass';
 import { StudyRecord } from './study-record';
 import { TeachingRecord } from './teaching-record';
 import { MemberCourse } from '../admin/admin-api.service';

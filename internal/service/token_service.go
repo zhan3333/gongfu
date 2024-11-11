@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"github.com/golang-jwt/jwt/v4"
+	"gongfu/internal/config"
 	"strings"
 )
 
@@ -15,8 +16,8 @@ type token struct {
 	Secret string
 }
 
-func NewToken(secret string) Token {
-	return &token{Secret: secret}
+func NewTokenService(conf *config.Config) Token {
+	return &token{Secret: conf.Token.Secret}
 }
 
 type Claims struct {

@@ -4,7 +4,9 @@ import (
 	"context"
 	"github.com/tencentyun/cos-go-sdk-v5"
 	_ "github.com/tencentyun/cos-go-sdk-v5"
+	"gongfu/internal/config"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 )
@@ -64,6 +66,13 @@ func (s storage) GetFileVisitURL(imgURL string) string {
 	return imgURL
 }
 
-func NewStorage(cos *cos.Client, secretID string, secreteKey string) Storage {
-	return &storage{Cos: cos, SecretID: secretID, SecretKey: secreteKey}
+func NewStorageService(conf *config.Config) Storage {
+	u, _ := url.Parse(conf.Tencent.COS.BucketURL)
+	client := cos.NewClient(&cos.BaseURL{BucketURL: u}, &http.Client{
+		Transport: &cos.AuthorizationTransport{
+			SecretID:  conf.Tencent.SecretId,
+			SecretKey: conf.Tencent.SecretKey,
+		},
+	})
+	return &storage{Cos: client, SecretID: conf.Tencent.SecretId, SecretKey: conf.Tencent.SecretKey}
 }

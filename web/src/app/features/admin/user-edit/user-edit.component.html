@@ -19,42 +19,60 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <!--教练级别-->
-      <mat-form-field *ngIf="selectedCoach" class=" flex-1">
-        <mat-label>教练级别</mat-label>
-        <mat-select formControlName="level">
-          <mat-option *ngFor="let lv of Levels" [value]="lv.value">{{ lv.key }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <!--任教单位-->
-      <mat-form-field *ngIf="selectedCoach" class=" flex-1">
-        <mat-label>{{ '任教单位' }}</mat-label>
-        <input formControlName="teachingSpace" matInput>
-      </mat-form-field>
-      <!--任教年限-->
-      <mat-form-field *ngIf="selectedCoach" class=" flex-1">
-        <mat-label>{{ '任教年限' }}</mat-label>
-        <input formControlName="teachingAge" matInput>
-      </mat-form-field>
-      <!--任教经历-->
-      <mat-form-field *ngIf="selectedCoach" class=" flex-1">
-        <mat-label>任教经历</mat-label>
-        <mat-chip-grid #chipList aria-label="Fruit selection">
-          <mat-chip-row (removed)="onRemoveExp(exp)"
-                        *ngFor="let exp of form.get('teachingExperiences')?.value" [removable]="true">
-            {{ exp }}
-            <button matChipRemove>
-              <mat-icon>
-                <fa-icon [icon]="faBan"></fa-icon>
-              </mat-icon>
-            </button>
-          </mat-chip-row>
-          <input (matChipInputTokenEnd)="onAddExp($event)"
-                 [matChipInputAddOnBlur]="true"
-                 [matChipInputFor]="chipList"
-                 placeholder="新的经历">
-        </mat-chip-grid>
-      </mat-form-field>
+      <ng-container *ngIf="selectedCoach">
+        <!--教练注册时间-->
+        <mat-form-field>
+          <mat-label>教练注册日期</mat-label>
+          <input [matDatepicker]="picker" formControlName="coachRegisterDate" matInput>
+          <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <!--教练状态-->
+        <mat-form-field>
+          <mat-label>教练状态</mat-label>
+          <mat-select formControlName="coachStatus">
+            <mat-option value="internship">实习</mat-option>
+            <mat-option value="regular">正式</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!--教练级别-->
+        <mat-form-field>
+          <mat-label>教练级别</mat-label>
+          <mat-select formControlName="level">
+            <mat-option *ngFor="let lv of Levels" [value]="lv.value">{{ lv.key }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!--任教单位-->
+        <mat-form-field>
+          <mat-label>{{ '任教单位' }}</mat-label>
+          <input formControlName="teachingSpace" matInput>
+        </mat-form-field>
+        <!--任教年限-->
+        <mat-form-field>
+          <mat-label>{{ '任教年限' }}</mat-label>
+          <input formControlName="teachingAge" matInput>
+        </mat-form-field>
+        <!--任教经历-->
+        <mat-form-field>
+          <mat-label>任教经历</mat-label>
+          <mat-chip-grid #chipList aria-label="Fruit selection">
+            <mat-chip-row (removed)="onRemoveExp(exp)"
+                          *ngFor="let exp of form.get('teachingExperiences')?.value" [removable]="true">
+              {{ exp }}
+              <button matChipRemove>
+                <mat-icon>
+                  <fa-icon [icon]="faBan"></fa-icon>
+                </mat-icon>
+              </button>
+            </mat-chip-row>
+            <input (matChipInputTokenEnd)="onAddExp($event)"
+                   [matChipInputAddOnBlur]="true"
+                   [matChipInputFor]="chipList"
+                   placeholder="新的经历">
+          </mat-chip-grid>
+        </mat-form-field>
+      </ng-container>
+
     </form>
     <mat-card-actions>
       <!--保存按钮-->

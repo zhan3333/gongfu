@@ -1,7 +1,22 @@
 import { TeachingRecord } from './teaching-record';
 import { StudyRecord } from './study-record';
 
-export class User {
+export interface User {
+  id: number;
+  openid: string;
+  nickname: string;
+  sex: number;
+  headimgurl: string;
+  phone: string;
+  roleNames: string[];
+  uuid: string;
+  teachingRecords: TeachingRecord[];
+  studyRecords: StudyRecord[];
+  coachStatus: string;
+  coachRegisterDate: string;
+}
+
+export class UserClass {
   id = 0;
   openid = '';
   nickname = '';
@@ -12,8 +27,9 @@ export class User {
   uuid = '';
   teachingRecords: TeachingRecord[] = [];
   studyRecords: StudyRecord[] = [];
+  coachStatus: string = '';
 
-  constructor(payload: Partial<User>) {
+  constructor(payload: Partial<UserClass>) {
     this.id = payload.id || 0;
     this.openid = payload.openid || '';
     this.nickname = payload.nickname || '';
@@ -112,7 +128,7 @@ export interface ICoach {
 }
 
 export class UsersPage {
-  users: User[] = [];
+  users: UserClass[] = [];
   page = 0;
   count = 0;
   limit = 0;
@@ -120,7 +136,7 @@ export class UsersPage {
   constructor(payload: Partial<UsersPage>) {
     const users = [];
     for (const user of payload.users || []) {
-      users.push(new User(user));
+      users.push(new UserClass(user));
     }
     this.users = users;
     this.page = payload.page || 0;

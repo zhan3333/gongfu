@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ICoach, User, UsersPage } from '../models/user';
+import { ICoach, User, UsersPage } from '../models/userClass';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Course, CoursesPage } from '../models/course';
@@ -33,12 +33,10 @@ export class AdminApiService {
 
   // 获取用户信息
   getUser(id: number) {
-    return this.http
-      .get<User>(getUser + '/' + id)
-      .pipe(map((v) => new User(v)));
+    return this.http.get<User>(getUser + '/' + id)
   }
 
-  updateUser(id: number, data: UpdateUserParams) {
+  updateUser(id: number, data: any) {
     return this.http.put(updateUser + '/' + id, data);
   }
 

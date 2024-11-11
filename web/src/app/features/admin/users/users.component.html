@@ -1,11 +1,11 @@
 <mat-form-field>
   <mat-label>角色</mat-label>
-  <mat-select [formControl]="conditions.controls.roleIds" [multiple]="true">
+  <mat-select [formControl]="userTableService.conditions.controls.roleIds" [multiple]="true">
     <mat-option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</mat-option>
   </mat-select>
 </mat-form-field>
 <div>
-  <table [dataSource]="dataSource" class="w-100" mat-table>
+  <table [dataSource]="userTableService.dataSource" class="w-100" mat-table>
     <!-- actions -->
     <ng-container matColumnDef="actions">
       <th *matHeaderCellDef mat-header-cell> 操作</th>

@@ -1,17 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild
-} from '@angular/core';
-import { User } from '../../api/models/user';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { UserClass } from '../../api/models/userClass';
 import { ApiService } from '../../api/api.service';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { BottomSheetComponent } from '../../shared/bottom-sheet.component';
-import { UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '../../core/auth/auth.service';
+import { FormsModule, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,16 +12,16 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-    selector: 'anms-setting',
-    templateUrl: './setting.component.html',
-    styleUrls: ['./setting.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default,
-    standalone: true,
-    imports: [MatCardModule, MatRippleModule, MatButtonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule]
+  selector: 'anms-setting',
+  templateUrl: './setting.component.html',
+  styleUrls: ['./setting.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [MatCardModule, MatRippleModule, MatButtonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule]
 })
 export class SettingComponent implements OnInit {
   @ViewChild('fileUpload') fileUpload!: ElementRef;
-  public user: User | undefined;
+  public user: UserClass | undefined;
   public loading = false;
   public uploadProgressValue = 0;
   public userForm = new UntypedFormGroup({
@@ -39,8 +32,8 @@ export class SettingComponent implements OnInit {
     private api: ApiService,
     private notification: NotificationService,
     private bottomSheet: MatBottomSheet,
-    private authService: AuthService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.refreshUser();
@@ -87,7 +80,7 @@ export class SettingComponent implements OnInit {
         (value) => (this.uploadProgressValue = value),
         (avatarKey) => {
           // @ts-ignore
-          this.api.editMe({ avatarKey }).subscribe(
+          this.api.editMe({avatarKey}).subscribe(
             () => {
               this.notification.success('修改成功');
               this.refreshUser();
@@ -104,7 +97,8 @@ export class SettingComponent implements OnInit {
         }
       )
       .subscribe(
-        () => {},
+        () => {
+        },
         (error) => {
           this.notification.error(
             '上传头像失败，请稍后重试: ' + JSON.stringify(error)
@@ -118,13 +112,14 @@ export class SettingComponent implements OnInit {
   public saveUserForm() {
     this.loading = true;
     this.api
-      .editMe({ nickname: this.userForm.get('nickname')?.value as string })
+      .editMe({nickname: this.userForm.get('nickname')?.value as string})
       .subscribe(
         () => {
           this.notification.success('修改成功');
           this.refreshUser();
         },
-        () => {},
+        () => {
+        },
         () => {
           this.loading = false;
         }

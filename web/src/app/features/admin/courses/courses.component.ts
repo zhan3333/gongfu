@@ -15,7 +15,6 @@ import { CourseCreateDialogComponent } from './course-create-dialog/course-creat
 @Component({
   selector: 'anms-courses',
   templateUrl: './courses.component.html',
-  styleUrls: ['./courses.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [MatButtonModule, RouterLink, MatTableModule, MatIconModule, FontAwesomeModule, MatPaginatorModule]
