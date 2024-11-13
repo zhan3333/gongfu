@@ -52,5 +52,8 @@ func (q UsersQuery) GetCoaches(ids ...uint) []Coach {
 			items = append(items, *coach)
 		}
 	}
+	if len(items) == 0 {
+		return []Coach{}
+	}
 	return items
 }

@@ -10,6 +10,7 @@ var _ School = (*DBStore)(nil)
 type School interface {
 	GetSchools(ctx context.Context) ([]*model.School, error)
 	GetSchool(ctx context.Context, id uint) (*model.School, error)
+	GetSchoolName(ctx context.Context, schoolId uint) (string, error)
 }
 
 // GetSchools 获取学校列表

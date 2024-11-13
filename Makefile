@@ -38,3 +38,9 @@ web:
 # 启动本地 api
 run:
 	go run cmd/main.go --config=config/local.toml
+
+generate:
+	go generate ./...
+
+status:
+	ssh ${remote_ssh} "cd ~/Application && docker-compose ps"

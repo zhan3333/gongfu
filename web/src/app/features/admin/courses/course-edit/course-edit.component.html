@@ -1,91 +1,75 @@
-<mat-card appearance="outlined">
+<mat-card>
   <mat-card-header>Course edit</mat-card-header>
   <mat-card-content>
-    <form [formGroup]="form" class="container">
-      <div class="row w-100">
-        <mat-form-field appearance="fill">
-          <mat-label>学校</mat-label>
-          <mat-select formControlName="schoolId">
-            <mat-option *ngFor="let school of schools" [value]="school.id">
-              {{school.name}} {{school.address}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="row w-100">
-        <mat-form-field appearance="fill">
-          <mat-label>上课日期</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="startDate">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-      </div>
-      <div class="row w-100">
-        <mat-form-field appearance="fill">
-          <mat-label>上课时间</mat-label>
-          <input matInput placeholder="上课时间" formControlName="startTime" required>
-        </mat-form-field>
-      </div>
-      <div class="row w-100">
-        <mat-form-field appearance="fill">
-          <mat-label>负责人</mat-label>
-          <mat-select formControlName="managerId">
-            <mat-option *ngFor="let coach of coaches" [value]="coach.id">
-              {{coach.name}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="row w-100">
-        <mat-form-field appearance="fill">
-          <mat-label>教练</mat-label>
-          <mat-select formControlName="coachId">
-            <mat-option *ngFor="let coach of coaches" [value]="coach.id">
-              {{coach.name}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="row w-100">
-        <mat-form-field appearance="fill">
-          <mat-label>助教(多选)</mat-label>
-          <mat-select [multiple]="true" formControlName="assistantCoachIds">
-            <mat-option *ngFor="let coach of coaches" [value]="coach.id">
-              {{coach.name}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="row w-100 mt-1">
-        <mat-form-field appearance="fill">
-          <mat-label>上课内容</mat-label>
-          <textarea formControlName="content" matInput [rows]="4" cdkTextareaAutosize></textarea>
-        </mat-form-field>
-      </div>
-      <div class="row w-100">
-        <mat-form-field appearance="fill">
-          <mat-label>总结</mat-label>
-          <textarea formControlName="summary" matInput [rows]="4" cdkTextareaAutosize></textarea>
-        </mat-form-field>
-      </div>
-      <div class="row w-100">
-        <mat-card appearance="outlined">
-          <mat-card-header>图片</mat-card-header>
-          <ng-container *ngFor="let image of form.value['images']">
-            <img mat-card-image [src]="api.visitFile(image)" alt="Image" (click)="removeImage(image)">
-          </ng-container>
-          <mat-card-actions>
-            <button mat-raised-button (click)="fileUpload.click()">上传</button>
-            <input [hidden]="true" type="file" (change)="onImageSelected($event)" #fileUpload accept="image/*">
-          </mat-card-actions>
-        </mat-card>
-      </div>
+    <form [formGroup]="form" class="space-x-2">
+      <mat-form-field class="ml-2">
+        <mat-label>学校</mat-label>
+        <mat-select formControlName="schoolId">
+          <mat-option *ngFor="let school of schools" [value]="school.id">
+            {{ school.name }} {{ school.address }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>上课日期</mat-label>
+        <input [matDatepicker]="picker" formControlName="startDate" matInput>
+        <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>上课时间</mat-label>
+        <input formControlName="startTime" matInput placeholder="上课时间" required>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>负责人</mat-label>
+        <mat-select formControlName="managerId">
+          <mat-option *ngFor="let coach of coaches" [value]="coach.id">
+            {{ coach.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>教练</mat-label>
+        <mat-select formControlName="coachId">
+          <mat-option *ngFor="let coach of coaches" [value]="coach.id">
+            {{ coach.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>助教(多选)</mat-label>
+        <mat-select [multiple]="true" formControlName="assistantCoachIds">
+          <mat-option *ngFor="let coach of coaches" [value]="coach.id">
+            {{ coach.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="w-full">
+        <mat-label>上课内容</mat-label>
+        <textarea [rows]="4" cdkTextareaAutosize formControlName="content" matInput></textarea>
+      </mat-form-field>
+      <mat-form-field class="w-full">
+        <mat-label>总结</mat-label>
+        <textarea [rows]="4" cdkTextareaAutosize formControlName="summary" matInput></textarea>
+      </mat-form-field>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>图片</mat-card-title>
+        </mat-card-header>
+        <ng-container *ngFor="let image of form.value['images']">
+          <img (click)="removeImage(image)" [src]="api.visitFile(image)" alt="Image" mat-card-image>
+        </ng-container>
+        <mat-card-actions>
+          <button (click)="fileUpload.click()" mat-raised-button>上传</button>
+          <input #fileUpload (change)="onImageSelected($event)" [hidden]="true" accept="image/*" type="file">
+        </mat-card-actions>
+      </mat-card>
     </form>
   </mat-card-content>
   <mat-card-actions>
     <div class="container">
       <div class="row">
-        <button class="col" mat-raised-button color="primary" (click)="onSave()">保存</button>
+        <button (click)="onSave()" class="col" color="primary" mat-raised-button>保存</button>
       </div>
     </div>
   </mat-card-actions>

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Course } from '../../../api/models/course';
-import { UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ApiService } from '../../../api/api.service';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { ActivatedRoute } from '@angular/router';
@@ -8,19 +8,18 @@ import { BottomSheetComponent } from '../../../shared/bottom-sheet.component';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-    selector: 'anms-course-edit',
-    templateUrl: './course-edit.component.html',
-    styleUrls: ['./course-edit.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default,
-    standalone: true,
-    imports: [MatCardModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatChipsModule, NgFor, TextFieldModule, MatButtonModule]
+  selector: 'anms-course-edit',
+  templateUrl: 'course-edit.component.html',
+  changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [MatCardModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatChipsModule, NgFor, TextFieldModule, MatButtonModule, NgIf]
 })
 export class CourseEditComponent implements OnInit {
   public course: Course | undefined;
@@ -41,7 +40,8 @@ export class CourseEditComponent implements OnInit {
     private notification: NotificationService,
     private route: ActivatedRoute,
     private bottomSheet: MatBottomSheet
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -58,10 +58,14 @@ export class CourseEditComponent implements OnInit {
     this.api.getCourse(id).subscribe((course) => {
       this.course = course;
       console.log('course', this.course);
+      let assistantCoachIds: number[] = [];
+      if (this.course.assistantCoaches) {
+        assistantCoachIds = this.course.assistantCoaches.map((item) => item.id);
+      }
       this.form.patchValue({
         managerId: this.course.manager.id,
         coachId: this.course.coach?.id,
-        assistantCoachIds: this.course.assistantCoaches.map((item) => item.id),
+        assistantCoachIds: assistantCoachIds,
         summary: this.course.summary,
         images: this.course.images || [],
         content: this.course.content
@@ -123,7 +127,8 @@ export class CourseEditComponent implements OnInit {
         }
       )
       .subscribe(
-        () => {},
+        () => {
+        },
         (error) => {
           this.notification.error(
             '上传头像失败，请稍后重试: ' + JSON.stringify(error)

@@ -27,3 +27,19 @@ func (m UsersMap) DefaultGet(userID uint) *model.User {
 		}
 	}
 }
+
+func (m UsersMap) OpenId(userId uint) *string {
+	if u, ok := m[userId]; ok {
+		return u.OpenID
+	} else {
+		return nil
+	}
+}
+
+func (m UsersMap) Name(userId uint) string {
+	if u, ok := m[userId]; ok {
+		return u.Nickname
+	} else {
+		return ""
+	}
+}

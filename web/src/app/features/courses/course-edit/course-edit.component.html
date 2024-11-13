@@ -1,68 +1,56 @@
-<mat-card appearance="outlined">
-  <mat-card-header>Course detail</mat-card-header>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Course detail</mat-card-title>
+  </mat-card-header>
   <mat-card-content>
-    <form [formGroup]="form" class="container">
-      <div class="row w-100">
-        <mat-form-field appearance="fill">
-          <mat-label>学校</mat-label>
-          <input matInput [value]="course?.school?.name" disabled>
-        </mat-form-field>
-      </div>
-      <div class="row w-100">
-        <mat-form-field appearance="fill">
-          <mat-label>上课时间</mat-label>
-          <input matInput [value]="course?.startDate + ' ' + course?.startTime" disabled>
-        </mat-form-field>
-      </div>
-      <div class="row w-100">
-        <mat-form-field appearance="fill">
-          <mat-label>负责人</mat-label>
-          <input matInput [value]="course?.manager?.name" disabled>
-        </mat-form-field>
-      </div>
-      <div class="row w-100">
-        <mat-form-field appearance="fill">
-          <mat-label>教练</mat-label>
-          <input matInput [value]="course?.coach?.name" disabled>
-        </mat-form-field>
-      </div>
-      <div class="row w-100">
-        <mat-label>助教</mat-label>
-        <mat-chip-listbox class="mt-1">
-          <mat-chip-option *ngFor="let coach of course?.assistantCoaches">{{coach.name}}</mat-chip-option>
-        </mat-chip-listbox>
-      </div>
-      <div class="row w-100 mt-1">
-        <mat-form-field appearance="fill">
-          <mat-label>上课内容</mat-label>
-          <textarea formControlName="content" matInput [rows]="4" cdkTextareaAutosize></textarea>
-        </mat-form-field>
-      </div>
-      <div class="row w-100">
-        <mat-form-field appearance="fill">
-          <mat-label>总结</mat-label>
-          <textarea formControlName="summary" cdkTextareaAutosize matInput [rows]="4"></textarea>
-        </mat-form-field>
-      </div>
-      <div class="row w-100">
-        <mat-card appearance="outlined">
-          <mat-card-header>图片</mat-card-header>
-          <ng-container *ngFor="let image of form.value['images']">
-            <img mat-card-image [src]="api.visitFile(image)" alt="Image" (click)="removeImage(image)">
-          </ng-container>
-          <mat-card-actions>
-            <button mat-raised-button (click)="fileUpload.click()">上传</button>
-            <input [hidden]="true" type="file" (change)="onImageSelected($event)" #fileUpload accept="image/*">
-          </mat-card-actions>
-        </mat-card>
-      </div>
+    <form *ngIf="course" [formGroup]="form" class="space-x-2">
+      <mat-form-field class="ml-2">
+        <mat-label>学校</mat-label>
+        <input [value]="course.school.name" disabled matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>上课时间</mat-label>
+        <input [value]="course.startDate + ' ' + course.startTime" disabled matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>负责人</mat-label>
+        <input [value]="course.manager.name" disabled matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>教练</mat-label>
+        <input [value]="course.coach?.name" disabled matInput>
+      </mat-form-field>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>助教</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-chip-listbox>
+            <mat-chip-option *ngFor="let coach of course.assistantCoaches">{{ coach.name }}</mat-chip-option>
+          </mat-chip-listbox>
+        </mat-card-content>
+      </mat-card>
+      <mat-form-field class="w-full mt-2">
+        <mat-label>上课内容</mat-label>
+        <textarea [rows]="4" cdkTextareaAutosize formControlName="content" matInput></textarea>
+      </mat-form-field>
+      <mat-form-field class="w-full">
+        <mat-label>总结</mat-label>
+        <textarea [rows]="4" cdkTextareaAutosize formControlName="summary" matInput></textarea>
+      </mat-form-field>
+      <mat-card>
+        <mat-card-header>图片</mat-card-header>
+        <ng-container *ngFor="let image of form.value['images']">
+          <img (click)="removeImage(image)" [src]="api.visitFile(image)" alt="Image" mat-card-image>
+        </ng-container>
+        <mat-card-actions>
+          <button (click)="fileUpload.click()" mat-raised-button>上传</button>
+          <input #fileUpload (change)="onImageSelected($event)" [hidden]="true" accept="image/*" type="file">
+        </mat-card-actions>
+      </mat-card>
     </form>
   </mat-card-content>
-  <mat-card-actions>
-    <div class="container">
-      <div class="row">
-        <button class="col" mat-raised-button color="primary" (click)="onSave()">保存</button>
-      </div>
-    </div>
+  <mat-card-actions align="end">
+    <button (click)="onSave()" class="col" color="primary" mat-raised-button>保存</button>
   </mat-card-actions>
 </mat-card>

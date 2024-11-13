@@ -14,14 +14,16 @@ import (
 )
 
 type UseCase struct {
-	Store   store.Store
-	Storage service.Storage
+	Store         store.Store
+	Storage       service.Storage
+	courseService *service.CourseService
 }
 
-func NewUseCase(store store.Store, storage service.Storage) UseCase {
+func NewUseCase(store store.Store, storage service.Storage, courseService *service.CourseService) UseCase {
 	return UseCase{
-		Store:   store,
-		Storage: storage,
+		Store:         store,
+		Storage:       storage,
+		courseService: courseService,
 	}
 }
 

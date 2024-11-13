@@ -21,7 +21,7 @@ type wechat struct {
 	NotifyHandler *notify.Handler
 }
 
-func (w *wechat) SubscriptionSend(ctx context.Context, in *SubscriptionSendInput) error {
+func (w *wechat) SubscribeSend(ctx context.Context, in *SubscriptionSendInput) error {
 	return nil
 }
 
@@ -31,7 +31,7 @@ type SubscriptionSendInput struct {
 type Wechat interface {
 	GetNotifyHandler() *notify.Handler
 	Prepay(ctx context.Context, in *PrepayInput) (*jsapi.PrepayWithRequestPaymentResponse, error)
-	SubscriptionSend(ctx context.Context, in *SubscriptionSendInput) error
+	SubscribeSend(ctx context.Context, in *SubscriptionSendInput) error
 }
 
 func NewWechat(config *config.Config) (Wechat, error) {

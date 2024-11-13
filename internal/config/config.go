@@ -71,6 +71,7 @@ type WeChat struct {
 	MchCertificateSerialNumber string // 商户证书序列号
 	MchAPIv3Key                string // 商户APIv3密钥
 	PrivateCertPath            string
+	SubscribeTemplateId        string // 订阅消息模板id
 }
 
 func NewConfig(file string) (*Config, error) {

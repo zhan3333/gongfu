@@ -26,11 +26,13 @@ func NewApp(
 		admin.NewUseCase,
 		middlewares.NewMiddlewares,
 		client.NewRedis,
-		service.NewOfficialAccount,
+		client.NewOfficialAccount,
 		service.NewAuthCodeService,
 		service.NewTokenService,
 		service.NewStorageService,
 		store.NewStore,
 		service.NewWechat,
+		service.NewCourseService,
+		client.NewDB,
 	))
 }

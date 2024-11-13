@@ -30,3 +30,10 @@ func NullTime(t sql.NullTime) *time.Time {
 	}
 	return nil
 }
+
+func Empty(s *string) bool {
+	if s == nil || *s == "" {
+		return true
+	}
+	return false
+}

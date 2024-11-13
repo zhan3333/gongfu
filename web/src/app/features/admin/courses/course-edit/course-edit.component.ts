@@ -1,11 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import {
-  AdminApiService,
-  ISampleCoach
-} from '../../../../api/admin/admin-api.service';
+import { AdminApiService, ISampleCoach } from '../../../../api/admin/admin-api.service';
 import { NotificationService } from '../../../../core/notifications/notification.service';
 import { ActivatedRoute } from '@angular/router';
-import { UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { School } from '../../../../api/models/school';
 import * as moment from 'moment';
 import { Course } from '../../../../api/models/course';
@@ -23,12 +20,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-    selector: 'anms-course-edit',
-    templateUrl: './course-edit.component.html',
-    styleUrls: ['./course-edit.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default,
-    standalone: true,
-    imports: [MatCardModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, NgFor, MatOptionModule, MatInputModule, MatDatepickerModule, TextFieldModule, MatButtonModule]
+  selector: 'anms-course-edit',
+  templateUrl: './course-edit.component.html',
+  changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [MatCardModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, NgFor, MatOptionModule, MatInputModule, MatDatepickerModule, TextFieldModule, MatButtonModule]
 })
 export class CourseEditComponent implements OnInit {
   public course: Course | undefined;
@@ -62,7 +58,8 @@ export class CourseEditComponent implements OnInit {
     private notification: NotificationService,
     public route: ActivatedRoute,
     private bottomSheet: MatBottomSheet
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -155,7 +152,8 @@ export class CourseEditComponent implements OnInit {
         }
       )
       .subscribe(
-        () => {},
+        () => {
+        },
         (error) => {
           this.notification.error(
             '上传头像失败，请稍后重试: ' + JSON.stringify(error)

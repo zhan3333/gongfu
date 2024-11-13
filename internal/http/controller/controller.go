@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/silenceper/wechat/v2/officialaccount"
 	"gongfu/internal/app"
+	"gongfu/internal/client"
 	"gongfu/internal/config"
 	"gongfu/internal/http/common"
 	"gongfu/internal/model"
@@ -17,7 +17,7 @@ import (
 
 type UseCase struct {
 	Config          *config.Config
-	OfficialAccount *officialaccount.OfficialAccount
+	OfficialAccount *client.OfficialAccount
 	AuthCode        service.AuthCode
 	Token           service.Token
 	Store           store.Store
@@ -27,7 +27,7 @@ type UseCase struct {
 
 func NewController(
 	config *config.Config,
-	officialAccount *officialaccount.OfficialAccount,
+	officialAccount *client.OfficialAccount,
 	authCode service.AuthCode,
 	token service.Token,
 	store store.Store,

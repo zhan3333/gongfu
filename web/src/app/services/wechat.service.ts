@@ -15,12 +15,20 @@ export class WechatService {
   ) {
   }
 
+  setOnError(fn: (res: any) => void) {
+    this.wx.error(fn)
+  }
+
+  setOnSuccess(fn: () => void) {
+    this.wx.ready(fn)
+  }
+
   refresh(uri: string) {
-    this.wx.error((res: any) => console.log('wechat config error: ', res))
+    this.wx.error((res: any) => console.error('wechat config error: ', res))
     return this.api.getWechatJSConfig(uri).pipe(
       map(config => {
           this.wx.config({
-            debug: false,
+            debug: true,
             appId: config.appID,
             timestamp: config.timestamp,
             nonceStr: config.nonceStr,

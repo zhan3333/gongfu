@@ -20,24 +20,29 @@ import (
 // Injectors from wire.go:
 
 func NewApp(config2 *config.Config) (*http.Route, error) {
-	officialAccount := service.NewOfficialAccount(config2)
+	officialAccount, err := client.NewOfficialAccount(config2)
+	if err != nil {
+		return nil, err
+	}
 	cmdable, err := client.NewRedis(config2)
 	if err != nil {
 		return nil, err
 	}
 	authCode := service.NewAuthCodeService(config2, cmdable)
 	token := service.NewTokenService(config2)
-	storeStore, err := store.NewStore(config2)
+	db, err := client.NewDB(config2)
 	if err != nil {
 		return nil, err
 	}
+	storeStore := store.NewStore(db)
 	storage := service.NewStorageService(config2)
 	wechat, err := service.NewWechat(config2)
 	if err != nil {
 		return nil, err
 	}
 	useCase := controller.NewController(config2, officialAccount, authCode, token, storeStore, storage, wechat)
-	adminUseCase := admin.NewUseCase(storeStore, storage)
+	courseService := service.NewCourseService(storeStore, db, officialAccount)
+	adminUseCase := admin.NewUseCase(storeStore, storage, courseService)
 	middlewaresMiddlewares := middlewares.NewMiddlewares(token, storeStore)
 	route := http.NewRoute(config2, officialAccount, useCase, adminUseCase, middlewaresMiddlewares)
 	return route, nil

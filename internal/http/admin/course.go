@@ -7,6 +7,7 @@ import (
 	"gongfu/internal/app"
 	"gongfu/internal/model"
 	"gongfu/internal/result"
+	"gongfu/internal/service"
 	"gongfu/internal/service/store"
 	util2 "gongfu/pkg/util"
 	"net/http"
@@ -35,7 +36,7 @@ func (r UseCase) CreateCourse(c *app.Context) result.Result {
 	if err := c.Bind(&req); err != nil {
 		return result.Err(err)
 	}
-	var err = r.Store.CreateCourse(context.TODO(), store.CreateCourseInput{
+	var err = r.courseService.CreateCourse(context.TODO(), &service.CreateCourseInput{
 		StartDate:         req.StartDate,
 		StartTime:         req.StartTime,
 		SchoolId:          req.SchoolId,

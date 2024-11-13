@@ -3,7 +3,7 @@ package http
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/silenceper/wechat/v2/officialaccount"
+	"gongfu/internal/client"
 	"gongfu/internal/config"
 	"gongfu/internal/http/action"
 	"gongfu/internal/http/admin"
@@ -20,7 +20,7 @@ import (
 
 type Route struct {
 	Config          *config.Config
-	OfficialAccount *officialaccount.OfficialAccount
+	OfficialAccount *client.OfficialAccount
 	UserUseCase     *controller.UseCase
 	AdminUseCase    admin.UseCase
 	Middleware      middlewares.Middlewares
@@ -28,7 +28,7 @@ type Route struct {
 
 func NewRoute(
 	config *config.Config,
-	officialAccount *officialaccount.OfficialAccount,
+	officialAccount *client.OfficialAccount,
 	controller *controller.UseCase,
 	adminUseCase admin.UseCase,
 	middleware middlewares.Middlewares,

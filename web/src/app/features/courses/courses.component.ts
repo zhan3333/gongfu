@@ -12,7 +12,7 @@ import { NgFor, NgIf } from '@angular/common';
   templateUrl: './courses.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [NgIf, NgFor, MatCardModule, MatButtonModule, RouterLink]
+  imports: [NgIf, NgFor, MatCardModule, MatButtonModule, RouterLink],
 })
 export class CoursesComponent implements OnInit {
 
